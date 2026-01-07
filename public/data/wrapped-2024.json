@@ -1,0 +1,133 @@
+{
+  "year": 2024,
+  "user": {
+    "username": "glossybigbro",
+    "name": "GlossyBigBro",
+    "avatar": "https://github.com/glossybigbro.png"
+  },
+  "stats": {
+    "totalCommits": 487,
+    "totalHours": 1247,
+    "totalStars": 23,
+    "totalRepos": 12,
+    "longestStreak": 45,
+    "currentStreak": 12
+  },
+  "language": {
+    "language": "TypeScript",
+    "percentage": 68.5,
+    "linesOfCode": 120430,
+    "files": 1845,
+    "color": "#3178c6"
+  },
+  "monthlyCommits": [
+    { "month": "Jan", "count": 42 },
+    { "month": "Feb", "count": 38 },
+    { "month": "Mar", "count": 51 },
+    { "month": "Apr", "count": 45 },
+    { "month": "May", "count": 39 },
+    { "month": "Jun", "count": 33 },
+    { "month": "Jul", "count": 28 },
+    { "month": "Aug", "count": 41 },
+    { "month": "Sep", "count": 47 },
+    { "month": "Oct", "count": 52 },
+    { "month": "Nov", "count": 38 },
+    { "month": "Dec", "count": 33 }
+  ],
+  "topProjects": [
+    {
+      "name": "glossybigbro.github.io",
+      "description": "개인 포트폴리오 웹사이트",
+      "techStack": ["Next.js", "TypeScript", "CSS Modules"],
+      "stars": 5,
+      "commits": 127,
+      "thumbnail": "/projects/portfolio.png",
+      "url": "https://github.com/glossybigbro/glossybigbro.github.io"
+    },
+    {
+      "name": "developer-journey",
+      "description": "개발자 여정 타임라인",
+      "techStack": ["Next.js", "Three.js", "Zustand"],
+      "stars": 8,
+      "commits": 89,
+      "thumbnail": "/projects/journey.png",
+      "url": "https://github.com/glossybigbro/developer-journey"
+    },
+    {
+      "name": "webtoon-app",
+      "description": "웹툰 앱 프로젝트",
+      "techStack": ["Flutter", "Dart", "Dio"],
+      "stars": 10,
+      "commits": 156,
+      "thumbnail": "/projects/webtoon.png",
+      "url": "https://github.com/glossybigbro/webtoon"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "commit-streak-30",
+      "title": "Commit Streak",
+      "description": "30일 연속 커밋 달성",
+      "icon": "🔥",
+      "rarity": "epic",
+      "unlockedAt": "2024-03-15"
+    },
+    {
+      "id": "clean-code-master",
+      "title": "Clean Code Master",
+      "description": "코드 리뷰 100회 달성",
+      "icon": "✨",
+      "rarity": "rare",
+      "unlockedAt": "2024-06-20"
+    },
+    {
+      "id": "early-bird",
+      "title": "Early Bird",
+      "description": "오전 6시 이전 커밋 50회",
+      "icon": "🌅",
+      "rarity": "common",
+      "unlockedAt": "2024-09-10"
+    },
+    {
+      "id": "debug-wizard",
+      "title": "Debug Wizard",
+      "description": "버그 수정 200회 달성",
+      "icon": "🐛",
+      "rarity": "epic",
+      "unlockedAt": "2024-11-05"
+    },
+    {
+      "id": "night-owl",
+      "title": "Night Owl",
+      "description": "자정 이후 커밋 100회",
+      "icon": "🦉",
+      "rarity": "rare",
+      "unlockedAt": "2024-08-22"
+    },
+    {
+      "id": "open-source-hero",
+      "title": "Open Source Hero",
+      "description": "오픈소스 기여 30회",
+      "icon": "💎",
+      "rarity": "legendary",
+      "unlockedAt": "2024-12-01"
+    }
+  ],
+  "insights": [
+    {
+      "type": "pattern",
+      "message": "주로 주말에 코딩하시네요! 토요일이 가장 활발합니다.",
+      "icon": "📊"
+    },
+    {
+      "type": "prediction",
+      "message": "이 속도면 내년엔 1000 커밋 달성 가능해요!",
+      "icon": "🚀"
+    },
+    {
+      "type": "recommendation",
+      "message": "React를 많이 쓰시니 Next.js도 도전해보세요!",
+      "icon": "💡"
+    }
+  ]
+}

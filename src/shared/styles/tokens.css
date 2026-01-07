@@ -1,0 +1,36 @@
+/**
+ * 디자인 토큰 시스템
+ * 
+ * 목적: 프로젝트 전체에서 일관된 디자인을 유지하기 위한 CSS 변수들
+ */
+
+:root {
+  /* 색상 시스템 */
+  --color-primary: #8b5cf6;
+  --color-secondary: #ec4899;
+  --color-accent: #3b82f6;
+  
+  /* 배경 색상 */
+  --color-bg-dark: #0a0e27;
+  --color-bg-card: rgba(255, 255, 255, 0.05);
+  
+  /* 텍스트 색상 */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a0aec0;
+  
+  /* 그라데이션 */
+  --gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-pink: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  
+  /* 간격 (8px 기반) */
+  --space-2: 0.5rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  
+  /* 폰트 크기 */
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-2xl: 1.5rem;
+  --text-4xl: 2.25rem;
+}
