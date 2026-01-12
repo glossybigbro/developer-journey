@@ -4,9 +4,9 @@
 
 ## 🎥 데모
 
-<!-- TODO: 스크린샷 또는 GIF 추가 -->
+**Live Demo**: [https://glossybigbro-developer-journey.vercel.app](https://glossybigbro-developer-journey.vercel.app)
 
-**Live Demo**: [http://localhost:3001/wrapped](http://localhost:3001/wrapped) (개발 중)
+**배포 상태**: ✅ Vercel에 배포 완료 (자동 배포 설정)
 
 ### ✨ 주요 특징
 
