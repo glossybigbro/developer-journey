@@ -40,7 +40,7 @@ npm start
 
 ## 🏗️ 프로젝트 구조
 
-```
+```text
 src/
 ├── features/          # 독립적인 기능 모듈
 │   ├── generator-form/      # GitHub Username 입력 폼
@@ -61,10 +61,6 @@ src/
 - ✅ **미사용 코드 0%** - 깔끔한 코드베이스
 - ✅ **주석 커버리지 100%** - 교육용 수준의 한국어 주석
 
-## 라이선스
+## 📄 라이선스
 
-MIT
-
----
-
-**Made with ❤️ by glossybigbro**
+이 프로젝트는 [MIT License](LICENSE) 라이선스를 따릅니다. 자세한 내용은 LICENSE 파일을 참고하세요.
