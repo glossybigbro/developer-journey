@@ -150,10 +150,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   /* [Background] 전역 배경색 */
-  background: var(--bg-main);
+  background: transparent;
 
   /* [Text Color] 전역 텍스트 색상 */
-  color: var(--text-primary);
+  color: #ffffff;
 }
 
 /* [Typography Defaults] 제목 요소 기본 스타일 */
@@ -167,7 +167,7 @@ h6 {
   font-weight: 600;
 
   /* [Text Color] 제목 색상 */
-  color: var(--text-primary);
+  color: #ffffff;
 
   /* [Line Height] 제목은 행간을 좁게 */
   line-height: 1.2;
@@ -229,7 +229,7 @@ p {
 
 ::-webkit-scrollbar-track {
   /* [Track Background] 스크롤바 트랙 배경색 */
-  background: var(--bg-main);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {

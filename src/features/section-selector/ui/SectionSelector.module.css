@@ -1,0 +1,589 @@
+/**
+ * 🎨 [CSS] SectionSelector Styles
+ * 
+ * @layer features/section-selector
+ * @description
+ * GitHub Wrapped 섹션 선택 UI의 스타일시트입니다.
+ * 글래스모피즘(Glassmorphism) 디자인과 미묘한 펄스 애니메이션을 포함합니다.
+ * 
+ * 🎓 [학습 목표]:
+ * 1. **Glassmorphism**: 반투명 배경 + backdrop-filter로 유리 질감 구현
+ * 2. **CSS Animations**: @keyframes로 펄스 애니메이션 정의
+ * 3. **Conditional Styling**: .collapsed 클래스로 조건부 애니메이션 적용
+ * 4. **Nested Accordion**: 2단계 펼침/접힘 UI 구현
+ * 5. **Custom Checkbox**: appearance: none으로 체크박스 커스터마이징
+ */
+
+/* 
+ * ============================================================================
+ * 1. Container
+ * ============================================================================
+ */
+.container {
+    /* [Full Width] 부모 요소의 너비를 100% 사용 */
+    width: 100%;
+
+    /* 
+     * [Responsive Margin] 
+     * clamp(MIN, PREFERRED, MAX)로 반응형 여백 구현
+     * - 최소: 0.75rem (모바일)
+     * - 권장: 2vw (뷰포트 너비의 2%)
+     * - 최대: 1rem (데스크톱)
+     */
+    margin: clamp(0.75rem, 2vw, 1rem) 0;
+}
+
+/* 
+ * ============================================================================
+ * 2. Toggle Button (메인 토글 버튼)
+ * ============================================================================
+ * "Customize Content" 버튼으로, 클릭 시 섹션 선택 UI를 펼치거나 접습니다.
+ */
+.toggleButton {
+    /* 
+     * [Glassmorphism Background]
+     * 반투명한 흰색 배경으로 뒤가 비치는 유리 효과
+     */
+    background: rgba(255, 255, 255, 0.08);
+
+    /* [Subtle Border] 유리 테두리처럼 얇고 밝은 선 */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    /* 
+     * [Responsive Border Radius]
+     * 화면 크기에 따라 10px ~ 12px 사이로 조절되는 둥근 모서리
+     */
+    border-radius: clamp(10px, 2vw, 12px);
+
+    /* [Full Width] 컨테이너 너비를 100% 사용 */
+    width: 100%;
+
+    /* 
+     * [Responsive Padding]
+     * 상하: 0.75rem ~ 1rem
+     * 좌우: 1rem ~ 1.5rem
+     */
+    padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 2.5vw, 1.5rem);
+
+    /* [Text Color] 흰색 텍스트 */
+    color: #FFFFFF;
+
+    /* [Responsive Font Size] 화면 크기에 따라 0.9rem ~ 1rem */
+    font-size: clamp(0.9rem, 2vw, 1rem);
+
+    /* [Font Weight] 중간 굵기 */
+    font-weight: 500;
+
+    /* [Flexbox Layout] 내부 요소를 Flexbox로 배치 */
+    display: flex;
+
+    /* [Vertical Alignment] 세로 중앙 정렬 */
+    align-items: center;
+
+    /* [Horizontal Alignment] 양쪽 끝 정렬 (좌측: 텍스트, 우측: 뱃지) */
+    justify-content: space-between;
+
+    /* [Gap] 자식 요소 사이의 간격 */
+    gap: clamp(0.3rem, 1vw, 0.5rem);
+
+    /* [Cursor] 클릭 가능한 포인터 커서 */
+    cursor: pointer;
+
+    /* [Smooth Transition] 모든 속성 변화를 0.3초 동안 부드럽게 애니메이션 */
+    transition: all 0.3s ease;
+}
+
+/* 
+ * [Collapsed State Animation]
+ * 섹션 선택 UI가 닫혀있을 때만 펄스 애니메이션 적용
+ * 
+ * 🎯 목적: 사용자의 주의를 끌어 커스터마이징 기능 발견 유도
+ * 💡 왜 닫혀있을 때만?: 펼쳐진 상태에서는 이미 발견했으므로 불필요
+ */
+.toggleButton.collapsed {
+    /* [Pulse Animation] 3초 주기로 무한 반복되는 펄스 효과 */
+    animation: subtlePulse 3s ease-in-out infinite;
+}
+
+/* 
+ * [Hover State]
+ * 마우스를 올렸을 때 배경과 테두리가 밝아짐
+ */
+.toggleButton:hover {
+    /* [Brighter Background] 호버 시 배경 밝기 증가 */
+    background: rgba(255, 255, 255, 0.12);
+
+    /* [Brighter Border] 호버 시 테두리 밝기 증가 */
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* 
+ * [Collapsed Hover State]
+ * 닫혀있는 상태에서 호버 시 펄스 애니메이션 중지
+ * 
+ * 💡 이유: 사용자가 상호작용 중일 때는 애니메이션이 방해가 됨
+ */
+.toggleButton.collapsed:hover {
+    /* [Stop Animation] 애니메이션 중지 */
+    animation: none;
+}
+
+/* 
+ * ============================================================================
+ * 3. Pulse Animation (펄스 애니메이션)
+ * ============================================================================
+ * 미묘한 파란색 글로우가 3초 주기로 깜빡이는 효과
+ */
+@keyframes subtlePulse {
+
+    /* [Start & End State] 애니메이션 시작과 끝: 그림자 없음 */
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(168, 216, 255, 0);
+    }
+
+    /* [Peak State] 애니메이션 중간: 파란색 글로우 최대 */
+    50% {
+        /* 
+         * [Glow Effect]
+         * - 0 0: 그림자 위치 (중앙)
+         * - 15px: 블러 반경 (퍼지는 정도)
+         * - 2px: 확산 반경 (그림자 크기)
+         * - rgba(168, 216, 255, 0.3): 파란색 30% 불투명도
+         */
+        box-shadow: 0 0 15px 2px rgba(168, 216, 255, 0.3);
+    }
+}
+
+/* 
+ * ============================================================================
+ * 4. Toggle Text Wrapper (토글 텍스트 영역)
+ * ============================================================================
+ */
+.toggleTextWrapper {
+    /* [Flexbox] 화살표 아이콘과 텍스트를 가로로 배치 */
+    display: flex;
+
+    /* [Vertical Alignment] 세로 중앙 정렬 */
+    align-items: center;
+
+    /* [Gap] 아이콘과 텍스트 사이 간격 */
+    gap: 0.5rem;
+}
+
+/* 
+ * [Toggle Icon]
+ * 화살표 아이콘 (▲ 또는 ▼)
+ */
+.toggleIcon {
+    /* [Responsive Font Size] 화면 크기에 따라 0.7rem ~ 0.8rem */
+    font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+
+    /* [Reduced Opacity] 텍스트보다 덜 강조 */
+    opacity: 0.7;
+}
+
+/* 
+ * ============================================================================
+ * 5. Badge (선택 개수 뱃지)
+ * ============================================================================
+ * 우측에 표시되는 "7 selected" 뱃지
+ */
+.badge {
+    /* 
+     * [Gradient Background]
+     * 보라색에서 파란색으로 그라데이션
+     * - 135deg: 대각선 방향
+     * - rgba(200, 162, 224, 0.3): 보라색 30% 불투명도
+     * - rgba(168, 216, 255, 0.3): 파란색 30% 불투명도
+     */
+    background: linear-gradient(135deg, rgba(200, 162, 224, 0.3), rgba(168, 216, 255, 0.3));
+
+    /* [Pill Shape] 완전히 둥근 모서리로 알약 모양 */
+    border-radius: 20px;
+
+    /* [Internal Padding] 뱃지 내부 여백 */
+    padding: 0.2rem 0.6rem;
+
+    /* [Responsive Font Size] 화면 크기에 따라 0.75rem ~ 0.8rem */
+    font-size: clamp(0.75rem, 1.5vw, 0.8rem);
+
+    /* [Font Weight] 굵은 글씨로 강조 */
+    font-weight: 600;
+
+    /* [Text Color] 흰색 텍스트 */
+    color: #FFFFFF;
+
+    /* [Emphasized Border] 파란색 테두리로 강조 */
+    border: 1px solid rgba(168, 216, 255, 0.4);
+
+    /* 
+     * [Glow Effect]
+     * 뱃지 주변에 파란색 글로우 효과
+     */
+    box-shadow: 0 0 10px rgba(168, 216, 255, 0.2);
+}
+
+/* 
+ * ============================================================================
+ * 6. Selector Content (섹션 선택 UI)
+ * ============================================================================
+ * 토글 버튼 클릭 시 나타나는 섹션 선택 영역
+ */
+.selectorContent {
+    /* [Glassmorphism Background] 더 투명한 유리 효과 */
+    background: rgba(255, 255, 255, 0.05);
+
+    /* [Subtle Border] 얇은 테두리 */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    /* [Responsive Border Radius] 둥근 모서리 */
+    border-radius: clamp(10px, 2vw, 12px);
+
+    /* [Top Margin] 토글 버튼과의 간격 */
+    margin-top: 0.5rem;
+
+    /* [Responsive Padding] 내부 여백 */
+    padding: clamp(0.75rem, 2vw, 1rem);
+
+    /* 
+     * [Max Height with Scroll]
+     * 최대 높이를 제한하고 넘치면 스크롤
+     * - 최소: 300px (모바일)
+     * - 권장: 50vh (뷰포트 높이의 50%)
+     * - 최대: 400px (데스크톱)
+     */
+    max-height: clamp(300px, 50vh, 400px);
+
+    /* [Vertical Scroll] 세로 스크롤만 허용 */
+    overflow-y: auto;
+
+    /* 
+     * [Custom Scrollbar - Firefox]
+     * Firefox에서 스크롤바 스타일링
+     */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* 
+ * [Custom Scrollbar - Webkit (Chrome, Safari, Edge)]
+ * Webkit 기반 브라우저에서 스크롤바 스타일링
+ */
+.selectorContent::-webkit-scrollbar {
+    /* [Scrollbar Width] 스크롤바 너비 */
+    width: 6px;
+}
+
+.selectorContent::-webkit-scrollbar-track {
+    /* [Track Background] 스크롤바 트랙 배경 (투명) */
+    background: transparent;
+}
+
+.selectorContent::-webkit-scrollbar-thumb {
+    /* [Thumb Background] 스크롤바 썸 배경 (반투명 흰색) */
+    background: rgba(255, 255, 255, 0.2);
+
+    /* [Thumb Shape] 둥근 모서리 */
+    border-radius: 3px;
+}
+
+/* 
+ * ============================================================================
+ * 7. ACT Group (ACT 그룹)
+ * ============================================================================
+ * 각 ACT(Welcome, Languages, Activity 등)를 감싸는 컨테이너
+ */
+.actGroup {
+    /* [Bottom Margin] ACT 그룹 사이의 간격 */
+    margin-bottom: 0.5rem;
+}
+
+/* 
+ * [ACT Header]
+ * ACT 제목 버튼 (클릭 시 섹션 목록 펼침/접힘)
+ */
+.actHeader {
+    /* [Background] 반투명 흰색 배경 */
+    background: rgba(255, 255, 255, 0.08);
+
+    /* [No Border] 테두리 없음 */
+    border: none;
+
+    /* [Responsive Border Radius] 둥근 모서리 */
+    border-radius: clamp(6px, 1.5vw, 8px);
+
+    /* [Full Width] 전체 너비 사용 */
+    width: 100%;
+
+    /* [Responsive Padding] 내부 여백 */
+    padding: clamp(0.6rem, 1.5vw, 0.75rem) clamp(0.75rem, 2vw, 1rem);
+
+    /* [Text Color] 흰색 텍스트 */
+    color: #FFFFFF;
+
+    /* [Responsive Font Size] 화면 크기에 따라 0.85rem ~ 0.95rem */
+    font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+
+    /* [Font Weight] 굵은 글씨 */
+    font-weight: 600;
+
+    /* [Flexbox Layout] 아이콘과 텍스트를 가로로 배치 */
+    display: flex;
+
+    /* [Vertical Alignment] 세로 중앙 정렬 */
+    align-items: center;
+
+    /* [Gap] 아이콘과 텍스트 사이 간격 */
+    gap: clamp(0.3rem, 1vw, 0.5rem);
+
+    /* [Cursor] 클릭 가능한 포인터 커서 */
+    cursor: pointer;
+
+    /* [Smooth Transition] 배경 변화를 0.2초 동안 부드럽게 */
+    transition: all 0.2s ease;
+}
+
+/* 
+ * [ACT Header Hover]
+ * 마우스를 올렸을 때 배경 밝아짐
+ */
+.actHeader:hover {
+    /* [Brighter Background] 호버 시 배경 밝기 증가 */
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* 
+ * [ACT Icon]
+ * ACT 헤더의 화살표 아이콘 (▶ 또는 ▼)
+ */
+.actIcon {
+    /* [Responsive Font Size] 화면 크기에 따라 0.6rem ~ 0.7rem */
+    font-size: clamp(0.6rem, 1.3vw, 0.7rem);
+
+    /* [Reduced Opacity] 텍스트보다 덜 강조 */
+    opacity: 0.7;
+}
+
+/* 
+ * [ACT Name]
+ * ACT 이름 텍스트 (예: "ACT 1: Welcome 🎉")
+ */
+.actName {
+    /* [Flex Grow] 남은 공간을 모두 차지 */
+    flex: 1;
+
+    /* [Left Align] 좌측 정렬 */
+    text-align: left;
+}
+
+/* 
+ * ============================================================================
+ * 8. Section List (섹션 목록)
+ * ============================================================================
+ * ACT 내부의 섹션 목록 (체크박스 리스트)
+ */
+.sectionList {
+    /* 
+     * [Responsive Padding]
+     * 상단: 0.3rem ~ 0.5rem
+     * 우측: 0
+     * 하단: 0
+     * 좌측: 1rem ~ 1.5rem (들여쓰기)
+     */
+    padding: clamp(0.3rem, 1vw, 0.5rem) 0 0 clamp(1rem, 2.5vw, 1.5rem);
+
+    /* [Flexbox Column] 세로 방향 Flexbox */
+    display: flex;
+    flex-direction: column;
+
+    /* [Gap] 섹션 아이템 사이의 간격 */
+    gap: clamp(0.3rem, 1vw, 0.5rem);
+}
+
+/* 
+ * [Section Item]
+ * 개별 섹션 아이템 (체크박스 + 이름 + 설명)
+ */
+.sectionItem {
+    /* [Flexbox Row] 가로 방향 Flexbox */
+    display: flex;
+
+    /* [Vertical Alignment] 세로 중앙 정렬 */
+    align-items: center;
+
+    /* [Gap] 체크박스, 이름, 설명 사이의 간격 */
+    gap: clamp(0.5rem, 1.5vw, 0.75rem);
+
+    /* [Responsive Padding] 내부 여백 */
+    padding: clamp(0.4rem, 1vw, 0.5rem);
+
+    /* [Responsive Border Radius] 둥근 모서리 */
+    border-radius: clamp(4px, 1vw, 6px);
+
+    /* [Cursor] 클릭 가능한 포인터 커서 */
+    cursor: pointer;
+
+    /* [Smooth Transition] 배경 변화를 0.2초 동안 부드럽게 */
+    transition: background 0.2s ease;
+}
+
+/* 
+ * [Section Item Hover]
+ * 마우스를 올렸을 때 배경 밝아짐
+ */
+.sectionItem:hover {
+    /* [Subtle Background] 호버 시 미묘한 배경 */
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* 
+ * ============================================================================
+ * 9. Custom Checkbox (커스텀 체크박스)
+ * ============================================================================
+ * 기본 체크박스를 숨기고 커스텀 디자인 적용
+ */
+.checkbox {
+    /* 
+     * [Remove Default Appearance]
+     * 브라우저 기본 체크박스 스타일 제거
+     */
+    appearance: none;
+
+    /* 
+     * [Responsive Size]
+     * 화면 크기에 따라 18px ~ 20px 사이로 조절
+     */
+    width: clamp(18px, 3vw, 20px);
+    height: clamp(18px, 3vw, 20px);
+
+    /* [Border] 반투명 흰색 테두리 */
+    border: 2px solid rgba(255, 255, 255, 0.3);
+
+    /* [Shape] 약간 둥근 모서리 */
+    border-radius: 4px;
+
+    /* [Cursor] 클릭 가능한 포인터 커서 */
+    cursor: pointer;
+
+    /* [Smooth Transition] 모든 변화를 0.2초 동안 부드럽게 */
+    transition: all 0.2s ease;
+
+    /* [Positioning Context] 체크 표시(::after)의 기준점 */
+    position: relative;
+
+    /* [Prevent Shrink] Flexbox에서 크기가 줄어들지 않도록 */
+    flex-shrink: 0;
+}
+
+/* 
+ * [Checked State]
+ * 체크박스가 선택되었을 때의 스타일
+ */
+.checkbox:checked {
+    /* 
+     * [Gradient Background]
+     * 보라색에서 파란색으로 그라데이션
+     * - 135deg: 대각선 방향
+     * - #C8A2E0: 보라색
+     * - #A8D8FF: 파란색
+     */
+    background: linear-gradient(135deg, #C8A2E0, #A8D8FF);
+
+    /* [Border Color] 파란색 테두리 */
+    border-color: #A8D8FF;
+}
+
+/* 
+ * [Check Mark]
+ * 체크박스가 선택되었을 때 표시되는 체크 표시 (✓)
+ */
+.checkbox:checked::after {
+    /* [Content] 체크 표시 문자 */
+    content: '✓';
+
+    /* [Absolute Position] 체크박스 중앙에 배치 */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    /* [Center Transform] 정확한 중앙 정렬 */
+    transform: translate(-50%, -50%);
+
+    /* [Text Color] 어두운 보라색 (그라데이션 배경과 대비) */
+    color: #2A1A40;
+
+    /* [Responsive Font Size] 화면 크기에 따라 12px ~ 14px */
+    font-size: clamp(12px, 2.5vw, 14px);
+
+    /* [Font Weight] 굵은 글씨 */
+    font-weight: bold;
+}
+
+/* 
+ * ============================================================================
+ * 10. Section Text (섹션 텍스트)
+ * ============================================================================
+ */
+
+/* 
+ * [Section Name]
+ * 섹션 이름 (예: "Hero", "Total Commits")
+ */
+.sectionName {
+    /* [Text Color] 흰색 텍스트 */
+    color: #FFFFFF;
+
+    /* [Responsive Font Size] 화면 크기에 따라 0.8rem ~ 0.9rem */
+    font-size: clamp(0.8rem, 1.7vw, 0.9rem);
+
+    /* [Font Weight] 중간 굵기 */
+    font-weight: 500;
+}
+
+/* 
+ * [Section Description]
+ * 섹션 설명 (예: "Your 2024 in Code", "총 커밋 수")
+ */
+.sectionDescription {
+    /* [Text Color] 반투명 흰색 (덜 강조) */
+    color: rgba(255, 255, 255, 0.5);
+
+    /* [Responsive Font Size] 화면 크기에 따라 0.75rem ~ 0.85rem */
+    font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+
+    /* 
+     * [Text Overflow Handling]
+     * 텍스트가 너무 길면 말줄임표(...) 표시
+     */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 
+ * ============================================================================
+ * 11. Responsive Design (반응형)
+ * ============================================================================
+ * 모바일 화면에서 설명 텍스트를 숨기고 여백 조정
+ */
+
+/* [Breakpoint: Mobile ~ 480px] */
+@media (max-width: 480px) {
+
+    /* 
+     * [Hide Description]
+     * 모바일에서는 화면이 좁아서 설명 텍스트 숨김
+     */
+    .sectionDescription {
+        display: none;
+    }
+
+    /* 
+     * [Reduced Padding]
+     * 모바일에서는 들여쓰기 줄임
+     */
+    .sectionList {
+        padding-left: 0.75rem;
+    }
+}

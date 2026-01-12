@@ -1,0 +1,79 @@
+/**
+ * 🌌 [CSS] SpaceBackground Styles
+ * 
+ * @layer widgets/space-background
+ * @description
+ * Canvas 기반 우주 배경 애니메이션의 스타일시트입니다.
+ * 화면 전체를 덮는 고정 배경으로 작동하며, Canvas 요소를 포함합니다.
+ * 
+ * 🎓 [학습 목표]:
+ * 1. **Fixed Positioning**: 스크롤해도 움직이지 않는 배경 구현
+ * 2. **Z-Index Layering**: 배경을 콘텐츠 뒤에 배치하는 법
+ * 3. **Canvas Sizing**: Canvas를 화면 전체에 맞추는 법
+ */
+
+/* 
+ * ============================================================================
+ * Container (배경 컨테이너)
+ * ============================================================================
+ * 
+ * Canvas를 감싸는 최상위 컨테이너입니다.
+ * 화면 전체를 덮으며 스크롤해도 움직이지 않습니다.
+ */
+.container {
+    /* 
+     * [Fixed Position]
+     * 뷰포트에 고정되어 스크롤해도 위치가 변하지 않음
+     */
+    position: fixed;
+
+    /* [Full Screen Coverage] 화면 전체를 덮도록 위치 설정 */
+    top: 0;
+    left: 0;
+
+    /* 
+     * [Viewport Units]
+     * vw (viewport width): 뷰포트 너비의 100%
+     * vh (viewport height): 뷰포트 높이의 100%
+     */
+    width: 100vw;
+    height: 100vh;
+
+    /* 
+     * [Z-Index]
+     * -10: 모든 콘텐츠 뒤에 배치 (배경 레이어)
+     * 음수 값을 사용하여 다른 요소들이 그 위에 올라옴
+     */
+    z-index: -10;
+
+    /* 
+     * [Overflow Hidden]
+     * Canvas가 컨테이너를 벗어나지 않도록 숨김
+     * 스크롤바 방지
+     */
+    overflow: hidden;
+}
+
+/* 
+ * ============================================================================
+ * Canvas (실제 그림이 그려지는 영역)
+ * ============================================================================
+ * 
+ * HTML Canvas 요소의 스타일입니다.
+ * JavaScript에서 이 Canvas에 별, 은하수, 유성을 그립니다.
+ */
+.canvas {
+    /* 
+     * [Full Container Size]
+     * 부모 컨테이너(.container)의 크기에 맞춤
+     */
+    width: 100%;
+    height: 100%;
+
+    /* 
+     * [Display Block]
+     * Canvas는 기본적으로 inline 요소이므로
+     * block으로 변경하여 하단 여백 제거
+     */
+    display: block;
+}
