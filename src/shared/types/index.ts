@@ -1,137 +1,22 @@
 /**
- * 공유 타입 정의
+ * 🛢️ [TYPE] Shared Types Index (Barrel File)
  * 
- * 목적: 프로젝트 전체에서 사용하는 TypeScript 타입들을 정의
- * TypeScript는 코드 작성 시 타입 에러를 미리 잡아줍니다
- */
-
-/**
- * GitHub 커밋 데이터 타입
- */
-export interface Commit {
-  date: string          // ISO 날짜 문자열 (예: "2024-01-07T12:00:00Z")
-  count: number         // 해당 날짜의 커밋 수
-  message?: string      // 커밋 메시지 (선택사항)
-}
-
-/**
- * GitHub 저장소 정보 타입
- */
-export interface Repository {
-  name: string          // 저장소 이름
-  description: string   // 저장소 설명
-  language: string      // 주 사용 언어
-  stars: number         // 스타 수
-  url: string          // 저장소 URL
-  createdAt: string    // 생성 날짜
-  thumbnail?: string   // 썸네일 이미지 경로 (선택사항)
-}
-
-/**
- * 프로그래밍 언어 통계 타입
- */
-export interface LanguageStats {
-  language: string      // 언어 이름 (예: "TypeScript")
-  percentage: number    // 사용 비율 (0-100)
-  linesOfCode: number  // 코드 라인 수
-  files: number        // 파일 수
-  color: string        // 언어 대표 색상 (예: "#3178c6")
-}
-
-/**
- * 월별 커밋 데이터 타입
- */
-export interface MonthlyCommit {
-  month: string        // 월 이름 (예: "Jan", "Feb")
-  count: number        // 해당 월의 커밋 수
-}
-
-/**
- * 업적/배지 타입
- */
-export interface Achievement {
-  id: string                                          // 고유 ID
-  title: string                                       // 업적 제목
-  description: string                                 // 업적 설명
-  icon: string                                        // 아이콘 (이모지 또는 이미지 경로)
-  rarity: 'common' | 'rare' | 'epic' | 'legendary'   // 희귀도
-  unlockedAt: string                                  // 획득 날짜
-}
-
-/**
- * AI 인사이트 타입
- */
-export interface Insight {
-  type: 'pattern' | 'prediction' | 'recommendation'  // 인사이트 유형
-  message: string                                     // 인사이트 메시지
-  icon: string                                        // 아이콘
-}
-
-/**
- * Wrapped 대시보드 전체 데이터 타입
+ * @layer shared/types
+ * @description
+ * `shared/types` 폴더 내부의 모든 타입 모듈을 한곳에서 export합니다.
+ * 외부에서는 `import { ... } from '@/shared/types'` 형태로 깔끔하게 가져다 쓸 수 있습니다.
  * 
- * 이 타입은 Wrapped 페이지에서 보여줄 모든 데이터를 포함합니다
+ * 🏗️ 디자인 패턴: [Barrel Pattern]
+ * - 장점: 
+ *   1. Import 경로가 단축됩니다. (e.g. `shared/types/wrapped` -> `shared/types`)
+ *   2. 내부 구조가 바뀌더라도 외부 코드에 영향을 주지 않습니다 (Encapsulation).
+ * - 단점:
+ *   1. 모든 타입을 다 불러오므로 Tree Shaking이 제대로 안 될 경우 번들 사이즈가 커질 수 있습니다. 
+ *      (하지만 Type only export는 런타임에 제거되므로 성능 영향이 거의 없습니다.)
+ * 
+ * 🎓 [학습 목표]:
+ * 1. **Re-export**: `export * from '...'` 구문을 사용하여 모듈을 다시 내보내는 법
  */
-export interface WrappedData {
-  year: number                    // 연도 (예: 2024)
-  
-  // 사용자 정보
-  user: {
-    username: string              // GitHub 사용자명
-    name: string                  // 실명
-    avatar: string                // 프로필 이미지 URL
-  }
-  
-  // 전체 통계
-  stats: {
-    totalCommits: number          // 총 커밋 수
-    totalHours: number            // 총 코딩 시간
-    totalStars: number            // 받은 스타 총합
-    totalRepos: number            // 저장소 수
-    longestStreak: number         // 최장 연속 커밋 일수
-    currentStreak: number         // 현재 연속 커밋 일수
-  }
-  
-  // 가장 많이 쓴 언어
-  language: LanguageStats
-  
-  // 월별 커밋 데이터
-  monthlyCommits: MonthlyCommit[]
-  
-  // 상위 프로젝트
-  topProjects: Repository[]
-  
-  // 획득한 업적
-  achievements: Achievement[]
-  
-  // AI 인사이트
-  insights: Insight[]
-}
 
-/**
- * 타임라인 노드 타입
- */
-export interface TimelineNode {
-  id: string                                                    // 고유 ID
-  date: string                                                  // 날짜
-  type: 'milestone' | 'project' | 'achievement' | 'learning' | 'bugfix'  // 노드 유형
-  title: string                                                 // 제목
-  description: string                                           // 설명
-  techStack: string[]                                          // 사용 기술 스택
-  
-  // 3D 공간에서의 위치 (Three.js용)
-  position: {
-    x: number
-    y: number
-    z: number
-  }
-  
-  // 추가 메타데이터
-  metadata: {
-    commits?: number        // 커밋 수
-    stars?: number          // 스타 수
-    contributors?: number   // 기여자 수
-    screenshot?: string     // 스크린샷 경로
-    repository?: string     // 저장소 URL
-  }
-}
+export * from './wrapped'
+export * from './animations'

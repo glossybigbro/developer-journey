@@ -9,18 +9,28 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@octokit/rest": "^22.0.1",
+    "@primer/octicons-react": "^19.21.1",
     "@tanstack/react-query": "^5.90.16",
+    "@tsparticles/react": "^3.0.0",
+    "@tsparticles/slim": "^3.9.1",
+    "canvas-confetti": "^1.9.4",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.24.7",
+    "lottie-react": "^2.4.1",
     "next": "16.1.1",
     "react": "19.2.3",
+    "react-calendar-heatmap": "^1.10.0",
+    "react-countup": "^6.5.3",
     "react-dom": "19.2.3",
+    "react-force-graph-2d": "^1.29.0",
     "recharts": "^3.6.0",
     "zod": "^4.3.5",
     "zustand": "^5.0.9"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

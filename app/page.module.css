@@ -1,140 +1,437 @@
+/**
+ * 📘 [CSS Module] Home Page Styling (홈 페이지 스타일링)
+ * 
+ * @layer app/page
+ * @description
+ * Next.js의 `page.tsx` 라우트 컴포넌트를 위한 **지역 스코프(Locally Scoped)** 스타일입니다.
+ * 
+ * 🏗️ 핵심 개념: [CSS Modules]
+ * - 클래스 이름 충돌 방지: 빌드 시 `.page` -> `.page_page__a1b2c` 처럼 고유한 해시값이 붙습니다.
+ * - 모듈화: 이 파일에 정의된 스타일은 오직 이 컴포넌트에만 영향을 미칩니다 (Encapsulation).
+ * 
+ * 🎓 [학습 목표]:
+ * 1. **Holy Grail Layout**: Flexbox를 사용하여 콘텐츠를 화면 정중앙에 배치하는 기법
+ * 2. **Local Variables**: 컴포넌트 내부에서만 유효한 CSS 변수 스코핑
+ * 3. **Responsive Typography**: 화면 크기에 따라 유동적으로 변하는 폰트 제어
+ */
+
+/* 
+ * =============================================================================
+ * 1. Root Container (.page)
+ * =============================================================================
+ * 화면 전체를 채우는 최상위 래퍼입니다.
+ */
 .page {
+  /* 
+   * 🎨 [Local CSS Variables Scope]
+   * :root가 아닌 선택자 내부에 변수를 선언하면, "Local Scope"가 생성됩니다.
+   * 이 변수들은 오직 .page 클래스와 그 자식 요소들에게만 적용됩니다.
+   */
+
+  /* [Theme Colors] 기본값: 라이트 모드 (눈이 편안한 미색) */
   --background: #fafafa;
-  --foreground: #fff;
 
-  --text-primary: #000;
-  --text-secondary: #666;
+  /* [Text Colors] 완전 검정(#000)보다 부드러운 차콜색 사용 */
+  --foreground: #171717;
 
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-  --button-secondary-border: #ebebeb;
+  /* [Hierarchy] 제목 등 강조 텍스트 */
+  --text-primary: #000000;
 
+  /* [Hierarchy] 본문 등 보조 텍스트 */
+  --text-secondary: #666666;
+
+  /* [Interactive] 버튼 호버 시 배경색 */
+  --btn-hover: #383838;
+
+  /* [Interactive] 보조 버튼의 기본 배경색 */
+  --btn-bg: #f2f2f2;
+
+  /* 
+   * 📐 [Layout System: Flexbox]
+   * 자식 요소들을 수직(Column)으로 배치하고, 중앙 정렬합니다.
+   */
+
+  /* [Flexbox Activation] Flexbox 레이아웃 활성화 */
   display: flex;
-  min-height: 100vh;
-  align-items: center;
+
+  /* [Direction] 위에서 아래로 요소를 쌓습니다. */
+  flex-direction: column;
+
+  /* [Main Axis] 세로 축 기준 중앙 정렬 (수직 중앙) */
   justify-content: center;
+
+  /* [Cross Axis] 가로 축 기준 중앙 정렬 (수평 중앙) */
+  align-items: center;
+
+  /* 
+   * 📏 [Sizing: Full Screen]
+   * min-height: 100vh
+   * -> 콘텐츠가 적더라도 최소한 화면 전체 높이(100 Viewport Height)를 차지하게 합니다.
+   * -> height: 100vh 대신 min-height를 쓰는 이유는, 콘텐츠가 많아질 경우 스크롤이 가능하게 하기 위함입니다.
+   */
+  min-height: 100vh;
+
+  /* 
+   * 📐 [Spacing: Safety Zone]
+   * padding: 상하 80px, 좌우 20px
+   * -> 모바일 화면에서도 콘텐츠가 벽에 붙지 않도록 좌우 여백을 확보합니다.
+   */
+  padding: 80px 20px;
+
+  /* 
+   * 🎛️ [Gap: Layout Rhythm]
+   * 자식 요소(Header, Main, Footer) 사이의 간격을 64px로 통일합니다.
+   * margin을 사용하는 것보다 훨씬 일관성 있는 여백 관리가 가능합니다.
+   */
+  gap: 64px;
+
+  /* 
+   * 🎨 [Typography & Theme]
+   * 폰트 최적화(Next.js Font Optimization) 및 테마 색상 적용
+   */
+
+  /* [Font Family] Next.js 최적화 폰트 사용 */
   font-family: var(--font-geist-sans);
+
+  /* [Background Color] 위에서 정의한 로컬 변수(--background)를 사용하여 배경색 적용 */
   background-color: var(--background);
+
+  /* [Text Color] 글자색 적용 */
+  color: var(--foreground);
 }
 
+/* 
+ * =============================================================================
+ * 2. Main Content Wrapper (.main)
+ * =============================================================================
+ * 실제 텍스트와 UI 컨트롤이 배치되는 핵심 영역(Card)입니다.
+ */
 .main {
+  /* 
+   * 📐 [Layout System]
+   * 마찬가지로 Flexbox를 사용하여 내부 요소들을 정렬합니다.
+   */
+
+  /* [Flexbox Activation] Flexbox 레이아웃 활성화 */
   display: flex;
-  min-height: 100vh;
-  width: 100%;
-  max-width: 800px;
+
+  /* [Direction] 세로 방향 배치 */
   flex-direction: column;
-  align-items: flex-start;
+
+  /* [Alignment] 가로 축 기준 중앙 정렬 */
+  align-items: center;
+
+  /* 
+   * 🧩 [Grid Placement]
+   * (참고) 만약 부모가 Grid 레이아웃일 경우, 이 요소를 2번째 행에 위치시킵니다.
+   */
+  grid-row-start: 2;
+
+  /* 
+   * 🎛️ [Spacing: Vertical Rhythm]
+   * 내부 요소들(Intro, Buttons 등) 사이의 간격을 32px로 설정합니다.
+   */
+  gap: 32px;
+
+  /* 
+   * 📏 [Sizing Strategy]
+   * - width: 100% -> 가능한 최대 너비를 차지하되
+   */
+  width: 100%;
+
+  /* [Max Width] 800px을 넘지 않게 제한합니다 (데스크탑 가독성 유지). */
+  max-width: 800px;
+
+  /* 
+   * 📏 [Minimum Height Safety]
+   * 콘텐츠가 로딩 중이거나 짧더라도 레이아웃이 무너지지 않도록 최소 높이를 줍니다.
+   */
+  min-height: 100vh;
+
+  /* 
+   * ⚖️ [Vertical Distribution]
+   * space-between: 첫 번째 요소는 맨 위, 마지막 요소는 맨 아래, 나머지는 등간격 배치
+   */
   justify-content: space-between;
+
+  /* 
+   * 👈 [Alignment Reset]
+   * 위에서 align-items: center를 줬지만, 필요에 따라 교차축 정렬을 다시 왼쪽으로(flex-start) 설정할 수 있습니다.
+   */
+  align-items: flex-start;
+
+  /* 
+   * 🎨 [Visual Styling]
+   * 카드 배경색과 넉넉한 여백(Negative Space)으로 고급스러운 느낌을 줍니다.
+   */
+
+  /* [Background Color] 카드 배경색 */
   background-color: var(--foreground);
+
+  /* [Padding] 시각적 주목도를 높이는 큰 패딩 (상하 120px, 좌우 60px) */
   padding: 120px 60px;
 }
 
+/* 
+ * =============================================================================
+ * 3. Text Content Section (.intro)
+ * =============================================================================
+ * 제목(h1)과 부제목(p)을 감싸는 텍스트 컨테이너입니다.
+ */
 .intro {
+  /* [Layout] Flexbox Column */
   display: flex;
   flex-direction: column;
+
+  /* [Alignment] 왼쪽 정렬 */
   align-items: flex-start;
   text-align: left;
+
+  /* [Gap] 제목과 본문 사이 간격 */
   gap: 24px;
 }
 
+/* 
+ * [Typography] Heading 1 (메인 타이틀)
+ */
 .intro h1 {
-  max-width: 320px;
+  /* 
+   * 📏 [Font Size & Weight]
+   * 40px 크기의 굵은 폰트로 확실한 위계(Hierarchy)를 줍니다.
+   */
+
+  /* [Font Size] 큰 제목 크기 */
   font-size: 40px;
+
+  /* [Font Weight] 굵은 글씨 */
   font-weight: 600;
+
+  /* 
+   * 📐 [Line Height & Letter Spacing]
+   * - line-height: 48px (1.2배) -> 제목은 행간이 좁아야 단단해 보입니다.
+   */
+
+  /* [Line Height] 줄 간격 */
   line-height: 48px;
+
+  /* [Letter Spacing] 글자 간격을 좁혀 현대적인 느낌을 줍니다(Tight Tracking). */
   letter-spacing: -2.4px;
+
+  /* 
+   * ✂️ [Word Break Control]
+   * - max-width: 320px -> 한 줄이 너무 길어지지 않게 강제로 줄바꿈을 유도합니다.
+   */
+
+  /* [Max Width] 최대 너비 제한 */
+  max-width: 320px;
+
+  /* [Text Wrap] 브라우저가 자동으로 가장 보기 좋은 위치에서 줄바꿈을 합니다(Widow 방지). */
   text-wrap: balance;
+
+  /* [Color] 강조 텍스트 색상 */
   color: var(--text-primary);
 }
 
+/* 
+ * [Typography] Paragraph (부제목/설명)
+ */
 .intro p {
+  /* 
+   * 📏 [Readability Width]
+   * 한 줄에 45~75자가 들어가도록 너비를 제한하는 것이 타이포그래피의 가독성 법칙입니다.
+   */
+
+  /* [Max Width] 가독성을 위한 최대 너비 */
   max-width: 440px;
+
+  /* 
+   * 📐 [Styling]
+   * 본문은 제목보다 행간을 넓게(1.5배 이상) 주어 읽기 편하게 합니다.
+   */
+
+  /* [Font Size] 본문 크기 */
   font-size: 18px;
+
+  /* [Line Height] 넓은 줄 간격 */
   line-height: 32px;
+
+  /* [Text Wrap] 균형잡힌 줄바꿈 */
   text-wrap: balance;
+
+  /* [Color] 시각적 피로를 줄이는 회색 */
   color: var(--text-secondary);
 }
 
+/* [Link Styling] 링크 스타일 */
 .intro a {
+  /* [Font Weight] 링크는 약간 굵게 */
   font-weight: 500;
+
+  /* [Color] 링크 색상 */
   color: var(--text-primary);
 }
 
+/* 
+ * =============================================================================
+ * 4. Call To Action Buttons (.ctas)
+ * =============================================================================
+ */
 .ctas {
+  /* [Flexbox] Flexbox 레이아웃 */
   display: flex;
+
+  /* [Direction] 버튼들을 가로로 나란히 배치 */
   flex-direction: row;
+
+  /* [Width] 컨테이너 너비 제한 */
   width: 100%;
   max-width: 440px;
+
+  /* [Gap] 버튼 사이 간격 16px */
   gap: 16px;
+
+  /* [Font Size] 버튼 텍스트 크기 */
   font-size: 14px;
 }
 
+/* 
+ * [Component] Base Button Style 
+ * 모든 버튼에 공통으로 적용되는 스타일입니다.
+ */
 .ctas a {
+  /* [Layout] 내부 텍스트/아이콘 중앙 정렬 */
   display: flex;
   justify-content: center;
   align-items: center;
+
+  /* [Sizing] Pill Shape (알약 모양) */
+
+  /* [Height] 터치 타겟을 고려한 높이 */
   height: 40px;
+
+  /* [Padding] 좌우 패딩 */
   padding: 0 16px;
+
+  /* [Border Radius] 완전히 둥근 모서리 */
   border-radius: 128px;
+
+  /* [Border] 호버 시 레이아웃 흔들림 방지를 위해 투명 테두리 미리 지정 */
   border: 1px solid transparent;
+
+  /* [Interaction] 부드러운 상태 변화 애니메이션 */
   transition: 0.2s;
+
+  /* [Cursor] 클릭 가능함을 표시 */
   cursor: pointer;
+
+  /* [Width] 콘텐츠 크기에 딱 맞춤 */
   width: fit-content;
+
+  /* [Font Weight] 버튼 텍스트 굵기 */
   font-weight: 500;
 }
 
+/* [Variant] Primary Button (Filled) - 꽉 찬 버튼 */
 a.primary {
+  /* [Background] 배경색 */
   background: var(--text-primary);
+
+  /* [Color] 글자색 (반전) */
   color: var(--background);
+
+  /* [Gap] 아이콘과 텍스트 간격 */
   gap: 8px;
 }
 
+/* [Variant] Secondary Button (Outline) - 테두리 버튼 */
 a.secondary {
+  /* [Border Color] 테두리 색상 지정 */
   border-color: var(--button-secondary-border);
 }
 
-/* Enable hover only on non-touch devices */
+/* 
+ * 🖱️ [Interaction: Hover State]
+ * @media (hover: hover) -> 마우스(포인터)가 있고 호버가 가능한 장치에서만 적용
+ * 터치 디바이스에서 호버 스타일이 "붙어있는(Sticky)" 현상을 방지합니다.
+ */
 @media (hover: hover) and (pointer: fine) {
   a.primary:hover {
+    /* [Hover Background] 호버 시 배경색 */
     background: var(--button-primary-hover);
+
+    /* [Hover Border] 호버 시 테두리 투명 */
     border-color: transparent;
   }
 
   a.secondary:hover {
+    /* [Hover Background] 호버 시 배경색 */
     background: var(--button-secondary-hover);
+
+    /* [Hover Border] 호버 시 테두리 투명 */
     border-color: transparent;
   }
 }
 
+/* 
+ * =============================================================================
+ * 5. Responsive Design (Media Queries)
+ * =============================================================================
+ */
+
+/* 
+ * 📱 Mobile Breakpoint (<600px) 
+ * 작은 화면에서는 여백과 폰트 크기를 줄여서 공간 효율을 높입니다.
+ */
 @media (max-width: 600px) {
   .main {
+    /* [Mobile Padding] 패딩 축소 */
     padding: 48px 24px;
   }
 
   .intro {
+    /* [Mobile Gap] 간격 축소 */
     gap: 16px;
   }
 
   .intro h1 {
+    /* [Mobile Font Size] 폰트 크기 축소 */
     font-size: 32px;
+
+    /* [Mobile Line Height] 줄 간격 축소 */
     line-height: 40px;
+
+    /* [Mobile Letter Spacing] 자간 조정 */
     letter-spacing: -1.92px;
   }
 }
 
+/* 
+ * 🌙 Dark Mode Support
+ * 시스템 설정(prefers-color-scheme)에 따라 자동으로 다크 테마를 적용합니다.
+ */
 @media (prefers-color-scheme: dark) {
   .logo {
+    /* [Filter] 로고 색상 반전 (검정 -> 흰색) */
     filter: invert();
   }
 
   .page {
-    --background: #000;
-    --foreground: #000;
+    /* 
+     * 🎨 [Variable Re-assignment]
+     * 핵심 원리: CSS 변수의 값만 바꿔주면, 이를 사용하는 모든 스타일이 자동으로 업데이트됩니다.
+     * 별도의 클래스를 토글할 필요가 없습니다.
+     */
 
+    /* [Background] Deep Black */
+    --background: #000000;
+    --foreground: #000000;
+
+    /* [Text] Off-white & Medium Gray */
     --text-primary: #ededed;
-    --text-secondary: #999;
+    --text-secondary: #999999;
 
-    --button-primary-hover: #ccc;
+    /* [Button] Dark Mode Hover Colors */
+    --button-primary-hover: #cccccc;
     --button-secondary-hover: #1a1a1a;
     --button-secondary-border: #1a1a1a;
   }

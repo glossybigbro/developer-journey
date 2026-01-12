@@ -1,0 +1,702 @@
+/**
+ * 🎨 [CSS] Stats Showcase Style
+ * 
+ * @layer features/stats-showcase
+ * @description
+ * 사용자의 GitHub 활동 통계를 보여주는 Bento Grid 레이아웃의 스타일시트입니다.
+ * Apple 스타일의 Bento UI, Glassmorphism(유리 효과), 그리고 미세한 인터랙티브 효과를 포함합니다.
+ * 
+ * 🎓 [학습 목표]:
+ * 1. **CSS Grid (Bento Layout)**: `grid-template-areas` 혹은 `span`을 활용해 도시락(Bento)처럼 다양한 크기의 셀을 배치하는 법
+ * 2. **Glassmorphism**: `background` 투명도와 `backdrop-filter: blur()`를 조합해 유리 질감을 만드는 법
+ * 3. **Radial Gradient Glow**: 마우스 호버 시 은은하게 퍼지는 빛 효과 구현
+ */
+
+/* 
+ * ============================================================================
+ * 1. Section Container
+ * ============================================================================
+ * 뷰포트 전체 너비에서 중앙 정렬을 담당하는 래퍼입니다.
+ */
+.container {
+    /* 
+     * [Flexbox Center Alignment]
+     * 콘텐츠를 수직(align-items) 및 수평(justify-content) 중앙에 배치합니다.
+     * Flexbox는 1차원 레이아웃 모델이지만, 이렇게 두 속성을 조합하면 완벽한 중앙 정렬이 가능합니다.
+     */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* 
+     * [Fluid Typography & Spacing]
+     * clamp(MIN, PREFERRED, MAX) 함수를 사용하여 반응형 패딩을 구현합니다.
+     * - 최소값: 4rem (모바일)
+     * - 권장값: 10vh (뷰포트 높이의 10%)
+     * - 최대값: 8rem (대형 화면)
+     * 이를 통해 미디어 쿼리 없이도 자연스러운 여백 조절이 가능합니다.
+     */
+    padding: clamp(4rem, 10vh, 8rem) 2rem;
+
+    /* [Positioning Context] 절대 위치 자식 요소(배경 장식 등)의 기준점이 됩니다. */
+    position: relative;
+
+    /* [Overflow Control] 자식 요소가 컨테이너 밖으로 넘칠 경우 잘라냅니다. */
+    overflow: hidden;
+}
+
+/* 
+ * [Inner Content Wrapper]
+ * 실제 그리드가 들어가는 영역으로, 최대 너비를 제한합니다.
+ */
+.content {
+    /* [Max Width] 콘텐츠가 너무 넓어지지 않도록 최대 너비 제한 */
+    max-width: 1400px;
+
+    /* [Full Width] 부모 컨테이너의 너비를 100% 사용 */
+    width: 100%;
+
+    /* [Relative Position] z-index를 사용하기 위한 위치 컨텍스트 생성 */
+    position: relative;
+
+    /* [Stacking Order] 배경 레이어보다 위에 표시되도록 z-index 설정 */
+    z-index: 1;
+}
+
+/* 
+ * ============================================================================
+ * 2. Typography
+ * ============================================================================
+ */
+.sectionHeader {
+    /* [Text Alignment] 모든 자식 텍스트를 가운데 정렬 */
+    text-align: center;
+
+    /* [Bottom Margin] 헤더와 그리드 사이의 간격 */
+    margin-bottom: 4rem;
+}
+
+.sectionTitle {
+    /* [Font Family] 프로젝트 전역 Heading 폰트 변수 사용 */
+    font-family: var(--font-heading);
+
+    /* 
+     * [Fluid Typography] 
+     * 뷰포트 너비(vw)에 따라 폰트 크기가 유동적으로 변합니다.
+     * 최소 2.5rem에서 시작하여 화면이 커지면 최대 4rem까지 커집니다.
+     */
+    font-size: clamp(2.5rem, 6vw, 4rem);
+
+    /* [Visual Weight] 제목의 존재감을 위한 가장 두꺼운 굵기 */
+    font-weight: 900;
+
+    /* [Semantic Color] 전역 텍스트 색상 토큰 사용 */
+    color: var(--text-primary);
+
+    /* [Bottom Margin] 제목과 부제목 사이의 간격 */
+    margin-bottom: 0.75rem;
+
+    /* [Typography Polish] 큰 제목의 경우 자간을 좁혀 밀도감을 높입니다. */
+    letter-spacing: -0.02em;
+}
+
+.sectionSubtitle {
+    /* [Font Family] 본문용 폰트 변수 사용 */
+    font-family: var(--font-body);
+
+    /* [Fluid Font Size] 화면 크기에 따라 1rem ~ 1.25rem 사이로 조절 */
+    font-size: clamp(1rem, 2vw, 1.25rem);
+
+    /* [Secondary Color] 부제목은 보조 색상 사용 */
+    color: var(--text-secondary);
+
+    /* [Font Weight] 중간 굵기로 제목과 차별화 */
+    font-weight: 500;
+
+    /* [Visual Hierarchy] 제목보다 덜 중요하므로 투명도를 주어 위계를 낮춥니다. */
+    opacity: 0.8;
+}
+
+/* 
+ * ============================================================================
+ * 🍱 Bento Grid Layout (도시락 그리드)
+ * ============================================================================
+ * Apple의 Bento UI 트렌드에서 영감을 받은 그리드 시스템입니다.
+ * 박스들이 도시락 통(Bento Box)처럼 꽉 짜여진 구조를 가집니다.
+ */
+.bentoGrid {
+    /* [Grid System Activation] CSS Grid 레이아웃 활성화 */
+    display: grid;
+
+    /* 
+     * [Columns Definition]
+     * 'repeat(3, 1fr)'은 '1fr 1fr 1fr'과 동일합니다.
+     * 화면 너비를 3등분하여 각각 1 fraction(비율)씩 나누어 가집니다.
+     */
+    grid-template-columns: repeat(3, 1fr);
+
+    /* 
+     * [Rows Definition]
+     * 2개의 행을 명시적으로 정의하지 않아도 되지만(auto), 명확성을 위해 선언할 수 있습니다.
+     * 여기서는 row의 높이가 내용물에 따라 자동으로 결정되도록 합니다. 
+     */
+    grid-template-rows: auto auto;
+
+    /* [Gap] 그리드 아이템 사이의 간격 (Gutter) */
+    gap: 1.5rem;
+}
+
+/* 
+ * ============================================================================
+ * 🧊 Card Styling (Glassmorphism Base)
+ * ============================================================================
+ * '유리 형태(Glassmorphism)' 디자인의 핵심 구현부입니다.
+ * 불투명한 유리 뒤에 물체가 있는 듯한 느낌을 줍니다.
+ */
+.card {
+    /* [Positional Context] 내부 절대 위치 아이템(Glow 등)의 기준점 */
+    position: relative;
+
+    /* 
+     * [Translucent Background] 
+     * 배경색(흰색)에 알파 채널(0.75)을 주어 뒤가 비치도록 합니다.
+     * 너무 투명하면 가독성이 떨어지므로 적절한 불투명도가 필요합니다.
+     */
+    background: rgba(255, 255, 255, 0.75);
+
+    /* 
+     * [Backdrop Filter] 핵심 속성!
+     * 요소의 '뒤쪽' 배경을 흐리게(Blur 20px) 처리합니다.
+     * (-webkit- 접두사는 Safari 호환성을 위해 필수입니다)
+     */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    /* [Border] 유리 단면처럼 얇고 밝은 테두리 */
+    border: 1px solid rgba(255, 255, 255, 0.9);
+
+    /* [Shape] 현대적인 느낌을 주는 큰 둥근 모서리 */
+    border-radius: 24px;
+
+    /* [Internal Spacing] 카드 내부 콘텐츠와 테두리 사이의 여백 */
+    padding: 3rem 2.5rem;
+
+    /* 
+     * [Elevation] 
+     * 부드러운 그림자로 깊이감을 줍니다.
+     * inset 그림자를 추가하여 유리 두께감을 표현할 수도 있습니다.
+     */
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+
+    /* 
+     * [Micro Interaction]
+     * hover 시의 스타일 변화를 부드럽게 애니메이션합니다.
+     * cubic-bezier를 사용해 쫀득한(bouncy) 느낌을 줄 수 있습니다.
+     */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* [Cursor Style] 기본 커서 유지 (클릭 불가 표시) */
+    cursor: default;
+
+    /* [Overflow] 카드 밖으로 삐져나오는 요소 숨김 */
+    overflow: hidden;
+}
+
+/* 
+ * 🌟 [Ambient Glow Effect] 
+ * 카드 내부에 은은하게 퍼지는 빛 효과입니다.
+ */
+.cardGlow {
+    /* [Full Cover] 부모(.card) 내부를 꽉 채웁니다. top:0, right:0, bottom:0, left:0과 동일 */
+    position: absolute;
+    inset: 0;
+
+    /* [Initial State] 평소에는 보이지 않음 */
+    opacity: 0;
+
+    /* [Transition] 호버 시 서서히 나타나도록 설정 */
+    transition: opacity 0.3s ease;
+
+    /* [Pointer Events] 빛 효과가 마우스 클릭 등을 방해하지 않도록 통과시킵니다. */
+    pointer-events: none;
+}
+
+/* 
+ * [Glow Color Variations]
+ * 각 테마(Yellow, Blue, Purple)에 맞는 그라데이션을 정의합니다.
+ * radial-gradient를 사용하여 중심에서 퍼져나가는 빛을 표현합니다.
+ * - rgba(..., 0.15): 중심부 불투명도 15%
+ * - transparent 70%: 70% 지점부터는 완전히 투명해짐
+ */
+.cardGlowYellow {
+    /* [Yellow Glow] 노란색 계열의 방사형 그라데이션 */
+    background: radial-gradient(circle at 50% 50%, rgba(255, 217, 61, 0.15), transparent 70%);
+}
+
+.cardGlowBlue {
+    /* [Blue Glow] 파란색 계열의 방사형 그라데이션 */
+    background: radial-gradient(circle at 50% 50%, rgba(96, 165, 250, 0.15), transparent 70%);
+}
+
+.cardGlowPurple {
+    /* [Purple Glow] 보라색 계열의 방사형 그라데이션 */
+    background: radial-gradient(circle at 50% 50%, rgba(167, 139, 250, 0.15), transparent 70%);
+}
+
+/* [Glow Activation] 카드에 마우스를 올리면 내부 Glow가 나타남 */
+.card:hover .cardGlow {
+    /* [Visible State] 불투명도를 1로 만들어 완전히 보이게 함 */
+    opacity: 1;
+}
+
+/* 
+ * [Theme Text Colors]
+ * CSS 변수(Custom Properties)를 사용하여 일관된 색상을 적용합니다.
+ * 이 변수들은 tokens.css나 globals.css에서 정의되어 있습니다.
+ */
+.textYellow {
+    /* [Yellow Theme] 노란색 강조 색상 */
+    color: var(--accent-yellow);
+}
+
+.textBlue {
+    /* [Blue Theme] 파란색 통계 색상 */
+    color: var(--stats-blue);
+}
+
+.textPurple {
+    /* [Purple Theme] 보라색 통계 색상 */
+    color: var(--stats-purple);
+}
+
+/* 
+ * ============================================================================
+ * 📐 Card Layout Variations (Large vs Small)
+ * ============================================================================
+ */
+
+/* [Large Card] 상단 3개의 메인 지표 카드 */
+.cardLarge {
+    /* 
+     * [Grid Placement] 
+     * span 1을 명시하여 3열 그리드에서 1칸씩 차지함을 보장합니다.
+     */
+    grid-column: span 1;
+
+    /* [Flex Column Layout] 아이콘 -> 숫자 -> 라벨 순서로 수직 정렬 */
+    display: flex;
+    flex-direction: column;
+
+    /* [Horizontal Alignment] 모든 자식 요소를 가로 중앙 정렬 */
+    align-items: center;
+
+    /* [Vertical Alignment] 모든 자식 요소를 세로 중앙 정렬 */
+    justify-content: center;
+
+    /* [Text Alignment] 텍스트를 가운데 정렬 */
+    text-align: center;
+
+    /* [Minimum Height] 내용이 없어도 최소한의 크기를 유지 */
+    min-height: 320px;
+}
+
+/* 
+ * [Icon Wrapper] 
+ * 아이콘을 감싸는 컨테이너입니다.
+ * inline-flex를 사용하여 내용물 크기에 딱 맞게 조절됩니다.
+ */
+.iconWrapper {
+    /* [Inline Flex] 내용물 크기만큼만 차지하는 Flexbox */
+    display: inline-flex;
+
+    /* [Center Icon Vertically] 아이콘을 세로 중앙 정렬 */
+    align-items: center;
+
+    /* [Center Icon Horizontally] 아이콘을 가로 중앙 정렬 */
+    justify-content: center;
+
+    /* [Bottom Margin] 아이콘과 숫자 사이의 간격 */
+    margin-bottom: 1.5rem;
+
+    /* [Internal Padding] 아이콘 주변의 여백 */
+    padding: 1.25rem;
+
+    /* [Transparent Background] 배경은 투명하지만, 필요 시 색상을 넣을 수 있도록 준비됨 */
+    background: transparent;
+
+    /* [Rounded Corners] 부드러운 사각형 형태 (Squircle에 가까움) */
+    border-radius: 16px;
+}
+
+/* 
+ * [Icon Shadow]
+ * SVG 아이콘 자체에 그림자를 줍니다.
+ * box-shadow와 달리, drop-shadow는 투명한 영역을 제외한 '실제 모양'에 그림자를 만듭니다.
+ */
+.icon {
+    /* [Drop Shadow Filter] SVG의 실제 모양에만 그림자 적용 */
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+}
+
+/* 
+ * [Number Typography]
+ * 숫자를 강조하기 위한 스타일입니다.
+ * - tabular-nums: 숫자의 너비를 일정하게 유지하여 카운팅 애니메이션 시 떨림 방지
+ * - clamp: 뷰포트에 따라 4rem ~ 7rem까지 거대하게 커짐
+ */
+.number {
+    /* [Heading Font] 숫자에 헤딩 폰트 적용 */
+    font-family: var(--font-heading);
+
+    /* [Huge Fluid Size] 화면 크기에 따라 4rem ~ 7rem 사이로 조절 */
+    font-size: clamp(4rem, 10vw, 7rem);
+
+    /* [Maximum Weight] 가장 두꺼운 굵기로 강조 */
+    font-weight: 900;
+
+    /* [Tight Line Height] 줄 간격을 1로 설정하여 숫자가 딱 붙도록 */
+    line-height: 1;
+
+    /* [Bottom Margin] 숫자와 라벨 사이의 간격 */
+    margin-bottom: 1rem;
+
+    /* [Negative Letter Spacing] 큰 숫자는 자간을 좁혀 밀도감 향상 */
+    letter-spacing: -0.05em;
+
+    /* [Text Shadow] 숫자에 은은한 그림자 효과 */
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* [Label Typography] 숫자 아래의 설명 텍스트 */
+.label {
+    /* [Body Font] 본문용 폰트 사용 */
+    font-family: var(--font-body);
+
+    /* [Fluid Size] 화면 크기에 따라 1rem ~ 1.25rem 사이로 조절 */
+    font-size: clamp(1rem, 2vw, 1.25rem);
+
+    /* [Bold Weight] 굵은 글씨로 가독성 향상 */
+    font-weight: 700;
+
+    /* [Primary Color] 주요 텍스트 색상 사용 */
+    color: var(--text-primary);
+
+    /* [Uppercase Transform] 모든 글자를 대문자로 변환 */
+    text-transform: uppercase;
+
+    /* [Wide Letter Spacing] 대문자는 자간을 넓혀 가독성 향상 */
+    letter-spacing: 0.12em;
+
+    /* [Reduced Opacity] 숫자보다 덜 강조하기 위해 투명도 적용 */
+    opacity: 0.8;
+}
+
+/* [Small Card] 하단 서브 지표 카드 */
+.cardSmall {
+    /* [Grid Placement] 1칸 차지 */
+    grid-column: span 1;
+
+    /* [Flex Container] Flexbox 레이아웃 활성화 */
+    display: flex;
+
+    /* [Column Direction] 세로 방향 정렬 */
+    flex-direction: column;
+
+    /* [Horizontal Center] 가로 중앙 정렬 */
+    align-items: center;
+
+    /* [Vertical Center] 세로 중앙 정렬 */
+    justify-content: center;
+
+    /* [Text Center] 텍스트 가운데 정렬 */
+    text-align: center;
+
+    /* [Smaller Height] Large Card보다 작게 설정하여 시각적 위계를 둡니다. */
+    min-height: 200px;
+
+    /* [Internal Padding] 카드 내부 여백 */
+    padding: 2.5rem 2rem;
+}
+
+/* [Small Number] 작은 카드용 숫자 스타일 */
+.smallNumber {
+    /* [Heading Font] 헤딩 폰트 사용 */
+    font-family: var(--font-heading);
+
+    /* [Medium Fluid Size] 3rem ~ 4.5rem 사이로 조절 */
+    font-size: clamp(3rem, 7vw, 4.5rem);
+
+    /* [Maximum Weight] 가장 두꺼운 굵기 */
+    font-weight: 900;
+
+    /* [Tight Line Height] 줄 간격 최소화 */
+    line-height: 1;
+
+    /* [Bottom Margin] 숫자와 라벨 사이 간격 */
+    margin-bottom: 0.75rem;
+
+    /* [Negative Spacing] 자간 좁히기 */
+    letter-spacing: -0.04em;
+}
+
+/* [Small Label] 작은 카드용 라벨 */
+.smallLabel {
+    /* [Body Font] 본문 폰트 사용 */
+    font-family: var(--font-body);
+
+    /* [Fixed Size] 고정 크기 1rem */
+    font-size: 1rem;
+
+    /* [Bold Weight] 굵은 글씨 */
+    font-weight: 700;
+
+    /* [Primary Color] 주요 텍스트 색상 */
+    color: var(--text-primary);
+
+    /* [Uppercase] 대문자 변환 */
+    text-transform: uppercase;
+
+    /* [Wide Spacing] 자간 넓히기 */
+    letter-spacing: 0.1em;
+
+    /* [Flex Container] Flexbox로 서브라벨 배치 */
+    display: flex;
+
+    /* [Column Direction] 세로 방향 */
+    flex-direction: column;
+
+    /* [Gap] 라벨과 서브라벨 사이 간격 */
+    gap: 0.25rem;
+}
+
+/* [Small Sublabel] 작은 카드의 보조 설명 텍스트 */
+.smallSublabel {
+    /* [Smaller Size] 더 작은 폰트 크기 */
+    font-size: 0.8rem;
+
+    /* [Medium Weight] 중간 굵기 */
+    font-weight: 500;
+
+    /* [Secondary Color] 보조 색상 사용 */
+    color: var(--text-secondary);
+
+    /* [Lowercase] 소문자로 변환 */
+    text-transform: lowercase;
+
+    /* [Narrow Spacing] 좁은 자간 */
+    letter-spacing: 0.05em;
+
+    /* [Reduced Opacity] 투명도로 위계 표현 */
+    opacity: 0.7;
+}
+
+/* 
+ * [Interactive Hover State]
+ * 마우스를 올렸을 때 카드가 살짝 떠오르는 듯한 효과를 줍니다.
+ * 
+ * 1. box-shadow: 그림자를 더 넓고 진하게 하여 높이감(Elevation) 상승 표현
+ * 2. border-color: 테두리를 불투명(1)하게 하여 선명도 강조
+ */
+.card:hover {
+    /* [Enhanced Shadow] 호버 시 더 깊은 그림자 */
+    box-shadow:
+        0 12px 48px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+
+    /* [Brighter Border] 테두리를 완전 불투명하게 */
+    border-color: rgba(255, 255, 255, 1);
+}
+
+/* 
+ * ============================================================================
+ * 4. Responsive Design (반응형)
+ * ============================================================================
+ * 화면 너비가 줄어들 때 레이아웃과 폰트 크기를 조정하여 최적의 경험을 제공합니다.
+ * - 1024px: Tablet Landscape (여유 공간 줄임)
+ * - 768px: Tablet Portrait (글자 크기 축소)
+ * - 640px: Mobile (패딩 최소화)
+ */
+
+/* [Breakpoint: Tablet Landscape ~ 1024px] */
+@media (max-width: 1024px) {
+    .container {
+        /* [Reduced Padding] 태블릿에서는 패딩 축소 */
+        padding: 6rem 2rem;
+    }
+
+    .bentoGrid {
+        /* [Smaller Gap] 그리드 간격 축소 */
+        gap: 1rem;
+    }
+
+    .cardLarge {
+        /* [Reduced Height] 카드 최소 높이 축소 */
+        min-height: 240px;
+    }
+
+    .cardSmall {
+        /* [Reduced Height] 작은 카드 높이 축소 */
+        min-height: 160px;
+    }
+
+    /* 카드 내부 패딩 조정 */
+    .card {
+        /* [Tighter Padding] 카드 내부 여백 축소 */
+        padding: 2rem 1.5rem;
+    }
+
+    .number {
+        /* [Smaller Number] 숫자 크기 축소 */
+        font-size: clamp(3rem, 5vw, 4.5rem);
+    }
+
+    .smallNumber {
+        /* [Smaller Small Number] 작은 숫자 크기 축소 */
+        font-size: clamp(2.5rem, 4vw, 3.5rem);
+    }
+}
+
+/* [Breakpoint: Tablet Portrait ~ 768px] */
+@media (max-width: 768px) {
+    .container {
+        /* [Further Reduced Padding] 패딩 더 축소 */
+        padding: 5rem 1.5rem;
+    }
+
+    .sectionHeader {
+        /* [Reduced Margin] 헤더 하단 여백 축소 */
+        margin-bottom: 3rem;
+    }
+
+    .sectionTitle {
+        /* [Smaller Title] 제목 크기 축소 */
+        font-size: clamp(2rem, 6vw, 2.5rem);
+    }
+
+    .sectionSubtitle {
+        /* [Smaller Subtitle] 부제목 크기 축소 */
+        font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+
+    .bentoGrid {
+        /* [Minimal Gap] 그리드 간격 최소화 */
+        gap: 0.875rem;
+    }
+
+    .cardLarge {
+        /* [Compact Height] 카드 높이 더 축소 */
+        min-height: 200px;
+    }
+
+    .cardSmall {
+        /* [Compact Small Height] 작은 카드 높이 더 축소 */
+        min-height: 140px;
+    }
+
+    .card {
+        /* [Minimal Padding] 카드 패딩 최소화 */
+        padding: 1.5rem 1rem;
+    }
+
+    .iconWrapper {
+        /* [Smaller Icon Padding] 아이콘 패딩 축소 */
+        padding: 0.875rem;
+
+        /* [Reduced Margin] 아이콘 하단 여백 축소 */
+        margin-bottom: 0.875rem;
+    }
+
+    .number {
+        /* [Compact Number] 숫자 크기 더 축소 */
+        font-size: clamp(2.5rem, 6vw, 3.5rem);
+
+        /* [Reduced Margin] 숫자 하단 여백 축소 */
+        margin-bottom: 0.5rem;
+    }
+
+    .label {
+        /* [Smaller Label] 라벨 크기 축소 */
+        font-size: clamp(0.7rem, 2vw, 0.85rem);
+    }
+
+    .smallNumber {
+        /* [Compact Small Number] 작은 숫자 더 축소 */
+        font-size: clamp(2rem, 5vw, 2.75rem);
+
+        /* [Reduced Margin] 여백 축소 */
+        margin-bottom: 0.5rem;
+    }
+
+    .smallLabel {
+        /* [Smaller Small Label] 작은 라벨 크기 축소 */
+        font-size: 0.75rem;
+    }
+
+    .smallSublabel {
+        /* [Tiny Sublabel] 서브라벨 크기 축소 */
+        font-size: 0.65rem;
+    }
+}
+
+/* [Breakpoint: Mobile ~ 640px] */
+@media (max-width: 640px) {
+    .container {
+        /* [Minimal Mobile Padding] 모바일 최소 패딩 */
+        padding: 4rem 1rem;
+    }
+
+    .bentoGrid {
+        /* [Tight Mobile Gap] 모바일 최소 간격 */
+        gap: 0.75rem;
+    }
+
+    .card {
+        /* [Tight Mobile Padding] 모바일 카드 최소 패딩 */
+        padding: 1.25rem 0.875rem;
+    }
+
+    .iconWrapper {
+        /* [Minimal Icon Padding] 아이콘 최소 패딩 */
+        padding: 0.75rem;
+
+        /* [Minimal Margin] 최소 여백 */
+        margin-bottom: 0.75rem;
+    }
+
+    .cardLarge {
+        /* [Mobile Large Height] 모바일 큰 카드 높이 */
+        min-height: 160px;
+    }
+
+    .cardSmall {
+        /* [Mobile Small Height] 모바일 작은 카드 높이 */
+        min-height: 120px;
+    }
+
+    .number {
+        /* [Mobile Number Size] 모바일 숫자 크기 */
+        font-size: clamp(2rem, 5vw, 3rem);
+    }
+
+    .label {
+        /* [Tiny Mobile Label] 모바일 라벨 최소 크기 */
+        font-size: 0.65rem;
+    }
+
+    .smallNumber {
+        /* [Mobile Small Number] 모바일 작은 숫자 크기 */
+        font-size: clamp(1.5rem, 4vw, 2.25rem);
+    }
+
+    .smallLabel {
+        /* [Tiny Mobile Small Label] 모바일 작은 라벨 크기 */
+        font-size: 0.65rem;
+    }
+
+    .smallSublabel {
+        /* [Minimal Mobile Sublabel] 모바일 서브라벨 최소 크기 */
+        font-size: 0.6rem;
+    }
+}
