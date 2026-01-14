@@ -1,0 +1,1 @@
+export { GeneratorHero } from './GeneratorHero'

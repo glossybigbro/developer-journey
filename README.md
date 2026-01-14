@@ -1,13 +1,22 @@
 # GitHub Profile Generator
 
-> GitHub 프로필 README를 쉽게 생성할 수 있는 웹 애플리케이션
+![Next.js](https://img.shields.io/badge/Next.js-15.0-black?style=for-the-badge&logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
+
+> 나만의 GitHub 프로필을 멋지게 꾸며보세요.
+
+> [!IMPORTANT]
+> **🚧 현재 활발히 개발 중입니다 (Active Development)**
+>
+> 이 프로젝트는 현재 **Alpha** 단계입니다. 기능과 UI가 자주 변경될 수 있습니다.
 
 ## ✨ 주요 특징
 
-- 🎨 **인터랙티브 UI** - 우주 배경과 글래스모피즘 디자인
-- 📝 **섹션 선택** - 7개 카테고리, 30+ 섹션 중 원하는 것만 선택
-- 📱 **반응형 디자인** - 모든 디바이스에서 최적화된 경험
-- 🏗️ **확장 가능한 구조** - Feature-Sliced Design 아키텍처
+- ⚡️ **실시간 미리보기 (Real-time Preview)** - 입력과 동시에 변하는 마크다운을 확인하세요.
+- 📋 **원클릭 생성 (Instant Export)** - 코드를 복사하거나 `README.md` 파일로 바로 다운로드하세요.
+- 🧩 **다양한 위젯 (Rich Widgets)** - 7개 카테고리, 30개 이상의 통계/배지 섹션을 조합하세요.
+- 🎨 **글로시 디자인 (Glossy Design)** - 차별화된 우주 테마와 글래스모피즘 UI를 경험하세요.
 
 ## 🚀 시작하기
 
@@ -32,34 +41,30 @@ npm start
 
 ## 🛠️ 기술 스택
 
-- **Framework**: Next.js 16 (App Router)
+- **Framework**: Next.js 16 (App Router), React 19
 - **Language**: TypeScript
-- **Styling**: CSS Modules
-- **Animation**: Canvas API
+- **State Management**: Zustand
+- **Styling**: CSS Modules (Main), Tailwind CSS
+- **Animation**: Framer Motion, Canvas API
+- **Data Fetching**: React Query
 - **Architecture**: Feature-Sliced Design (FSD)
 
 ## 🏗️ 프로젝트 구조
 
 ```text
 src/
+├── entities/          # 비즈니스 로직 및 데이터 모델 (Profile 등)
 ├── features/          # 독립적인 기능 모듈
-│   ├── generator-form/      # GitHub Username 입력 폼
-│   └── section-selector/    # 섹션 선택 UI
+│   ├── markdown-preview/    # 실시간 마크다운 미리보기
+│   └── section-builder/     # 섹션 선택 및 편집 UI
 ├── widgets/           # 페이지 레벨 UI 블록
-│   ├── generator-hero/      # 메인 Hero 섹션
-│   └── space-background/    # 배경 애니메이션
+│   └── generator-hero/      # 메인 Hero 섹션 (복합 위젯)
 └── shared/            # 공통 모듈
+    ├── ui/                  # 재사용 UI (SpaceBackground 등)
     └── styles/              # CSS 변수 및 토큰
 ```
 
 **의존성 규칙**: `App → Widgets → Features → Shared`
-
-## 🎨 코드 품질
-
-- ✅ **FSD 아키텍처 100% 준수** - 순환 의존성 없음
-- ✅ **TypeScript 100%** - 완전한 타입 안정성
-- ✅ **미사용 코드 0%** - 깔끔한 코드베이스
-- ✅ **주석 커버리지 100%** - 교육용 수준의 한국어 주석
 
 ## 📄 라이선스
 

@@ -37,7 +37,7 @@ const inter = Inter({
  * 여기서 설정한 값이 오버라이드(덮어쓰기)되거나 머지(병합)됩니다.
  */
 export const metadata: Metadata = {
-  title: 'Developer Journey - 2024 Wrapped',
+  title: 'Glossy.BigBro - GitHub Profile Generator',
   description: 'GitHub 활동 내역으로 보는 나의 개발자 성장 스토리',
   icons: {
     icon: '/favicon.ico',

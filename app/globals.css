@@ -12,8 +12,22 @@
  * - Playfair Display: 우아한 세리프 폰트 (제목용)
  * - Inter: 가독성 좋은 산세리프 폰트 (본문용)
  * - Space Grotesk: 기하학적인 산세리프 폰트 (숫자/데이터 강조용)
+ * 
+ * ⚠️ IMPORTANT: @import 규칙은 반드시 @tailwind보다 먼저 와야 합니다.
+ * CSS 명세에 따라 @import는 @charset와 @layer를 제외한 모든 규칙보다 앞에 위치해야 합니다.
  */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;700&display=swap');
+
+/* 
+ * 🎨 Tailwind CSS v4 Import
+ * 
+ * ⚠️ IMPORTANT: Tailwind CSS v4는 @tailwind 지시문 대신 @import를 사용합니다!
+ * - v3: @tailwind base; @tailwind components; @tailwind utilities;
+ * - v4: @import "tailwindcss";
+ * 
+ * 이 한 줄이 Tailwind의 모든 유틸리티 클래스를 제공합니다.
+ */
+@import "tailwindcss";
 
 /* 
  * 🎨 Design System Tokens (CSS Variables)
