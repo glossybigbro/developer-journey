@@ -202,7 +202,7 @@ export function SimpleBioSettings() {
                         <div className={styles.list} style={{ padding: 0 }}>
 
                             {bio.bullets.map((bullet, index) => (
-                                <div key={index} style={{ display: 'flex', gap: '8px', marginBottom: '4px' }}>
+                                <div key={index} style={{ display: 'flex', gap: '8px', marginBottom: '4px', alignItems: 'center' }}>
                                     <input
                                         type="text"
                                         className={styles.settingsInput}
