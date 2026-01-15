@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { UI_DEFAULTS } from '../../../shared/config/markdown-constants'
-import { SECTIONS, Section } from './sections'
+import { SECTIONS, Section, BIO_DEFAULTS } from './sections'
 
 interface ProfileState {
     // 단계 관리
@@ -20,6 +20,27 @@ interface ProfileState {
     // 테마
     theme: 'dark' | 'light'
     accentColor: string
+
+    // Bio Data
+    bio: {
+        heading: string
+        description: string
+        bullets: string[]
+        showHeading: boolean
+        showDescription: boolean
+        showBullets: boolean
+        headingSize: 'h1' | 'h2' | 'h3'
+        descriptionSize?: 'l' | 'm' | 's'
+    }
+    setBio: (bio: Partial<{
+        heading: string;
+        description: string;
+        bullets: string[];
+        showHeading: boolean;
+        showDescription: boolean;
+        showBullets: boolean;
+        headingSize: 'h1' | 'h2' | 'h3';
+    }>) => void
 
     // Activity Graph Settings
     activityGraphTheme: string
@@ -77,6 +98,18 @@ export const useProfileStore = create<ProfileState>((set) => ({
     activityGraphDays: UI_DEFAULTS.ACTIVITY_GRAPH_DAYS,
     activityGraphRadius: UI_DEFAULTS.ACTIVITY_GRAPH_RADIUS,
     activityGraphCustomTitle: '',
+
+    // Bio Initial State
+    bio: {
+        ...BIO_DEFAULTS,
+        showHeading: true,
+        showDescription: true,
+        showBullets: true,
+        headingSize: 'h1',
+    },
+
+    setBio: (newBio) => set((state) => ({ bio: { ...state.bio, ...newBio } })),
+
     lastValidUsername: null,
 
     // Actions

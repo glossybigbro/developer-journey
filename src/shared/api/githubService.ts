@@ -9,10 +9,13 @@ import {
     isGitHubError,
 } from './github-types';
 import { MARKDOWN_URLS } from '../config/markdown-constants';
+import { GITHUB_API_CONFIG } from '../config/api-constants';
 
-// Initialize Octokit client
 const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN, // Optional: for higher rate limits
+    request: {
+        timeout: GITHUB_API_CONFIG.TIMEOUT_MS,
+    }
 });
 
 // Initialize GraphQL client
@@ -42,27 +45,73 @@ export interface GitHubStats {
 }
 
 /**
- * Fetch GitHub user profile data
+ * Retry helper with exponential backoff
+ */
+async function retryWithBackoff<T>(
+    fn: () => Promise<T>,
+    maxRetries: number = GITHUB_API_CONFIG.RETRY.MAX_ATTEMPTS,
+    baseDelay: number = GITHUB_API_CONFIG.RETRY.BASE_DELAY_MS
+): Promise<T> {
+    let lastError: unknown;
+
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+            return await fn();
+        } catch (error) {
+            lastError = error;
+
+            // Don't retry on 404 (user not found) or 403 (rate limit)
+            if (isGitHubError(error) && GITHUB_API_CONFIG.RETRY.NO_RETRY_STATUSES.includes(error.status as any)) {
+                throw error;
+            }
+
+            // If this was the last attempt, throw
+            if (attempt === maxRetries) {
+                throw error;
+            }
+
+            // Wait before retrying (exponential backoff)
+            const delay = baseDelay * Math.pow(2, attempt);
+            console.log(`[GitHub API] Retry attempt ${attempt + 1}/${maxRetries} after ${delay}ms`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+    }
+
+    throw lastError;
+}
+
+/**
+ * Fetch GitHub user profile data with retry logic
  */
 export async function getUserProfile(username: string): Promise<GitHubUser> {
     try {
-        const { data } = await octokit.rest.users.getByUsername({
-            username,
-        });
+        return await retryWithBackoff(async () => {
+            const { data } = await octokit.rest.users.getByUsername({
+                username,
+            });
 
-        return {
-            name: data.name,
-            bio: data.bio,
-            avatarUrl: data.avatar_url,
-            createdAt: data.created_at,
-            publicRepos: data.public_repos,
-        };
+            return {
+                name: data.name,
+                bio: data.bio,
+                avatarUrl: data.avatar_url,
+                createdAt: data.created_at,
+                publicRepos: data.public_repos,
+            };
+        });
     } catch (error: unknown) {
-        if (isGitHubError(error) && error.status === 404) {
-            throw new Error(`User "${username}" not found`);
+        if (isGitHubError(error)) {
+            if (error.status === 404) {
+                throw new Error(`User "${username}" not found`);
+            }
+            if (error.status === 403) {
+                throw new Error('GitHub API rate limit exceeded. Please try again later.');
+            }
+            if (error.status === 500 || error.status === 502 || error.status === 503) {
+                throw new Error('GitHub API is temporarily unavailable. Please try again in a moment.');
+            }
+            throw new Error(`GitHub API error: ${error.message}`);
         }
-        const message = isGitHubError(error) ? error.message : 'Unknown error';
-        throw new Error(`Failed to fetch user profile: ${message}`);
+        throw new Error('Network error. Please check your connection and try again.');
     }
 }
 

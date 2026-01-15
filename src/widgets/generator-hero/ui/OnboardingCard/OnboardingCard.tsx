@@ -30,7 +30,9 @@ export function OnboardingCard() {
             await verifyUser(username)
             setStep('generator')
         } catch (err) {
-            setError(APP_CONFIG.ERRORS.NETWORK_ERROR)
+            // Display the specific error message from the API
+            const errorMessage = err instanceof Error ? err.message : APP_CONFIG.ERRORS.NETWORK_ERROR
+            setError(errorMessage)
         } finally {
             setIsLoading(false)
         }

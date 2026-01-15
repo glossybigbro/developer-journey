@@ -9,13 +9,13 @@ import { APP_CONFIG } from '../../../../shared/config/constants'
 import styles from './PreviewPanel.module.css'
 
 export function PreviewPanel() {
-    const { username, sections, selectedTemplate, theme } = useProfileStore()
+    const { username, sections, selectedTemplate, theme, bio } = useProfileStore()
     const { handleCopy, handleDownload } = useProfileExport()
 
     const [activeTab, setActiveTab] = useState<'preview' | 'code'>('preview')
 
-    const onCopy = () => handleCopy({ username, sections, selectedTemplate, theme })
-    const onDownload = () => handleDownload({ username, sections, selectedTemplate, theme })
+    const onCopy = () => handleCopy()
+    const onDownload = () => handleDownload()
 
     return (
         <div className={styles.rightPanel}>
@@ -49,7 +49,7 @@ export function PreviewPanel() {
                             {activeTab === 'preview' && <MarkdownPreview />}
                             {activeTab === 'code' && (
                                 <pre className={styles.codeBlock}>
-                                    {generateMarkdown({ username, sections: sections, selectedTemplate, theme })}
+                                    {generateMarkdown(useProfileStore.getState())}
                                 </pre>
                             )}
                         </div>

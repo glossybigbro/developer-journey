@@ -11,11 +11,14 @@ import styles from './MarkdownPreview.module.css'
 export function MarkdownPreview() {
     // Subscribe to all relevant store changes explicitly to force re-render
     const store = useProfileStore()
-    const { activityGraphTheme, activityGraphAreaFill } = store
+    const { activityGraphTheme, activityGraphAreaFill, bio } = store
 
     // Pass the full store, but the destructuring above ensures we re-render on changes
     // Also, we need to make sure generateMarkdown uses the CURRENT store values
     const markdown = generateMarkdown(store)
+
+    // Debug: log the generated markdown
+    console.log('Generated Markdown:', markdown)
 
     // Allow all HTML tags and attributes for GitHub README compatibility
     const schema = {

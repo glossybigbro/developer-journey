@@ -52,6 +52,19 @@ export interface GeneratorConfig {
     activityGraphRadius: number
     /** Custom title text (if hideTitle is false) */
     activityGraphCustomTitle: string
+
+    // Bio Configuration
+    bio?: {
+        heading: string
+        description: string
+        bullets: string[]
+        showHeading?: boolean
+        showDescription?: boolean
+        showBullets?: boolean
+        headingSize?: 'h1' | 'h2' | 'h3'
+        descriptionSize?: 'l' | 'm' | 's'
+        bulletsSize?: 'l' | 'm' | 's'
+    }
 }
 
 /**

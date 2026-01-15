@@ -17,8 +17,8 @@ export const SECTIONS: Section[] = [
     { id: 'visitor-counter', name: 'Visitor Counter', description: 'Profile view counter', icon: '🟣', category: 'ACT1', width: 'compact', defaultEnabled: false, locked: true },
     { id: 'socialify-banner', name: 'Socialify Banner', description: 'Auto-generated repo banner', icon: '🟢', category: 'ACT1', width: 'full', defaultEnabled: false, locked: true },
     { id: 'social-icons', name: 'Social Icons', description: 'LinkedIn, Twitter, etc.', icon: '🟢', category: 'ACT1', width: 'full', defaultEnabled: false, locked: true },
-    { id: 'activity-graph', name: 'Activity Graph', description: 'Contribution activity graph', icon: '🔥', category: 'ACT1', width: 'full', defaultEnabled: true },
-    { id: 'yaml-bio', name: 'YAML Bio Block', description: 'Code-style bio information', icon: '🔵', category: 'ACT1', width: 'full', defaultEnabled: false, locked: true },
+    { id: 'activity-graph', name: 'Activity Graph', description: 'Contribution activity graph', icon: '🔥', category: 'ACT1', width: 'full', defaultEnabled: false },
+    { id: 'yaml-bio', name: 'Bio', description: 'Introduce yourself with a cool bio', icon: '👋', category: 'ACT1', width: 'full', defaultEnabled: true },
     { id: 'profile-card', name: 'Profile Card', description: 'GitHub stats card', icon: '🔵', category: 'ACT1', width: 'half', defaultEnabled: false, locked: true },
     { id: 'rank-badge', name: 'Rank Badge', description: 'GitHub rank/level badge', icon: '🟣', category: 'ACT1', width: 'compact', defaultEnabled: false, locked: true },
     { id: 'terminal-hero', name: 'Terminal Hero', description: 'ASCII art terminal greeting', icon: '🔵', category: 'ACT1', width: 'full', defaultEnabled: false, locked: true },
@@ -76,4 +76,16 @@ export const ACT_LABELS = {
     ACT5: 'Cumulative History',
     ACT6: 'GitHub Deep Dive & Achievements',
     ACT7: 'Interests & Finale',
+}
+
+export const BIO_DEFAULTS = {
+    heading: "Hey there! I'm **GlossyBigBro** 👋",
+    description: "I'm a **Full Stack Developer** based in 📍 **Seoul**. I enjoy building _web applications_ and exploring new technologies.",
+    bullets: [
+        "🔭 I’m currently working on **Something Cool**",
+        "🌱 I’m currently learning **React & Next.js**",
+        "👯 I’m looking to collaborate on **Open Source Projects**",
+        "👨‍💻 All of my projects are available at [my-website.com](https://my-website.com)",
+        "📝 I regularly write articles on [my-blog.com](https://my-blog.com)",
+    ]
 }

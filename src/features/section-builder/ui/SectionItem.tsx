@@ -6,6 +6,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { Section } from '../../../entities/profile/model/sections'
 import styles from './SectionBuilder.module.css'
 import { ActivityGraphSettings } from './ActivityGraphSettings'
+import { SimpleBioSettings } from './SimpleBioSettings'
 
 interface SectionItemProps {
     section: Section
@@ -66,12 +67,12 @@ export function SectionItem({ section, onToggle }: SectionItemProps) {
                 )}
 
                 <div className={styles.itemInfo}>
-                    <span className={styles.itemIcon}>{section.icon}</span>
                     <span className={styles.itemName}>{section.name}</span>
                     {isLocked && <span className={`${styles.badge} ${styles.comingSoonBadge}`}>COMING SOON</span>}
                     {section.width && (
                         <span className={styles.badge}>{section.width}</span>
                     )}
+
 
                     {/* Settings Trigger */}
                     {!isLocked && section.id === 'activity-graph' && section.enabled && (
@@ -92,6 +93,30 @@ export function SectionItem({ section, onToggle }: SectionItemProps) {
                             {isSettingsOpen && (
                                 <div className={styles.settingsPopOver}>
                                     <ActivityGraphSettings />
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Bio Settings Trigger */}
+                    {!isLocked && section.id === 'yaml-bio' && section.enabled && (
+                        <div className={`${styles.extraActions} ${isSettingsOpen ? styles.visible : ''}`} ref={popoverRef}>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    setIsSettingsOpen(!isSettingsOpen)
+                                }}
+                                className={`${styles.settingsButton} ${isSettingsOpen ? styles.active : ''}`}
+                                aria-label="Edit Bio"
+                            >
+                                <span className={styles.buttonIcon}>✏️</span>
+                                <span className={styles.buttonText}>Edit Bio</span>
+                            </button>
+
+                            {/* Pop-over Panel */}
+                            {isSettingsOpen && (
+                                <div className={styles.settingsPopOver}>
+                                    <SimpleBioSettings />
                                 </div>
                             )}
                         </div>

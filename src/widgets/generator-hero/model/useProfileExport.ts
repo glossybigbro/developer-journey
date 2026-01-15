@@ -1,18 +1,11 @@
 import { generateMarkdown } from '../../../shared/lib/markdown/generator'
 import { APP_CONFIG } from '../../../shared/config/constants'
-import { Section } from '../../../entities/profile/model/sections'
-
-interface ExportOptions {
-    username: string
-    sections: Section[]
-    selectedTemplate: 'guilyx' | 'minimal' | 'space-ghibli'
-    theme: 'dark' | 'light'
-}
+import { useProfileStore } from '../../../entities/profile/model/useProfileStore'
 
 export function useProfileExport() {
 
-    const handleCopy = async (options: ExportOptions) => {
-        const markdown = generateMarkdown(options)
+    const handleCopy = async () => {
+        const markdown = generateMarkdown(useProfileStore.getState())
         const blob = new Blob([markdown], { type: 'text/markdown' })
         const item = new ClipboardItem({ "text/plain": blob })
 
@@ -31,8 +24,8 @@ export function useProfileExport() {
         }
     }
 
-    const handleDownload = (options: ExportOptions) => {
-        const markdown = generateMarkdown(options)
+    const handleDownload = () => {
+        const markdown = generateMarkdown(useProfileStore.getState())
         const blob = new Blob([markdown], { type: 'text/markdown' })
         const url = URL.createObjectURL(blob)
         const a = document.createElement('a')

@@ -195,7 +195,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-width: 60px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 }
 
@@ -236,7 +235,7 @@
     cursor: grabbing;
 }
 
-/* Settings Button */
+/* Reverting settingsButton to general style and creating iconButton */
 .settingsButton {
     background: rgba(168, 85, 247, 0.15);
     border: 1px solid rgba(168, 85, 247, 0.4);
@@ -324,18 +323,29 @@
 .settingsPopOver {
     position: absolute;
     top: calc(100% + 4px);
-    right: 0;
+    left: 0;
     z-index: 1000;
-    width: 280px;
+
+    /* Strict Match to Section Item Width */
+    width: 100%;
+    min-width: unset;
+    max-width: unset;
+
+    /* Disable resizing to maintain match */
+    resize: none;
+    overflow: hidden;
+
+    box-sizing: border-box;
+
     padding: 0;
-    background: rgba(13, 17, 23, 0.9);
+    background: rgba(13, 17, 23, 0.95);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
     animation: popIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    transform-origin: top right;
+    transform-origin: top left;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 }
 
@@ -585,4 +595,119 @@ input:checked+.slider:before {
     background: #00d9ff;
     cursor: pointer;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* --- BIO SETTINGS STYLES --- */
+.settingsContent {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-bottom: 16px;
+}
+
+.settingsSection {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-bottom: 0;
+    margin-bottom: 16px;
+    border-bottom: none;
+}
+
+.settingsSection:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.sectionTitle {
+    font-size: 13px;
+    font-weight: 600;
+    color: #00d9ff;
+    margin: 0 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.settingsGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.settingsLabel {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.settingsHint {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+    margin-top: -4px;
+    margin-bottom: 4px;
+}
+
+.settingsInput {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 13px;
+    outline: none;
+    transition: all 0.2s;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+textarea.settingsInput {
+    min-height: 100px;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.settingsInput:focus {
+    border-color: #00d9ff;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 2px rgba(0, 217, 255, 0.2);
+}
+
+.settingsInput::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* --- SEGMENTED CONTROL --- */
+.sizeSelector {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    padding: 2px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    height: 24px;
+    align-items: center;
+}
+
+.sizeOption {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    line-height: 1;
+}
+
+.sizeOption:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.sizeOption.selected {
+    background: #00d9ff;
+    color: #0d1117;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }

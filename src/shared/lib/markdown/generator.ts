@@ -37,9 +37,13 @@ export function generateMarkdown(config: ExtendedGeneratorConfig): string {
     let markdown = ''
 
     // Generate markdown for each enabled section
-    enabledSections.forEach((section: MarkdownSection) => {
+    enabledSections.forEach((section: MarkdownSection, index: number) => {
         const generator = getGenerator(section.id)
         if (generator) {
+            // Add blank line between sections (but not before first section)
+            if (index > 0) {
+                markdown += '\n\n'
+            }
             markdown += generator.generate(config, section)
         }
     })
