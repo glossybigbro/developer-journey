@@ -1,6 +1,6 @@
 'use client'
 
-import { SpaceBackground } from '../src/shared/ui/space-background'
+import { SpaceBackground } from '@/shared/ui/SpaceBackground'
 import { GeneratorHero } from '@/widgets/generator-hero'
 
 export default function GeneratorPage() {
