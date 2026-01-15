@@ -5,7 +5,8 @@ import {
     DndContext,
     closestCenter,
     KeyboardSensor,
-    PointerSensor,
+    MouseSensor,
+    TouchSensor,
     useSensor,
     useSensors,
     DragEndEvent
@@ -120,11 +121,18 @@ export function SectionBuilder() {
     const { sections, toggleSection, reorderSections } = useProfileStore()
 
     const sensors = useSensors(
-        useSensor(PointerSensor),
+        useSensor(MouseSensor),
+        useSensor(TouchSensor, {
+            activationConstraint: {
+                delay: 250,
+                tolerance: 5,
+            },
+        }),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         })
     )
+
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event
