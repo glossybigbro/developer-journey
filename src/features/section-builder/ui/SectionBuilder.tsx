@@ -16,60 +16,12 @@ import {
     SortableContext,
     sortableKeyboardCoordinates,
     verticalListSortingStrategy,
-    useSortable
 } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
 
 import { useProfileStore } from '../../../entities/profile/model/useProfileStore'
 import { ACT_LABELS, Section } from '../../../entities/profile/model/sections'
 import styles from './SectionBuilder.module.css'
-
-interface SectionItemProps {
-    section: Section
-    onToggle: (id: string) => void
-}
-
-function SectionItem({ section, onToggle }: SectionItemProps) {
-    const {
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        transition,
-    } = useSortable({ id: section.id })
-
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition,
-    }
-
-    return (
-        <div
-            ref={setNodeRef}
-            style={style}
-            className={`${styles.item} ${section.enabled ? styles.enabled : ''}`}
-        >
-            <div className={styles.itemContent}>
-                <input
-                    type="checkbox"
-                    checked={section.enabled}
-                    onChange={() => onToggle(section.id)}
-                    className={styles.checkbox}
-                />
-                <div className={styles.itemInfo}>
-                    <span className={styles.itemIcon}>{section.icon}</span>
-                    <span className={styles.itemName}>{section.name}</span>
-                    {section.width && (
-                        <span className={styles.badge}>{section.width}</span>
-                    )}
-                </div>
-            </div>
-            <div {...attributes} {...listeners} className={styles.handle}>
-                ⋮⋮
-            </div>
-        </div>
-    )
-}
+import { SectionItem } from './SectionItem'
 
 function SectionGroup({
     category,

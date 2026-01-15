@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { UI_DEFAULTS } from '../../../shared/config/markdown-constants'
 import { SECTIONS, Section } from './sections'
 
 interface ProfileState {
@@ -19,6 +20,25 @@ interface ProfileState {
     // 테마
     theme: 'dark' | 'light'
     accentColor: string
+
+    // Activity Graph Settings
+    activityGraphTheme: string
+    activityGraphAreaFill: boolean
+    activityGraphHideBorder: boolean
+    activityGraphHideTitle: boolean
+    activityGraphGrid: boolean
+    activityGraphDays: number
+    activityGraphRadius: number
+    activityGraphCustomTitle: string
+
+    setActivityGraphTheme: (theme: string) => void
+    setActivityGraphAreaFill: (enabled: boolean) => void
+    setActivityGraphHideBorder: (enabled: boolean) => void
+    setActivityGraphHideTitle: (enabled: boolean) => void
+    setActivityGraphGrid: (enabled: boolean) => void
+    setActivityGraphDays: (days: number) => void
+    setActivityGraphRadius: (radius: number) => void
+    setActivityGraphCustomTitle: (title: string) => void
 
     // State
     lastValidUsername: string | null
@@ -47,8 +67,16 @@ export const useProfileStore = create<ProfileState>((set) => ({
         ...s,
         enabled: s.defaultEnabled ?? false
     })),
-    theme: 'dark',
-    accentColor: '#00d9ff',
+    theme: UI_DEFAULTS.THEME,
+    accentColor: UI_DEFAULTS.ACCENT_COLOR,
+    activityGraphTheme: UI_DEFAULTS.ACTIVITY_GRAPH_THEME,
+    activityGraphAreaFill: true,
+    activityGraphHideBorder: false,
+    activityGraphHideTitle: true,
+    activityGraphGrid: false,
+    activityGraphDays: UI_DEFAULTS.ACTIVITY_GRAPH_DAYS,
+    activityGraphRadius: UI_DEFAULTS.ACTIVITY_GRAPH_RADIUS,
+    activityGraphCustomTitle: '',
     lastValidUsername: null,
 
     // Actions
@@ -69,6 +97,16 @@ export const useProfileStore = create<ProfileState>((set) => ({
 
     reorderSections: (sections) => set({ sections }),
     setAccentColor: (color) => set({ accentColor: color }),
+
+    // Activity Graph actions
+    setActivityGraphTheme: (theme) => set({ activityGraphTheme: theme }),
+    setActivityGraphAreaFill: (enabled) => set({ activityGraphAreaFill: enabled }),
+    setActivityGraphHideBorder: (enabled) => set({ activityGraphHideBorder: enabled }),
+    setActivityGraphHideTitle: (enabled) => set({ activityGraphHideTitle: enabled }),
+    setActivityGraphGrid: (enabled) => set({ activityGraphGrid: enabled }),
+    setActivityGraphDays: (days) => set({ activityGraphDays: days }),
+    setActivityGraphRadius: (radius) => set({ activityGraphRadius: radius }),
+    setActivityGraphCustomTitle: (title) => set({ activityGraphCustomTitle: title }),
 
     verifyUser: async (username: string) => {
         const { getUserProfile } = await import('../../../shared/api/githubService')
