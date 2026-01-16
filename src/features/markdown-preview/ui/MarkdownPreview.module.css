@@ -8,7 +8,7 @@
 .container p {
     margin-top: 16px;
     margin-bottom: 16px;
-    font-size: 16px;
+    font-size: clamp(14px, 4vw, 16px);
     color: #24292f;
 }
 
@@ -22,18 +22,19 @@
 .h1 {
     border-bottom: 1px solid #d0d7de;
     padding-bottom: 0.3em;
-    font-size: 2.5em;
+    font-size: clamp(1.4em, 4vw, 2.2em);
     margin-top: 24px;
     margin-bottom: 16px;
     font-weight: 700;
     line-height: 1.25;
     color: #1f2328;
+    white-space: nowrap;
 }
 
 .h2 {
     border-bottom: 1px solid #d0d7de;
     padding-bottom: 0.3em;
-    font-size: 1.8em;
+    font-size: clamp(1.5em, 4vw, 1.8em);
     margin-top: 24px;
     margin-bottom: 16px;
     font-weight: 600;
@@ -44,7 +45,7 @@
 .h3 {
     border-bottom: 1px solid #d0d7de;
     padding-bottom: 0.3em;
-    font-size: 1.4em;
+    font-size: clamp(1.2em, 3vw, 1.4em);
     margin-top: 24px;
     margin-bottom: 16px;
     font-weight: 600;
