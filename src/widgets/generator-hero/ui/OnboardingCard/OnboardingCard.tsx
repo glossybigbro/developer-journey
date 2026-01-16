@@ -49,7 +49,6 @@ export function OnboardingCard() {
     return (
         <>
             <div className={styles.card}>
-                {/* <ReleaseBadge /> removed in favor of HUD */}
                 <div className={styles.header}>
                     <h1 className={styles.title}>{APP_CONFIG.TITLES.MAIN}</h1>
                     <p className={styles.subtitle}>{APP_CONFIG.SUBTITLES.MAIN}</p>

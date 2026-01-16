@@ -25,7 +25,10 @@ export function CanvasRadar({ hasSignal, color }: CanvasRadarProps) {
     const animationRef = useRef<number>(0)
     const angleRef = useRef(0)
     const pulseRef = useRef(0)
-    const signalPosRef = useRef({ angle: Math.PI / 6, distance: 0.6 })
+    const signalPosRef = useRef({
+        angle: RADAR_CONFIG.signalInitialAngle,
+        distance: RADAR_CONFIG.signalInitialDistance
+    })
     const lastSignalUpdateRef = useRef(Date.now())
 
     useEffect(() => {

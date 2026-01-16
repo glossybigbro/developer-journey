@@ -14,6 +14,8 @@
   position: relative;
   overflow: visible;
   box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+  pointer-events: auto;
+  /* 카드 클릭 허용 */
 }
 
 .card:before {

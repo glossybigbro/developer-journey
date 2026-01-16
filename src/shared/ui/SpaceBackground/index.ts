@@ -1,14 +1,14 @@
 /**
  * 🌌 [WIDGET] Space Background - Public API
  * 
- * @layer widgets/space-background
+ * @layer shared/ui/SpaceBackground
  * @description
- * SpaceBackground 위젯의 공개 인터페이스(Public API)를 정의하는 Barrel Export 파일입니다.
+ * SpaceBackground 컴포넌트의 공개 인터페이스(Public API)를 정의하는 Barrel Export 파일입니다.
  * Canvas를 사용한 지브리 스타일의 우주 배경 애니메이션을 제공합니다.
  * 
- * 🏗️ FSD 아키텍처: [Widget Layer]
- * - **역할**: 페이지 전체 배경을 담당하는 독립적인 위젯
- * - **위치**: widgets/ 디렉토리
+ * 🏗️ FSD 아키텍처: [Shared Layer]
+ * - **역할**: 페이지 전체 배경을 담당하는 재사용 가능한 UI 컴포넌트
+ * - **위치**: shared/ui/ 디렉토리
  * - **사용처**: App 레이어(pages, layouts)에서 import하여 사용
  * 
  * 🎨 주요 기능:

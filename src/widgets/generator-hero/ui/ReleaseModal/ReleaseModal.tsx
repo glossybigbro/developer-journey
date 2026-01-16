@@ -1,5 +1,7 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import styles from './ReleaseModal.module.css'
 import { RELEASE_NOTES, RELEASE_NOTIFICATION_DAYS } from '@/shared/config/release-constants'
@@ -12,7 +14,16 @@ interface ReleaseModalProps {
 }
 
 export function ReleaseModal({ isOpen, onClose }: ReleaseModalProps) {
-    return (
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+        return () => setMounted(false)
+    }, [])
+
+    if (!mounted) return null
+
+    return createPortal(
         <AnimatePresence>
             {isOpen && (
                 <motion.div
@@ -67,6 +78,7 @@ export function ReleaseModal({ isOpen, onClose }: ReleaseModalProps) {
                     </motion.div>
                 </motion.div>
             )}
-        </AnimatePresence>
+        </AnimatePresence>,
+        document.body
     )
 }

@@ -18,6 +18,7 @@
     gap: 8px;
     cursor: pointer;
     z-index: 1000;
+    pointer-events: auto;
 }
 
 .hudGroup {

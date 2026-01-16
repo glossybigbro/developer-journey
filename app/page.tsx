@@ -8,7 +8,7 @@ export default function GeneratorPage() {
         <>
             <SpaceBackground />
 
-            <div className="relative z-10 min-h-screen">
+            <div className="relative z-10 min-h-screen pointer-events-none">
 
 
                 <main className="w-full h-screen overflow-hidden">

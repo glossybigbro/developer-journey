@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import styles from './HudTransmission.module.css'
 import { RELEASE_NOTES, RELEASE_NOTIFICATION_DAYS } from '@/shared/config/release-constants'
 import { HUD_COLORS } from '@/shared/config/ui-constants'
-import { UI_TEXT, ANIMATION_CONFIG } from '@/shared/config/ui-constants'
+import { UI_TEXT, ANIMATION_CONFIG, HUD_STYLES } from '@/shared/config/ui-constants'
 import { isRecentRelease } from '@/shared/lib/release/isRecentRelease'
 import { CanvasRadar } from '@/shared/ui/CanvasRadar/CanvasRadar'
 
@@ -49,7 +49,7 @@ export function HudTransmission({ onClick }: HudTransmissionProps) {
                 className={styles.hudIconWrapper}
                 style={{
                     borderColor: iconColor,
-                    boxShadow: `0 0 15px ${iconColor}40`,
+                    boxShadow: `0 0 ${HUD_STYLES.GLOW_SHADOW_BLUR} ${iconColor}${HUD_STYLES.GLOW_OPACITY_HEX}`,
                     color: iconColor,
                     opacity: hasSignal ? ANIMATION_CONFIG.HUD_OPACITY.ACTIVE : ANIMATION_CONFIG.HUD_OPACITY.IDLE
                 }}

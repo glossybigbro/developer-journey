@@ -9,6 +9,8 @@
     overflow: hidden;
     box-sizing: border-box;
     animation: fadeIn 0.5s ease-out;
+    pointer-events: none;
+    /* 배경 클릭 허용 */
 }
 
 @keyframes fadeIn {
@@ -36,6 +38,8 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     overflow: hidden;
     margin-right: 0;
+    pointer-events: auto;
+    /* 패널 클릭 허용 */
 }
 
 .sections {
@@ -61,6 +65,8 @@
     height: 100vh;
     padding: 20px;
     animation: fadeIn 0.5s ease-out;
+    pointer-events: none;
+    /* 배경 클릭 허용 */
 }
 
 /* [Change User Button] */
@@ -82,6 +88,8 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     backdrop-filter: blur(4px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    pointer-events: auto;
+    /* 버튼 클릭 허용 */
 }
 
 .changeUserButton:before {
