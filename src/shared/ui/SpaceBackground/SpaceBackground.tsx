@@ -1,7 +1,7 @@
 /**
  * 🌌 [WIDGET] SpaceBackground (지브리 스타일 우주 배경)
  * 
- * @layer widgets/space-background
+ * @layer shared/ui
  * @description
  * HTML Canvas API를 사용하여 실시간으로 그려지는 인터랙티브 우주 배경입니다.
  * 지브리 애니메이션의 몽환적인 느낌을 재현하기 위해 여러 레이어의 별, 은하수, 유성을 구현했습니다.
@@ -33,81 +33,8 @@
 
 import { useEffect, useRef } from 'react'
 import styles from './SpaceBackground.module.css'
-
-// ==========================================
-// [TypeScript Interfaces] 데이터 타입 정의
-// ==========================================
-
-/**
- * ⭐ Star 인터페이스
- * 
- * 캔버스에 그려질 개별 별의 속성을 정의합니다.
- * 
- * @property x - X 좌표 (0~1 비율로 저장, 실제 픽셀은 렌더링 시 계산)
- * @property y - Y 좌표 (0~1 비율로 저장)
- * @property size - 별의 반지름 (픽셀)
- * @property opacity - 투명도 (0.0 ~ 1.0, 반짝임 효과에 사용)
- * @property twinkleSpeed - 반짝임 속도 (opacity 변화율)
- * @property layer - 레이어 번호 (1=큰별, 2=중간별, 3=작은별)
- * @property color - 별의 고정 색상 (rgba 문자열)
- * @property pulsePhase - 펄스 효과용 위상각 (0 ~ 2π)
- */
-interface Star {
-    x: number
-    y: number
-    size: number
-    opacity: number
-    twinkleSpeed: number
-    layer: number
-    color: string
-    pulsePhase: number
-}
-
-/**
- * 💫 ShootingStar 인터페이스
- * 
- * 유성(별똥별)의 속성을 정의합니다.
- * 
- * @property x - 현재 X 좌표 (픽셀)
- * @property y - 현재 Y 좌표 (픽셀)
- * @property length - 꼬리 길이 (픽셀)
- * @property speed - 이동 속도 (픽셀/프레임)
- * @property opacity - 투명도 (시간이 지나면 감소)
- * @property angle - 이동 각도 (라디안, Math.PI/4 = 45도)
- */
-interface ShootingStar {
-    x: number
-    y: number
-    length: number
-    speed: number
-    opacity: number
-    angle: number
-}
-
-/**
- * 🌫️ NebulaDust 인터페이스
- * 
- * 은하수를 구성하는 개별 먼지 파티클의 속성을 정의합니다.
- * 
- * @property x - X 좌표 (픽셀)
- * @property y - Y 좌표 (픽셀)
- * @property size - 파티클 크기 (픽셀)
- * @property opacity - 투명도 (중심부일수록 높음)
- * @property color - 파티클 색상 (rgba 문자열)
- * @property speedX - X축 이동 속도 (픽셀/프레임)
- * @property speedY - Y축 이동 속도 (픽셀/프레임)
- * @property layer - 레이어 번호 (깊이감 표현용)
- */
-interface NebulaDust {
-    x: number
-    y: number
-    size: number
-    opacity: number
-    color: string
-    speedX: number
-    speedY: number
-    layer: number
-}
+import type { Star, ShootingStar, NebulaDust } from '@/shared/types/ui'
+import { SPACE_CONFIG } from '@/shared/config/ui-constants'
 
 // ==========================================
 // [Main Component] SpaceBackground
@@ -372,21 +299,12 @@ export default function SpaceBackground() {
             })
         }
 
-        // 유성 생성 인터벌 설정
-        // 0.3~1.1초마다 실행되며, 확률적으로 2~3개 동시 생성
-        const shootingStarInterval = setInterval(() => {
-            createShootingStar()
-
-            // 50% 확률로 0.1초 후 추가 생성
-            if (Math.random() > 0.5) {
-                setTimeout(() => createShootingStar(), 100)
-            }
-
-            // 20% 확률로 0.2초 후 추가 생성
-            if (Math.random() > 0.8) {
-                setTimeout(() => createShootingStar(), 200)
-            }
-        }, Math.random() * 800 + 300) // 300~1100ms 간격
+        // 유성 생성 타이밍 제어 변수
+        // setInterval을 사용하면 탭 비활성화 시에도 백그라운드에서 실행되어 
+        // 탭 복귀 시 유성 폭탄(Meteor Shower) 현상이 발생합니다.
+        // 이를 방지하기 위해 animation loop 내에서 시간을 체크하여 생성하도록 변경했습니다.
+        let lastShootingStarTime = 0
+        let nextShootingStarInterval = Math.random() * 800 + 300
 
         // ==========================================
         // [Animation Loop] 메인 애니메이션 루프
@@ -396,7 +314,7 @@ export default function SpaceBackground() {
         // 1. 배경 그라데이션 그리기
         // 2. 은하수 먼지 그리기 + 업데이트
         // 3. 별 그리기 + 업데이트
-        // 4. 유성 그리기 + 업데이트
+        // 4. 유성 생성 및 그리기 + 업데이트
         // 5. requestAnimationFrame으로 다음 프레임 예약
         // 
         // 💡 성능 최적화:
@@ -412,7 +330,10 @@ export default function SpaceBackground() {
          * 매 프레임마다 호출되어 캔버스를 다시 그립니다.
          * 60fps로 실행되며, 모든 객체의 위치를 업데이트합니다.
          */
-        const animate = () => {
+        const animate = (timestamp: number) => {
+            // timestamp가 없을 경우 (최초 실행 등) 방어 코드
+            if (!timestamp) timestamp = performance.now()
+
             // ==========================================
             // [Background Gradient] 배경 그라데이션
             // ==========================================
@@ -561,6 +482,25 @@ export default function SpaceBackground() {
             })
 
             // ==========================================
+            // [Shooting Star Generation] 유성 생성 (Frame Loop 기반)
+            // ==========================================
+            // 
+            // setInterval 대신 프레임 루프 내에서 시간을 체크하여 생성
+            // 장점: 탭이 비활성화되어 animate가 멈추면 유성 생성도 자동으로 멈춤 (유성 폭탄 방지)
+
+            if (timestamp - lastShootingStarTime > nextShootingStarInterval) {
+                createShootingStar()
+
+                // 확률적으로 추가 생성 (단순화: 2개 동시 생성 확률)
+                if (Math.random() > 0.5) {
+                    createShootingStar()
+                }
+
+                lastShootingStarTime = timestamp
+                nextShootingStarInterval = Math.random() * 800 + 300
+            }
+
+            // ==========================================
             // [Shooting Star Rendering] 유성 렌더링
             // ==========================================
             // 
@@ -640,8 +580,8 @@ export default function SpaceBackground() {
             animationId = requestAnimationFrame(animate)
         }
 
-        // 애니메이션 시작
-        animate()
+        // 애니메이션 시작 (첫 Frame을 requestAnimationFrame으로 호출하여 timestamp 전달)
+        animationId = requestAnimationFrame(animate)
 
         // ==========================================
         // [Cleanup] 정리 함수
@@ -656,9 +596,6 @@ export default function SpaceBackground() {
 
             // 애니메이션 프레임 취소
             cancelAnimationFrame(animationId)
-
-            // 유성 생성 인터벌 정리
-            clearInterval(shootingStarInterval)
         }
     }, []) // 빈 의존성 배열: 컴포넌트 마운트 시 한 번만 실행
 

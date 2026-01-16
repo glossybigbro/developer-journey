@@ -107,3 +107,76 @@ export const HUD_COLORS = {
     signal: '#ff0055',     // Signal detection (Red)
     signalGlow: '#ff3377', // Signal inner glow
 } as const
+
+/**
+ * 우주 배경 설정
+ */
+export const SPACE_CONFIG = {
+    // 은하수 먼지
+    NEBULA: {
+        COUNT: 800,
+        BAND_WIDTH_RATIO: 0.4,   // 화면 높이 대비 띠 너비
+        BAND_SLOPE: 0.3,         // 대각선 기울기
+        BASE_SPEED_X: -0.08,
+        BASE_SPEED_Y: -0.024,
+        SIZE_BASE: 0.8,
+        SIZE_VARIANCE: 2.5,
+        GLOW_THRESHOLD: 1.5      // 이 크기 이상일 때 글로우 효과
+    },
+    // 별 레이어 (3단)
+    STARS: {
+        LAYER_1: {
+            COUNT: 50,
+            SIZE_MIN: 1.5,
+            SIZE_MAX: 3.5,
+            SPEED: 0.00005,
+            TWINKLE_MIN: 0.01,
+            TWINKLE_MAX: 0.03
+        },
+        LAYER_2: {
+            COUNT: 100,
+            SIZE_MIN: 0.8,
+            SIZE_MAX: 2.3,
+            SPEED: 0.00003,
+            TWINKLE_MIN: 0.008,
+            TWINKLE_MAX: 0.023
+        },
+        LAYER_3: {
+            COUNT: 200,
+            SIZE_MIN: 0.3,
+            SIZE_MAX: 1.3,
+            SPEED: 0.00001,
+            TWINKLE_MIN: 0.005,
+            TWINKLE_MAX: 0.015,
+            OPACITY_MAX: 0.6
+        }
+    },
+    // 유성
+    SHOOTING_STAR: {
+        INTERVAL_MIN: 300,
+        INTERVAL_MAX: 1100,    // 300 + 800
+        SPEED_MIN: 3,
+        SPEED_MAX: 7,          // 3 + 4
+        LENGTH_MIN: 100,
+        LENGTH_MAX: 220,       // 100 + 120
+        ANGLE: Math.PI / 4,    // 45도
+        PROBABILITY_DOUBLE: 0.5,
+        PROBABILITY_TRIPLE: 0.2
+    },
+    // 색상 팔레트
+    COLORS: {
+        GRADIENT: {
+            TOP: '#0a0e27',
+            MIDDLE: '#1a1a3e',
+            BOTTOM: '#2d1b3d'
+        },
+        STARS: [
+            'rgba(255, 255, 255, 1)',   // 흰색
+            'rgba(255, 240, 200, 1)',   // 노란빛
+            'rgba(200, 220, 255, 1)',   // 파란빛
+            'rgba(255, 200, 150, 1)',   // 주황빛
+            'rgba(255, 220, 220, 1)',   // 분홍빛
+            'rgba(200, 255, 220, 1)',   // 연두빛
+        ]
+    }
+} as const

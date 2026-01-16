@@ -49,3 +49,46 @@ export interface RadarConfig {
     signalBlinkMin: number
     signalBlinkMax: number
 }
+
+/**
+ * ⭐ Star 인터페이스
+ * 캔버스에 그려질 개별 별의 속성
+ */
+export interface Star {
+    x: number
+    y: number
+    size: number
+    opacity: number
+    twinkleSpeed: number
+    layer: number
+    color: string
+    pulsePhase: number
+}
+
+/**
+ * 💫 ShootingStar 인터페이스
+ * 유성(별똥별)의 속성
+ */
+export interface ShootingStar {
+    x: number
+    y: number
+    length: number
+    speed: number
+    opacity: number
+    angle: number
+}
+
+/**
+ * 🌫️ NebulaDust 인터페이스
+ * 은하수를 구성하는 개별 먼지 파티클의 속성
+ */
+export interface NebulaDust {
+    x: number
+    y: number
+    size: number
+    opacity: number
+    color: string
+    speedX: number
+    speedY: number
+    layer: number
+}
