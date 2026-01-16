@@ -25,7 +25,7 @@ interface ProfileState {
     bio: {
         heading: string
         description: string
-        bullets: string[]
+        bullets: { id: string; text: string }[]
         showHeading: boolean
         showDescription: boolean
         showBullets: boolean
@@ -35,7 +35,7 @@ interface ProfileState {
     setBio: (bio: Partial<{
         heading: string;
         description: string;
-        bullets: string[];
+        bullets: { id: string; text: string }[];
         showHeading: boolean;
         showDescription: boolean;
         showBullets: boolean;

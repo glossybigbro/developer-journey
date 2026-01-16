@@ -82,10 +82,10 @@ export const BIO_DEFAULTS = {
     heading: "Hey there! I'm **GlossyBigBro** 👋",
     description: "I'm a **Full Stack Developer** based in 📍 **Seoul**. I enjoy building _web applications_ and exploring new technologies.",
     bullets: [
-        "🔭 I’m currently working on **Something Cool**",
-        "🌱 I’m currently learning **React & Next.js**",
-        "👯 I’m looking to collaborate on **Open Source Projects**",
-        "👨‍💻 All of my projects are available at [my-website.com](https://my-website.com)",
-        "📝 I regularly write articles on [my-blog.com](https://my-blog.com)",
+        { id: 'default-1', text: "🔭 I’m currently working on **Something Cool**" },
+        { id: 'default-2', text: "🌱 I’m currently learning **React & Next.js**" },
+        { id: 'default-3', text: "👯 I’m looking to collaborate on **Open Source Projects**" },
+        { id: 'default-4', text: "👨‍💻 All of my projects are available at [my-website.com](https://my-website.com)" },
+        { id: 'default-5', text: "📝 I regularly write articles on [my-blog.com](https://my-blog.com)" },
     ]
 }

@@ -1,7 +1,27 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    MouseSensor,
+    TouchSensor,
+    useSensor,
+    useSensors,
+} from '@dnd-kit/core'
+import {
+    SortableContext,
+    sortableKeyboardCoordinates,
+    verticalListSortingStrategy,
+    useSortable
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
+
 import { useProfileStore } from '@/entities/profile/model/useProfileStore'
+import { useBioList } from '../model/useBioList'
+import { hexToRgba, autoResizeTextarea } from '@/shared/lib/utils/style-utils'
 import styles from './SectionBuilder.module.css'
 import {
     BIO_UI_LABELS,
@@ -10,63 +30,123 @@ import {
     ACCENT_OPACITY,
     TEXTAREA_CONFIG,
 } from '../config/bio-constants'
+import { DragHandleIcon, DeleteIcon } from './bio-icons'
 
 /**
- * Simple Bio Settings Component (Manual Input)
+ * 정렬 가능한 불렛 아이템 컴포넌트
  * 
  * @description
- * Provides a flexible UI for bio creation:
- * 1. Heading (Manual text, Auto-resize)
- * 2. Description (Manual textarea, Auto-resize)
- * 3. Bullets (Dynamic list with add/remove)
+ * 개별 불렛 포인트의 드래그 앤 드롭 동작과 렌더링을 담당합니다.
+ * dnd-kit의 useSortable 훅을 사용하여 드래그 이벤트를 처리합니다.
+ */
+interface SortableBulletItemProps {
+    id: string
+    value: string
+    index: number
+    onChange: (index: number, value: string) => void
+    onRemove: (index: number) => void
+}
+
+function SortableBulletItem({ id, value, index, onChange, onRemove }: SortableBulletItemProps) {
+    // dnd-kit 훅: 드래그 상태 및 이벤트 핸들러 제공
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging
+    } = useSortable({ id })
+
+    // 드래그 중 시각적 피드백을 위한 스타일
+    // CSS.Transform을 사용하여 GPU 가속 활용
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+    }
+
+    return (
+        <div
+            ref={setNodeRef}
+            style={style}
+            className={`${styles.unifiedListItem} ${isDragging ? styles.dragging : ''}`}
+        >
+            {/* 드래그 핸들: 이 영역을 잡고 드래그 시작 */}
+            <div className={styles.dragHandle} {...attributes} {...listeners}>
+                <DragHandleIcon />
+            </div>
+
+            {/* 내용 입력 필드 */}
+            <input
+                type="text"
+                className={styles.unifiedInput}
+                value={value}
+                onChange={(e) => onChange(index, e.target.value)}
+                placeholder={BIO_PLACEHOLDERS.BULLET}
+            />
+
+            {/* 삭제 버튼: 항목 제거 */}
+            <button
+                onClick={() => onRemove(index)}
+                className={styles.deleteAction}
+                aria-label="Remove item"
+            >
+                <DeleteIcon />
+            </button>
+        </div>
+    )
+}
+
+/**
+ * 심플 바이오 설정 컴포넌트
+ * 
+ * @description
+ * 사용자의 자기소개(Bio) 섹션을 설정하는 UI입니다.
+ * - 제목 및 소개글 설정 (자동 조절 텍스트 영역)
+ * - 불렛 포인트 리스트 관리 (추가, 삭제, 드래그 앤 드롭 정렬)
+ * - 테마 색상에 따른 동적 스타일링
  */
 export function SimpleBioSettings() {
-    const bio = useProfileStore((state) => state.bio)
-    const setBio = useProfileStore((state) => state.setBio)
+    // 전역 상태 관리 (Zustand)
+    // 전역 상태 및 로직 훅 사용
     const accentColor = useProfileStore(state => state.accentColor)
+    const { bio, setBio, updateBullet, addBullet, removeBullet, handleDragEnd } = useBioList()
 
+    // 텍스트 영역 자동 조절을 위한 Ref
     const headingRef = useRef<HTMLTextAreaElement>(null)
     const descriptionRef = useRef<HTMLTextAreaElement>(null)
 
-    // Auto-resize logic
-    const adjustHeight = (el: HTMLTextAreaElement | null) => {
-        if (!el) return
-        el.style.height = 'auto'
-        el.style.height = `${el.scrollHeight}px`
-    }
+    // DnD 센서 설정
+    // Mouse: 기본 드래그
+    // Touch: 모바일 환경 대응 (딜레이와 허용 오차 설정으로 스크롤과 구분)
+    // Keyboard: 접근성 지원
+    const sensors = useSensors(
+        useSensor(MouseSensor),
+        useSensor(TouchSensor, {
+            activationConstraint: {
+                delay: 250,
+                tolerance: 5,
+            },
+        }),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    )
 
-    // Adjust Heading Height on change
+    // 데이터 변경 시 텍스트 영역 높이 자동 조절
     useEffect(() => {
-        adjustHeight(headingRef.current)
+        autoResizeTextarea(headingRef.current)
     }, [bio?.heading])
 
-    // Adjust Description Height on change
     useEffect(() => {
-        adjustHeight(descriptionRef.current)
+        autoResizeTextarea(descriptionRef.current)
     }, [bio?.description])
 
     if (!bio) return null
 
-    // Helper to convert hex to rgba
-    // TODO: Move to shared/lib/utils/colors.ts if used elsewhere
-    const hexToRgba = (hex: string, alpha: number) => {
-        let r = 0, g = 0, b = 0;
-        if (hex.length === 4) {
-            r = parseInt(hex[1] + hex[1], 16);
-            g = parseInt(hex[2] + hex[2], 16);
-            b = parseInt(hex[3] + hex[3], 16);
-        } else if (hex.length === 7) {
-            r = parseInt(hex.substring(1, 3), 16);
-            g = parseInt(hex.substring(3, 5), 16);
-            b = parseInt(hex.substring(5, 7), 16);
-        }
-        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-    };
-
-    /**
-     * Generates dynamic styles for the selected state.
-     * Mimics the "Change User Button" aesthetic with the user's accent color.
-     */
+    // 선택된 테마 색상에 따른 동적 스타일 생성
+    // CSS 변수로 처리하기 어려운 미세한 투명도 조정을 위해 유틸리티 사용
     const getSelectedStyle = (color: string) => ({
         background: hexToRgba(color, ACCENT_OPACITY.BACKGROUND),
         borderColor: hexToRgba(color, ACCENT_OPACITY.BORDER),
@@ -75,32 +155,18 @@ export function SimpleBioSettings() {
         textShadow: `0 0 8px ${hexToRgba(color, ACCENT_OPACITY.TEXT_SHADOW)}`,
     })
 
-    // Handler for updating a specific bullet
-    const handleBulletChange = (index: number, value: string) => {
-        const newBullets = [...bio.bullets]
-        newBullets[index] = value
-        setBio({ bullets: newBullets })
-    }
+    // 불렛 포인트 내용 변경 핸들러
 
-    // Handler for adding a new bullet
-    const addBullet = () => {
-        setBio({ bullets: [...bio.bullets, ''] })
-    }
-
-    // Handler for removing a bullet
-    const removeBullet = (index: number) => {
-        const newBullets = bio.bullets.filter((_, i) => i !== index)
-        setBio({ bullets: newBullets })
-    }
 
     return (
         <div className={styles.popOverContent}>
-            {/* Section 1: Heading & Introduction */}
+            {/* 섹션 1: 제목 및 헤딩 크기 설정 */}
             <div className={styles.settingsSection}>
                 <div className={styles.settingsGroup}>
                     <div className={styles.labelRow}>
                         <span className={styles.settingsLabel}>{BIO_UI_LABELS.HEADING}</span>
-                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                        <div className={styles.headingControls}>
+                            {/* 헤딩 태그(H1, H2, H3) 선택기 */}
                             <div className={styles.sizeSelector}>
                                 {HEADING_SIZE_OPTIONS.map((option) => {
                                     const isSelected = (bio.headingSize || 'h2') === option.value
@@ -116,6 +182,7 @@ export function SimpleBioSettings() {
                                     )
                                 })}
                             </div>
+                            {/* 섹션 표시 여부 토글 */}
                             <label className={styles.switch}>
                                 <input
                                     type="checkbox"
@@ -126,29 +193,22 @@ export function SimpleBioSettings() {
                             </label>
                         </div>
                     </div>
+
+                    {/* 제목 입력 필드 (조건부 렌더링) */}
                     {bio.showHeading !== false && (
                         <textarea
                             ref={headingRef}
                             value={bio.heading}
                             onChange={(e) => setBio({ heading: e.target.value })}
-                            className={`${styles.settingsInput} ${styles.textareaInput}`}
+                            className={`${styles.settingsInput} ${styles.textareaInput} ${styles.headingTextarea}`}
                             placeholder={BIO_PLACEHOLDERS.HEADING}
                             rows={1}
-                            style={{
-                                minHeight: `${TEXTAREA_CONFIG.HEADING_MIN_HEIGHT}px`,
-                                resize: 'none',
-                                overflow: 'hidden',
-                                whiteSpace: 'pre-wrap'
-                            }}
-                            onInput={(e) => {
-                                const target = e.target as HTMLTextAreaElement
-                                target.style.height = 'auto'
-                                target.style.height = `${target.scrollHeight}px`
-                            }}
+                            onInput={(e) => autoResizeTextarea(e.target as HTMLTextAreaElement)}
                         />
                     )}
                 </div>
 
+                {/* 섹션 2: 소개글 설정 */}
                 <div className={styles.settingsGroup}>
                     <div className={styles.labelRow}>
                         <span className={styles.settingsLabel}>{BIO_UI_LABELS.INTRODUCTION}</span>
@@ -161,34 +221,27 @@ export function SimpleBioSettings() {
                             <span className={styles.slider}></span>
                         </label>
                     </div>
+
+                    {/* 소개글 입력 필드 */}
                     {bio.showDescription !== false && (
                         <textarea
                             ref={descriptionRef}
                             value={bio.description}
                             onChange={(e) => setBio({ description: e.target.value })}
-                            className={`${styles.settingsInput} ${styles.textareaInput}`}
+                            className={`${styles.settingsInput} ${styles.textareaInput} ${styles.introTextarea}`}
                             placeholder={BIO_PLACEHOLDERS.INTRODUCTION}
                             rows={3}
-                            style={{
-                                minHeight: `${TEXTAREA_CONFIG.INTRODUCTION_MIN_HEIGHT}px`,
-                                resize: 'none',
-                                overflow: 'hidden'
-                            }}
-                            onInput={(e) => {
-                                const target = e.target as HTMLTextAreaElement
-                                target.style.height = 'auto'
-                                target.style.height = `${target.scrollHeight}px`
-                            }}
+                            onInput={(e) => autoResizeTextarea(e.target as HTMLTextAreaElement)}
                         />
                     )}
                 </div>
             </div>
 
-            {/* Section 3: Bullets (Dynamic List) */}
+            {/* 섹션 3: 상세 불렛 포인트 (DnD 리스트) */}
             <div className={styles.settingsSection}>
                 <div className={styles.settingsGroup}>
                     <div className={styles.labelRow}>
-                        <span className={styles.settingsLabel} style={{ marginBottom: 0 }}>{BIO_UI_LABELS.DETAILS}</span>
+                        <span className={`${styles.settingsLabel} ${styles.detailsLabel}`}>{BIO_UI_LABELS.DETAILS}</span>
                         <label className={styles.switch}>
                             <input
                                 type="checkbox"
@@ -198,36 +251,34 @@ export function SimpleBioSettings() {
                             <span className={styles.slider}></span>
                         </label>
                     </div>
-                    {bio.showBullets !== false && (
-                        <div className={styles.list} style={{ padding: 0 }}>
 
-                            {bio.bullets.map((bullet, index) => (
-                                <div key={index} style={{ display: 'flex', gap: '8px', marginBottom: '4px', alignItems: 'center' }}>
-                                    <input
-                                        type="text"
-                                        className={styles.settingsInput}
-                                        value={bullet}
-                                        onChange={(e) => handleBulletChange(index, e.target.value)}
-                                        placeholder={BIO_PLACEHOLDERS.BULLET}
-                                        style={{ flex: 1 }}
-                                    />
-                                    <button
-                                        onClick={() => removeBullet(index)}
-                                        className={styles.settingsButton}
-                                        style={{ width: '36px', height: '36px', padding: '0', justifyContent: 'center' }}
-                                        aria-label="Remove item"
-                                    >
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M6.5 1.75c0-.414.336-.75.75-.75h1.5a.75.75 0 01.75.75V3h2.25a.75.75 0 010 1.5H11.5v8.5a1.5 1.5 0 01-1.5 1.5h-4a1.5 1.5 0 01-1.5-1.5V4.5H4.25a.75.75 0 010-1.5H6.5V1.75zm1.5 1.25V2.5h-1v.5h1zm-3 1.5v8.5a.5.5 0 00.5.5h4a.5.5 0 00.5-.5V4.5H5zM6.75 6.5a.75.75 0 01.75.75v4a.75.75 0 01-1.5 0v-4a.75.75 0 01.75-.75zm3.25.75a.75.75 0 10-1.5 0v4a.75.75 0 10 1.5 0v-4z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            ))}
+                    {bio.showBullets !== false && (
+                        <div className={`${styles.list} ${styles.detailsList}`}>
+                            <DndContext
+                                sensors={sensors}
+                                collisionDetection={closestCenter}
+                                onDragEnd={handleDragEnd}
+                            >
+                                <SortableContext
+                                    items={bio.bullets.map((b) => b.id)}
+                                    strategy={verticalListSortingStrategy}
+                                >
+                                    {bio.bullets.map((bullet: { id: string; text: string }, index: number) => (
+                                        <SortableBulletItem
+                                            key={bullet.id}
+                                            id={bullet.id}
+                                            value={bullet.text}
+                                            index={index}
+                                            onChange={updateBullet}
+                                            onRemove={removeBullet}
+                                        />
+                                    ))}
+                                </SortableContext>
+                            </DndContext>
 
                             <button
                                 onClick={addBullet}
-                                className={styles.settingsButton}
-                                style={{ width: '100%', justifyContent: 'center', marginTop: '8px', height: '36px' }}
+                                className={`${styles.settingsButton} ${styles.addBulletButton}`}
                             >
                                 {BIO_UI_LABELS.ADD_BULLET}
                             </button>

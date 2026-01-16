@@ -57,7 +57,7 @@ export interface GeneratorConfig {
     bio?: {
         heading: string
         description: string
-        bullets: string[]
+        bullets: (string | { id: string; text: string })[]
         showHeading?: boolean
         showDescription?: boolean
         showBullets?: boolean

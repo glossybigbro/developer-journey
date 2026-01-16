@@ -29,11 +29,7 @@ export class SimpleBioGenerator implements SectionGenerator {
             // Relaxing this to just newlines for consistency in preview/spacing
             // H1/H2 have native borders, H3 via CSS in preview.
             // Removing explicit '---' for H3 prevents double borders/spacing issues.
-            /* if ((bio.showDescription !== false || bio.showBullets !== false) && bio.headingSize === 'h3') {
-               markdown += '---\n\n'
-            } else { */
             markdown += '\n'
-            /* } */
         }
 
         // 2. Description
@@ -44,7 +40,9 @@ export class SimpleBioGenerator implements SectionGenerator {
         // 3. Bullets
         if (bio.showBullets !== false && bio.bullets && bio.bullets.length > 0) {
             bio.bullets.forEach(bullet => {
-                markdown += `- ${bullet}\n`
+                // Handle both usage forms just in case, but prioritize object .text
+                const text = typeof bullet === 'string' ? bullet : bullet.text
+                markdown += `- ${text}\n`
             })
         }
 
