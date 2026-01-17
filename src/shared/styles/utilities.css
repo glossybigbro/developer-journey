@@ -1,0 +1,71 @@
+/**
+ * 🛠️ [CSS] Global Utilities (전역 유틸리티)
+ * 
+ * @layer shared/styles
+ * @description
+ * 프로젝트 전반에서 재사용되는 범용 유틸리티 클래스입니다.
+ * Tailwind CSS로 대체하기 번거롭거나, 의미론적(Semantic)으로 묶고 싶은 스타일을 정의합니다.
+ */
+
+/* 
+ * 📦 Common Card Style
+ */
+.card {
+    /* [Background] 카드 배경색 */
+    background: var(--bg-card);
+
+    /* [Border Radius] 둥근 모서리 */
+    border-radius: var(--radius-lg);
+
+    /* [Padding] 카드 내부 여백 */
+    padding: var(--spacing-md);
+
+    /* [Border] 연한 테두리 */
+    border: 1px solid var(--border-light);
+
+    /* [Shadow] 작은 그림자 */
+    box-shadow: var(--shadow-sm);
+
+    /* [Transition] 마우스 호버 시 부드러운 움직임을 위한 전환 효과 */
+    transition: all 0.2s ease;
+}
+
+.card:hover {
+    /* [Hover Shadow] 호버 시 더 깊은 그림자 */
+    box-shadow: var(--shadow-md);
+
+    /* [Hover Transform] 살짝 위로 떠오름 */
+    transform: translateY(-2px);
+}
+
+/* 
+ * 🖱️ Custom Scrollbar
+ * (Webkit 기반 브라우저: Chrome, Safari, Edge 등 적용)
+ */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-medium);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-gray);
+}
+
+/* 
+ * [Utility: Gradient Text] 그라데이션 텍스트 
+ */
+.gradient-text {
+    background: linear-gradient(135deg, var(--accent-yellow) 0%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}

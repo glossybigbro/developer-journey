@@ -2,7 +2,8 @@
 
 import { useProfileStore } from '../../../entities/profile/model/useProfileStore'
 import { ACTIVITY_GRAPH_THEMES } from '../../../entities/profile/model/themes'
-import { MARKDOWN_URLS, UI_TEXT } from '../../../shared/config/markdown-constants'
+import { MARKDOWN_UI_TEXT } from '../../../entities/profile/config/markdown-constants'
+import { MARKDOWN_URLS } from '@/entities/profile/config/urls'
 import styles from './SectionBuilder.module.css'
 
 export function ActivityGraphSettings() {
@@ -32,7 +33,7 @@ export function ActivityGraphSettings() {
 
                 {/* Area Fill */}
                 <div className={`${styles.settingRow} ${styles.noMarginBottom}`}>
-                    <span className={styles.settingLabel}>Area Fill</span>
+                    <span className={styles.settingLabel}>{MARKDOWN_UI_TEXT.ACTIVITY_GRAPH_LABELS.AREA_FILL}</span>
                     <label className={styles.switch}>
                         <input
                             type="checkbox"
@@ -45,7 +46,7 @@ export function ActivityGraphSettings() {
 
                 {/* Show Grid */}
                 <div className={`${styles.settingRow} ${styles.noMarginBottom}`}>
-                    <span className={styles.settingLabel}>Show Grid</span>
+                    <span className={styles.settingLabel}>{MARKDOWN_UI_TEXT.ACTIVITY_GRAPH_LABELS.SHOW_GRID}</span>
                     <label className={styles.switch}>
                         <input
                             type="checkbox"
@@ -58,7 +59,7 @@ export function ActivityGraphSettings() {
 
                 {/* Hide Border */}
                 <div className={`${styles.settingRow} ${styles.noMarginBottom}`}>
-                    <span className={styles.settingLabel}>Hide Border</span>
+                    <span className={styles.settingLabel}>{MARKDOWN_UI_TEXT.ACTIVITY_GRAPH_LABELS.HIDE_BORDER}</span>
                     <label className={styles.switch}>
                         <input
                             type="checkbox"
@@ -71,7 +72,7 @@ export function ActivityGraphSettings() {
 
                 {/* Hide Title */}
                 <div className={`${styles.settingRow} ${styles.noMarginBottom}`}>
-                    <span className={styles.settingLabel}>Hide Title</span>
+                    <span className={styles.settingLabel}>{MARKDOWN_UI_TEXT.ACTIVITY_GRAPH_LABELS.HIDE_TITLE}</span>
                     <label className={styles.switch}>
                         <input
                             type="checkbox"
@@ -86,10 +87,10 @@ export function ActivityGraphSettings() {
             {/* Conditional Custom Title */}
             {!activityGraphHideTitle && (
                 <div className={`${styles.settingRow} ${styles.flexColumnStart}`}>
-                    <span className={styles.settingLabel}>Custom Title</span>
+                    <span className={styles.settingLabel}>{MARKDOWN_UI_TEXT.ACTIVITY_GRAPH_LABELS.CUSTOM_TITLE}</span>
                     <input
                         type="text"
-                        placeholder={UI_TEXT.ACTIVITY_GRAPH_PLACEHOLDER}
+                        placeholder={MARKDOWN_UI_TEXT.ACTIVITY_GRAPH_PLACEHOLDER}
                         value={activityGraphCustomTitle}
                         onChange={(e) => setActivityGraphCustomTitle(e.target.value)}
                         className={styles.textInput}
@@ -103,7 +104,7 @@ export function ActivityGraphSettings() {
                 {/* Radius */}
                 <div className={`${styles.settingRow} ${styles.flexColumnStartNoMargin}`}>
                     <div className={styles.labelRow}>
-                        <span className={styles.settingLabel}>Radius</span>
+                        <span className={styles.settingLabel}>{MARKDOWN_UI_TEXT.ACTIVITY_GRAPH_LABELS.RADIUS}</span>
                         <span className={styles.valueLabel}>{activityGraphRadius}px</span>
                     </div>
                     <input
@@ -119,7 +120,7 @@ export function ActivityGraphSettings() {
                 {/* Days */}
                 <div className={`${styles.settingRow} ${styles.flexColumnStartNoMargin}`}>
                     <div className={styles.labelRow}>
-                        <span className={styles.settingLabel}>Days</span>
+                        <span className={styles.settingLabel}>{MARKDOWN_UI_TEXT.ACTIVITY_GRAPH_LABELS.DAYS}</span>
                         <span className={styles.valueLabel}>{activityGraphDays}</span>
                     </div>
                     <input
@@ -134,7 +135,7 @@ export function ActivityGraphSettings() {
             </div>
 
             {/* Theme Selection */}
-            <div className={styles.sectionTitle}>Theme</div>
+            <div className={styles.sectionTitle}>{MARKDOWN_UI_TEXT.ACTIVITY_GRAPH_LABELS.THEME}</div>
             <div className={styles.themeGrid}>
                 {ACTIVITY_GRAPH_THEMES.map(t => (
                     <div
@@ -161,7 +162,7 @@ export function ActivityGraphSettings() {
                 rel="noopener noreferrer"
                 className={styles.docLink}
             >
-                Advanced Documentation ✨
+                {MARKDOWN_UI_TEXT.ACTIVITY_GRAPH_LABELS.DOCS_LINK}
             </a>
         </div>
     )

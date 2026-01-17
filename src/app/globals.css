@@ -1,0 +1,59 @@
+/**
+ * 🌍 [CSS] Global Styles (전역 스타일)
+ * 
+ * @layer app
+ * @description
+ * 애플리케이션 전체에 적용되는 기본 Reset CSS와 Font 설정을 담습니다.
+ * 디자인 토큰은 `shared/styles/tokens.css`에서관리됩니다.
+ */
+
+/* 
+ * 🔤 Google Fonts Import
+ */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;700&display=swap');
+
+/* 
+ * 🎨 Tailwind CSS v4 Import
+ */
+@import "tailwindcss";
+
+/* 
+ * 🧹 CSS Reset
+ * 모든 브라우저에서 동일한 레이아웃을 보여주기 위한 기본 초기화입니다.
+ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: transparent;
+  color: #ffffff;
+  /* Fallback */
+}
+
+/* [Typography Defaults] */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+p {
+  line-height: 1.6;
+  color: var(--text-secondary);
+}

@@ -1,12 +1,15 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { Section } from '../../../entities/profile/model/sections'
 import styles from './SectionBuilder.module.css'
 import { ActivityGraphSettings } from './ActivityGraphSettings'
 import { SimpleBioSettings } from './SimpleBioSettings'
+
+import { SECTION_UI_LABELS } from '../config/sectionConstants'
+import { useOnClickOutside } from '@/shared/lib/hooks/useOnClickOutside'
 
 interface SectionItemProps {
     section: Section
@@ -34,17 +37,7 @@ export function SectionItem({ section, onToggle }: SectionItemProps) {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false)
     const popoverRef = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            if (popoverRef.current && !popoverRef.current.contains(event.target as Node)) {
-                setIsSettingsOpen(false)
-            }
-        }
-        document.addEventListener("mousedown", handleClickOutside)
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside)
-        }
-    }, [popoverRef])
+    useOnClickOutside(popoverRef, () => setIsSettingsOpen(false))
 
     return (
         <div
@@ -63,12 +56,12 @@ export function SectionItem({ section, onToggle }: SectionItemProps) {
                         <span className={styles.slider}></span>
                     </label>
                 ) : (
-                    <span className={`${styles.badge} ${styles.lockedBadge}`}>🔒 Locked</span>
+                    <span className={`${styles.badge} ${styles.lockedBadge}`}>{SECTION_UI_LABELS.STATUS.LOCKED}</span>
                 )}
 
                 <div className={styles.itemInfo}>
                     <span className={styles.itemName}>{section.name}</span>
-                    {isLocked && <span className={`${styles.badge} ${styles.comingSoonBadge}`}>COMING SOON</span>}
+                    {isLocked && <span className={`${styles.badge} ${styles.comingSoonBadge}`}>{SECTION_UI_LABELS.STATUS.COMING_SOON}</span>}
                     {section.width && (
                         <span className={styles.badge}>{section.width}</span>
                     )}
@@ -83,10 +76,10 @@ export function SectionItem({ section, onToggle }: SectionItemProps) {
                                     setIsSettingsOpen(!isSettingsOpen)
                                 }}
                                 className={`${styles.settingsButton} ${isSettingsOpen ? styles.active : ''}`}
-                                aria-label="Customize Graph"
+                                aria-label={SECTION_UI_LABELS.ACTIONS.CUSTOMIZE_GRAPH}
                             >
-                                <span className={styles.buttonIcon}>🎨</span>
-                                <span className={styles.buttonText}>Customize Graph</span>
+                                <span className={styles.buttonIcon}>{SECTION_UI_LABELS.ICONS.GRAPH}</span>
+                                <span className={styles.buttonText}>{SECTION_UI_LABELS.ACTIONS.CUSTOMIZE_GRAPH}</span>
                             </button>
 
                             {/* Pop-over Panel */}
@@ -107,10 +100,10 @@ export function SectionItem({ section, onToggle }: SectionItemProps) {
                                     setIsSettingsOpen(!isSettingsOpen)
                                 }}
                                 className={`${styles.settingsButton} ${isSettingsOpen ? styles.active : ''}`}
-                                aria-label="Edit Bio"
+                                aria-label={SECTION_UI_LABELS.ACTIONS.EDIT_BIO}
                             >
-                                <span className={styles.buttonIcon}>✏️</span>
-                                <span className={styles.buttonText}>Edit Bio</span>
+                                <span className={styles.buttonIcon}>{SECTION_UI_LABELS.ICONS.EDIT}</span>
+                                <span className={styles.buttonText}>{SECTION_UI_LABELS.ACTIONS.EDIT_BIO}</span>
                             </button>
 
                             {/* Pop-over Panel */}

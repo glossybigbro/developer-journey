@@ -13,61 +13,13 @@ import {
 } from '@dnd-kit/core'
 import {
     arrayMove,
-    SortableContext,
     sortableKeyboardCoordinates,
-    verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 
 import { useProfileStore } from '../../../entities/profile/model/useProfileStore'
-import { ACT_LABELS, Section } from '../../../entities/profile/model/sections'
+import { ACT_LABELS } from '../../../entities/profile/model/sections'
 import styles from './SectionBuilder.module.css'
-import { SectionItem } from './SectionItem'
-
-function SectionGroup({
-    category,
-    label,
-    sections,
-    onToggle
-}: {
-    category: string,
-    label: string,
-    sections: Section[],
-    onToggle: (id: string) => void
-}) {
-    const [isOpen, setIsOpen] = useState(true)
-
-    if (sections.length === 0) return null
-
-    return (
-        <div className={styles.group}>
-            <button
-                className={styles.groupHeader}
-                onClick={() => setIsOpen(!isOpen)}
-                type="button"
-            >
-                <span className={styles.groupTitle}>{label}</span>
-                <span className={`${styles.chevron} ${isOpen ? styles.open : ''}`}>▼</span>
-            </button>
-
-            {isOpen && (
-                <div className={styles.list}>
-                    <SortableContext
-                        items={sections.map(s => s.id)}
-                        strategy={verticalListSortingStrategy}
-                    >
-                        {sections.map((section) => (
-                            <SectionItem
-                                key={section.id}
-                                section={section}
-                                onToggle={onToggle}
-                            />
-                        ))}
-                    </SortableContext>
-                </div>
-            )}
-        </div>
-    )
-}
+import { SectionGroup } from './SectionGroup'
 
 export function SectionBuilder() {
     const { sections, toggleSection, reorderSections } = useProfileStore()

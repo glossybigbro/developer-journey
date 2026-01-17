@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { UI_DEFAULTS } from '../../../shared/config/markdown-constants'
+import { UI_DEFAULTS } from '../config/markdown-constants'
 import { SECTIONS, Section, BIO_DEFAULTS } from './sections'
 
 interface ProfileState {
@@ -142,7 +142,7 @@ export const useProfileStore = create<ProfileState>((set) => ({
     setActivityGraphCustomTitle: (title) => set({ activityGraphCustomTitle: title }),
 
     verifyUser: async (username: string) => {
-        const { getUserProfile } = await import('../../../shared/api/githubService')
+        const { getUserProfile } = await import('../api/profile-api')
         await getUserProfile(username)
         // If successful, update state
         set({ username, currentStep: 'generator' })

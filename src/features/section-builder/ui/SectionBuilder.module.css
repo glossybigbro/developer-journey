@@ -716,9 +716,12 @@ input:checked+.slider:before {
 }
 
 textarea.settingsInput {
-    min-height: 100px;
+    min-height: 40px;
     line-height: 1.5;
-    resize: vertical;
+    resize: none;
+    /* Disable manual resize */
+    overflow: hidden;
+    /* Prevent scrollbar */
 }
 
 .settingsInput:focus {
