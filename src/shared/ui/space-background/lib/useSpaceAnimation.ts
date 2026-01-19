@@ -291,11 +291,24 @@ export const useSpaceAnimation = () => {
 
             // [배경]
             // [배경]
+            // [배경]
             const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height)
             const { TOP, MIDDLE, BOTTOM } = SPACE_CONFIG.COLORS.GRADIENT
-            gradient.addColorStop(0, TOP)
-            gradient.addColorStop(0.5, MIDDLE)
-            gradient.addColorStop(1, BOTTOM)
+
+            // Helper to resolve CSS variables if needed
+            const resolveColor = (color: string) => {
+                if (color.startsWith('var(')) {
+                    const varName = color.match(/var\(([^)]+)\)/)?.[1]
+                    if (varName) {
+                        return getComputedStyle(document.body).getPropertyValue(varName).trim()
+                    }
+                }
+                return color
+            }
+
+            gradient.addColorStop(0, resolveColor(TOP))
+            gradient.addColorStop(0.5, resolveColor(MIDDLE))
+            gradient.addColorStop(1, resolveColor(BOTTOM))
             ctx.fillStyle = gradient
             ctx.fillRect(0, 0, canvas.width, canvas.height)
 

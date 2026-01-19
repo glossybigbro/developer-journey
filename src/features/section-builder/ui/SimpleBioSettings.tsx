@@ -74,8 +74,9 @@ export function SimpleBioSettings() {
             {/* 섹션 1: 제목 및 헤딩 크기 설정 */}
             <div className={styles.settingsSection}>
                 <div className={styles.settingsGroup}>
-                    <div className={styles.labelRow}>
-                        <span className={styles.settingsLabel}>{BIO_UI_LABELS.HEADING}</span>
+                    {/* 타이틀과 컨트롤이 수평 정렬 (flex) + 하단 마진 일치 (8px) */}
+                    <div className={styles.labelRow} style={{ marginBottom: 'var(--spacing-sm)' }}>
+                        <span className={styles.sectionTitle} style={{ marginBottom: 0 }}>{BIO_UI_LABELS.HEADING}</span>
                         <div className={styles.headingControls}>
                             {/* 헤딩 태그(H1, H2, H3) 선택기 */}
                             <div className={styles.sizeSelector}>
@@ -121,8 +122,8 @@ export function SimpleBioSettings() {
 
                 {/* 섹션 2: 소개글 설정 */}
                 <div className={styles.settingsGroup}>
-                    <div className={styles.labelRow}>
-                        <span className={styles.settingsLabel}>{BIO_UI_LABELS.INTRODUCTION}</span>
+                    <div className={styles.labelRow} style={{ marginBottom: 'var(--spacing-sm)' }}>
+                        <span className={styles.sectionTitle} style={{ marginBottom: 0 }}>{BIO_UI_LABELS.INTRODUCTION}</span>
                         <label className={styles.switch}>
                             <input
                                 type="checkbox"
@@ -151,8 +152,8 @@ export function SimpleBioSettings() {
             {/* 섹션 3: 상세 불렛 포인트 (DnD 리스트) */}
             <div className={styles.settingsSection}>
                 <div className={styles.settingsGroup}>
-                    <div className={styles.labelRow}>
-                        <span className={`${styles.settingsLabel} ${styles.detailsLabel}`}>{BIO_UI_LABELS.DETAILS}</span>
+                    <div className={styles.labelRow} style={{ marginBottom: 'var(--spacing-sm)' }}>
+                        <span className={`${styles.sectionTitle} ${styles.detailsLabel}`} style={{ marginBottom: 0 }}>{BIO_UI_LABELS.DETAILS}</span>
                         <label className={styles.switch}>
                             <input
                                 type="checkbox"

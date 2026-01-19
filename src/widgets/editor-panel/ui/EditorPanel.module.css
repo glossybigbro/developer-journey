@@ -51,8 +51,6 @@
     pointer-events: auto;
 }
 
-
-
 .changeUserButton:hover {
     background: rgba(0, 217, 255, 0.2);
     border-color: rgba(0, 217, 255, 0.8);

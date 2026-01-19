@@ -44,7 +44,7 @@ export function generateMarkdown(config: ExtendedGeneratorConfig): string {
             if (index > 0) {
                 markdown += '\n\n'
             }
-            markdown += generator.generate(config, section)
+            markdown += generator.generate(config, section).trim()
         }
     })
 

@@ -30,7 +30,7 @@ export const SECTIONS: Section[] = [
     { id: 'activity-heatmap', name: 'Activity Heatmap', description: 'Contribution heatmap', icon: '🟣', category: 'ACT2', width: 'full', defaultEnabled: false, locked: true },
 
     // ACT 3: 천성과 습관 (6개)
-    { id: 'night-owl', name: "I'm a Night 🦉", description: 'Time-of-day commit analysis', icon: '🔵', category: 'ACT3', width: 'half', defaultEnabled: false, locked: true },
+    { id: 'productive-time', name: 'Peak Activity', description: 'Time-of-day commit analysis', icon: '🔵', category: 'ACT3', width: 'half', defaultEnabled: false },
     { id: 'timezone', name: 'Time Zone', description: 'Current timezone display', icon: '🔵', category: 'ACT3', width: 'compact', defaultEnabled: false, locked: true },
     { id: 'time-bars', name: 'Time of Day Bars', description: 'Morning/Day/Evening/Night bars', icon: '🔵', category: 'ACT3', width: 'full', defaultEnabled: false, locked: true },
     { id: 'code-time-badge', name: 'Code Time Badge', description: 'Total coding time badge', icon: '🟢', category: 'ACT3', width: 'compact', defaultEnabled: false, locked: true },

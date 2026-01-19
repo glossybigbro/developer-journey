@@ -7,11 +7,8 @@ export const SECTION_UI_LABELS = {
         COMING_SOON: 'COMING SOON',
     },
     ACTIONS: {
-        CUSTOMIZE_GRAPH: 'Customize Graph',
-        EDIT_BIO: 'Edit Bio',
+        CUSTOMIZE_GRAPH: 'Customize',
+        EDIT_BIO: 'Edit',
+        CUSTOMIZE_PRODUCTIVE_TIME: 'Customize',
     },
-    ICONS: {
-        GRAPH: '🎨',
-        EDIT: '✏️',
-    }
 } as const

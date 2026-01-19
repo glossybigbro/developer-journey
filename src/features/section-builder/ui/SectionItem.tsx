@@ -7,6 +7,7 @@ import { Section } from '../../../entities/profile/model/sections'
 import styles from './SectionBuilder.module.css'
 import { ActivityGraphSettings } from './ActivityGraphSettings'
 import { SimpleBioSettings } from './SimpleBioSettings'
+import { ProductiveTimeSettings } from './ProductiveTimeSettings'
 
 import { SECTION_UI_LABELS } from '../config/sectionConstants'
 import { useOnClickOutside } from '@/shared/lib/hooks/useOnClickOutside'
@@ -78,7 +79,6 @@ export function SectionItem({ section, onToggle }: SectionItemProps) {
                                 className={`${styles.settingsButton} ${isSettingsOpen ? styles.active : ''}`}
                                 aria-label={SECTION_UI_LABELS.ACTIONS.CUSTOMIZE_GRAPH}
                             >
-                                <span className={styles.buttonIcon}>{SECTION_UI_LABELS.ICONS.GRAPH}</span>
                                 <span className={styles.buttonText}>{SECTION_UI_LABELS.ACTIONS.CUSTOMIZE_GRAPH}</span>
                             </button>
 
@@ -86,6 +86,28 @@ export function SectionItem({ section, onToggle }: SectionItemProps) {
                             {isSettingsOpen && (
                                 <div className={styles.settingsPopOver}>
                                     <ActivityGraphSettings />
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Productive Time (Night Owl) Settings Trigger */}
+                    {!isLocked && section.id === 'productive-time' && section.enabled && (
+                        <div className={`${styles.extraActions} ${isSettingsOpen ? styles.visible : ''}`} ref={popoverRef}>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    setIsSettingsOpen(!isSettingsOpen)
+                                }}
+                                className={`${styles.settingsButton} ${isSettingsOpen ? styles.active : ''}`}
+                                aria-label="Customize Productive Time"
+                            >
+                                <span className={styles.buttonText}>{SECTION_UI_LABELS.ACTIONS.CUSTOMIZE_PRODUCTIVE_TIME}</span>
+                            </button>
+
+                            {isSettingsOpen && (
+                                <div className={styles.settingsPopOver}>
+                                    <ProductiveTimeSettings />
                                 </div>
                             )}
                         </div>
@@ -102,7 +124,6 @@ export function SectionItem({ section, onToggle }: SectionItemProps) {
                                 className={`${styles.settingsButton} ${isSettingsOpen ? styles.active : ''}`}
                                 aria-label={SECTION_UI_LABELS.ACTIONS.EDIT_BIO}
                             >
-                                <span className={styles.buttonIcon}>{SECTION_UI_LABELS.ICONS.EDIT}</span>
                                 <span className={styles.buttonText}>{SECTION_UI_LABELS.ACTIONS.EDIT_BIO}</span>
                             </button>
 
@@ -121,6 +142,6 @@ export function SectionItem({ section, onToggle }: SectionItemProps) {
                     ⋮⋮
                 </div>
             )}
-        </div >
+        </div>
     )
 }

@@ -1,3 +1,5 @@
+import { ProductiveTimeStyleId } from '@/entities/profile/config/productive-time'
+
 /**
  * Markdown Section Configuration
  * 
@@ -64,6 +66,24 @@ export interface GeneratorConfig {
         headingSize?: 'h1' | 'h2' | 'h3'
         descriptionSize?: 'l' | 'm' | 's'
         bulletsSize?: 'l' | 'm' | 's'
+    }
+
+    // Productive Time Configuration
+    productiveTime?: {
+        stats: {
+            morning: number
+            daytime: number
+            evening: number
+            night: number
+            commits: {
+                morning: number
+                daytime: number
+                evening: number
+                night: number
+            }
+        }
+        style: ProductiveTimeStyleId
+        isAnalyzed: boolean
     }
 }
 

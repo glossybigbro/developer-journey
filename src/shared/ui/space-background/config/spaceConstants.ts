@@ -76,7 +76,7 @@ export const SPACE_CONFIG = {
             TRANSPARENT_WHITE: 'rgba(255, 255, 255, 0)'
         },
         GRADIENT: {
-            TOP: '#0a0e27',
+            TOP: 'var(--color-bg-dark)',
             MIDDLE: '#1a1a3e',
             BOTTOM: '#2d1b3d'
         },

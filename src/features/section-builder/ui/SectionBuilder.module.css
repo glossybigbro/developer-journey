@@ -36,10 +36,12 @@
 }
 
 .sectionTitle {
-    margin-bottom: var(--spacing-sm);
+    margin: 0 0 var(--spacing-sm) 0;
     font-size: 14px;
     font-weight: 600;
-    color: white;
+    color: var(--accent-cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .fullWidth {
@@ -672,14 +674,7 @@ input:checked+.slider:before {
     padding-bottom: 0;
 }
 
-.sectionTitle {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--accent-cyan);
-    margin: 0 0 8px 0;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
+/* .sectionTitle removed - using utility class at top of file */
 
 .settingsGroup {
     display: flex;
@@ -798,6 +793,136 @@ textarea.settingsInput {
     box-shadow: 0 8px 24px rgba(var(--accent-cyan-rgb), 0.2);
     z-index: var(--z-index-dragging);
 }
+
+/* --- PRODUCTIVE TIME SETTINGS --- */
+.styleGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.styleCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    height: 90px;
+    position: relative;
+    overflow: hidden;
+}
+
+.styleCard:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.styleIcon {
+    font-size: 28px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    z-index: 1;
+}
+
+.styleLabel {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    z-index: 1;
+    letter-spacing: 0.3px;
+    transition: color 0.2s;
+}
+
+.styleCard:hover .styleLabel {
+    color: white;
+}
+
+.analyzeButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-system);
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.analyzeButton:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.analyzeButton:active {
+    transform: scale(0.98);
+}
+
+.analyzeButton:disabled {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none;
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.dataNote {
+    font-size: 11px;
+    color: var(--text-secondary);
+    /* Increased contrast */
+    margin-top: 12px;
+    text-align: center;
+    line-height: 1.5;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.analysisResult {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    animation: fadeIn 0.4s ease-out;
+    padding: 12px;
+    background: rgba(139, 92, 246, 0.1);
+    /* Subtle purple tint BG */
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: var(--radius-md);
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.15);
+}
+
 
 .dragHandle {
     display: flex;

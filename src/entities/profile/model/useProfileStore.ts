@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { UI_DEFAULTS } from '../config/markdown-constants'
 import { SECTIONS, Section, BIO_DEFAULTS } from './sections'
+import { ProductiveTimeStyleId } from '@/entities/profile/config/productive-time'
 
 interface ProfileState {
     // 단계 관리
@@ -60,6 +61,36 @@ interface ProfileState {
     setActivityGraphDays: (days: number) => void
     setActivityGraphRadius: (radius: number) => void
     setActivityGraphCustomTitle: (title: string) => void
+
+    productiveTime: {
+        style: ProductiveTimeStyleId
+        isAnalyzed: boolean
+        stats: {
+            morning: number // 06-12
+            daytime: number // 12-18
+            evening: number // 18-24
+            night: number   // 00-06
+            commits: {
+                morning: number
+                daytime: number
+                evening: number
+                night: number
+            }
+        }
+    }
+    setProductiveTimeStyle: (style: ProductiveTimeStyleId) => void
+    setProductiveTimeStats: (stats: {
+        morning: number
+        daytime: number
+        evening: number
+        night: number
+        commits: {
+            morning: number
+            daytime: number
+            evening: number
+            night: number
+        }
+    }) => void
 
     // State
     lastValidUsername: string | null
@@ -140,6 +171,22 @@ export const useProfileStore = create<ProfileState>((set) => ({
     setActivityGraphDays: (days) => set({ activityGraphDays: days }),
     setActivityGraphRadius: (radius) => set({ activityGraphRadius: radius }),
     setActivityGraphCustomTitle: (title) => set({ activityGraphCustomTitle: title }),
+
+    // Productive Time Initial State & Actions
+    productiveTime: {
+        style: 'cyber',
+        isAnalyzed: false,
+        stats: {
+            morning: 0, daytime: 0, evening: 0, night: 0,
+            commits: { morning: 0, daytime: 0, evening: 0, night: 0 }
+        }
+    },
+    setProductiveTimeStyle: (style) => set((state) => ({
+        productiveTime: { ...state.productiveTime, style }
+    })),
+    setProductiveTimeStats: (stats) => set((state) => ({
+        productiveTime: { ...state.productiveTime, stats, isAnalyzed: true }
+    })),
 
     verifyUser: async (username: string) => {
         const { getUserProfile } = await import('../api/profile-api')

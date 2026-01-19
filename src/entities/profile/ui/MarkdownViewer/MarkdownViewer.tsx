@@ -4,6 +4,8 @@ import rehypeRaw from 'rehype-raw'
 import rehypeSanitize from 'rehype-sanitize'
 import { useProfileStore } from '../../model/useProfileStore'
 import { generateMarkdown } from '../../lib/markdown/generator'
+import rehypeHighlight from 'rehype-highlight'
+import './github-light.css' // Custom Light Theme without white background
 import styles from './MarkdownViewer.module.css'
 import { MARKDOWN_SCHEMA, MARKDOWN_COMPONENTS } from '../../config/markdownConfig'
 
@@ -22,7 +24,7 @@ export function MarkdownViewer() {
             <ReactMarkdown
                 key={markdown} // Force re-render on markdown change
                 remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeRaw, [rehypeSanitize, MARKDOWN_SCHEMA]]}
+                rehypePlugins={[rehypeRaw, [rehypeSanitize, MARKDOWN_SCHEMA], rehypeHighlight]}
                 components={MARKDOWN_COMPONENTS}
             >
                 {markdown}

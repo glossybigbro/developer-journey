@@ -5,8 +5,6 @@
 
 import type { RadarConfig } from '@/shared/types/uiTypes'
 
-
-
 /**
  * 레이더 애니메이션 설정 (그리기 명세 - Generic)
  */
