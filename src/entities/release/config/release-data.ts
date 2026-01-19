@@ -11,13 +11,16 @@ import type { ReleaseNote } from '../model/types'
  */
 export const RELEASE_NOTES: ReleaseNote[] = [
     {
-        icon: '📝',
+        title: 'PEAK ACTIVITY',
+        desc: 'Discover your coding chronotype! New "Peak Activity" section with 5 visualizations including Git Graph and Terminal style.',
+        date: '2026-01-19'
+    },
+    {
         title: 'CUSTOMIZE YOUR BIO',
         desc: 'Make your intro pop! You can now easily change heading sizes and add bullet points to tell your story.',
         date: '2026-01-16'
     },
     {
-        icon: '🎨',
         title: 'STYLIZE YOUR GRAPH',
         desc: 'Your contributions, your style. Pick custom themes, adjust rounded corners, and choose how many days to show.',
         date: '2026-01-16'

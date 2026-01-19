@@ -54,7 +54,6 @@ export function ReleaseModal({ isOpen, onClose }: ReleaseModalProps) {
 
                                     return (
                                         <div key={idx} className={styles.updateItem}>
-                                            <div className={styles.iconBox}>{note.icon}</div>
                                             <div className={styles.itemContent}>
                                                 <span className={styles.itemTitle}>
                                                     {note.title}
