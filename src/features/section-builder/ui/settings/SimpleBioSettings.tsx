@@ -11,17 +11,15 @@ import {
 } from '@dnd-kit/sortable'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { useProfileStore } from '@/entities/profile/model/useProfileStore'
-import { useBioList } from '../model/useBioList'
-import { useSortableSensors } from '../model/useSortableSensors'
+import { useBioList } from '../../model/useBioList'
+import { useSortableSensors } from '../../model/useSortableSensors'
 import { hexToRgba, autoResizeTextarea } from '@/shared/lib/utils/styleUtils'
-import styles from './SectionBuilder.module.css'
+import styles from '../SectionBuilder.module.css'
 import {
     BIO_UI_LABELS,
     BIO_PLACEHOLDERS,
-    HEADING_SIZE_OPTIONS,
-    ACCENT_OPACITY,
-} from '../config/bioConstants'
-import { SortableBulletItem } from './SortableBulletItem'
+} from '../../config/bioConstants'
+import { SortableBulletItem } from '../blocks/SortableBulletItem'
 
 /**
  * 심플 바이오 설정 컴포넌트
@@ -56,57 +54,30 @@ export function SimpleBioSettings() {
 
     if (!bio) return null
 
-    // 선택된 테마 색상에 따른 동적 스타일 생성
-    // CSS 변수로 처리하기 어려운 미세한 투명도 조정을 위해 유틸리티 사용
-    const getSelectedStyle = (color: string) => ({
-        background: hexToRgba(color, ACCENT_OPACITY.BACKGROUND),
-        borderColor: hexToRgba(color, ACCENT_OPACITY.BORDER),
-        color: color,
-        boxShadow: `0 0 15px ${hexToRgba(color, ACCENT_OPACITY.SHADOW)}`,
-        textShadow: `0 0 8px ${hexToRgba(color, ACCENT_OPACITY.TEXT_SHADOW)}`,
-    })
+    if (!bio) return null
 
     // 불렛 포인트 내용 변경 핸들러
 
+    // 불렛 포인트 내용 변경 핸들러
 
     return (
         <div className={styles.popOverContent}>
-            {/* 섹션 1: 제목 및 헤딩 크기 설정 */}
+            {/* Section 0: Header/Title */}
             <div className={styles.settingsSection}>
                 <div className={styles.settingsGroup}>
-                    {/* 타이틀과 컨트롤이 수평 정렬 (flex) + 하단 마진 일치 (8px) */}
                     <div className={styles.labelRow} style={{ marginBottom: 'var(--spacing-sm)' }}>
                         <span className={styles.sectionTitle} style={{ marginBottom: 0 }}>{BIO_UI_LABELS.HEADING}</span>
-                        <div className={styles.headingControls}>
-                            {/* 헤딩 태그(H1, H2, H3) 선택기 */}
-                            <div className={styles.sizeSelector}>
-                                {HEADING_SIZE_OPTIONS.map((option) => {
-                                    const isSelected = (bio.headingSize || 'h2') === option.value
-                                    return (
-                                        <div
-                                            key={option.value}
-                                            className={`${styles.sizeOption}`}
-                                            onClick={() => setBio({ headingSize: option.value })}
-                                            style={isSelected ? getSelectedStyle(accentColor) : {}}
-                                        >
-                                            {option.label}
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                            {/* 섹션 표시 여부 토글 */}
-                            <label className={styles.switch}>
-                                <input
-                                    type="checkbox"
-                                    checked={bio.showHeading !== false}
-                                    onChange={(e) => setBio({ showHeading: e.target.checked })}
-                                />
-                                <span className={styles.slider}></span>
-                            </label>
-                        </div>
+                        <label className={styles.switch}>
+                            <input
+                                type="checkbox"
+                                checked={bio.showHeading !== false}
+                                onChange={(e) => setBio({ showHeading: e.target.checked })}
+                            />
+                            <span className={styles.slider}></span>
+                        </label>
                     </div>
 
-                    {/* 제목 입력 필드 (조건부 렌더링) */}
+                    {/* Heading Input */}
                     {bio.showHeading !== false && (
                         <textarea
                             ref={headingRef}
@@ -119,8 +90,10 @@ export function SimpleBioSettings() {
                         />
                     )}
                 </div>
+            </div>
 
-                {/* 섹션 2: 소개글 설정 */}
+            {/* Section 1: Introduction */}
+            <div className={styles.settingsSection}>
                 <div className={styles.settingsGroup}>
                     <div className={styles.labelRow} style={{ marginBottom: 'var(--spacing-sm)' }}>
                         <span className={styles.sectionTitle} style={{ marginBottom: 0 }}>{BIO_UI_LABELS.INTRODUCTION}</span>
@@ -134,7 +107,7 @@ export function SimpleBioSettings() {
                         </label>
                     </div>
 
-                    {/* 소개글 입력 필드 */}
+                    {/* Description Input */}
                     {bio.showDescription !== false && (
                         <textarea
                             ref={descriptionRef}
@@ -149,7 +122,7 @@ export function SimpleBioSettings() {
                 </div>
             </div>
 
-            {/* 섹션 3: 상세 불렛 포인트 (DnD 리스트) */}
+            {/* Section 2: Bullets */}
             <div className={styles.settingsSection}>
                 <div className={styles.settingsGroup}>
                     <div className={styles.labelRow} style={{ marginBottom: 'var(--spacing-sm)' }}>

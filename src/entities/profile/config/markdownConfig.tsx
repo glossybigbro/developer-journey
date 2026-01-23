@@ -22,5 +22,8 @@ export const MARKDOWN_COMPONENTS = {
     ),
     h3: ({ node, ...props }: any) => (
         <h3 {...props} className={styles.h3} />
+    ),
+    h4: ({ node, ...props }: any) => (
+        <h4 {...props} className={styles.h4} />
     )
 }

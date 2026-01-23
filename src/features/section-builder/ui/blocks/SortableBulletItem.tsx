@@ -2,9 +2,9 @@
 
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import styles from './SectionBuilder.module.css'
+import styles from '../SectionBuilder.module.css'
 import { DragHandleIcon, DeleteIcon } from './BioIcons'
-import { BIO_PLACEHOLDERS, BIO_UI_LABELS } from '../config/bioConstants'
+import { BIO_PLACEHOLDERS, BIO_UI_LABELS } from '../../config/bioConstants'
 
 /**
  * 정렬 가능한 불렛 아이템 컴포넌트

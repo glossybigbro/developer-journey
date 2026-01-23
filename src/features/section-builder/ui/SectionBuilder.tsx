@@ -1,53 +1,17 @@
 'use client'
 
-import { useState } from 'react'
 import {
     DndContext,
     closestCenter,
-    KeyboardSensor,
-    MouseSensor,
-    TouchSensor,
-    useSensor,
-    useSensors,
-    DragEndEvent
 } from '@dnd-kit/core'
-import {
-    arrayMove,
-    sortableKeyboardCoordinates,
-} from '@dnd-kit/sortable'
 
-import { useProfileStore } from '../../../entities/profile/model/useProfileStore'
+import { useSectionBuilder } from '../model/useSectionBuilder'
 import { ACT_LABELS } from '../../../entities/profile/model/sections'
 import styles from './SectionBuilder.module.css'
-import { SectionGroup } from './SectionGroup'
+import { SectionGroup } from './blocks/SectionGroup'
 
 export function SectionBuilder() {
-    const { sections, toggleSection, reorderSections } = useProfileStore()
-
-    const sensors = useSensors(
-        useSensor(MouseSensor),
-        useSensor(TouchSensor, {
-            activationConstraint: {
-                delay: 250,
-                tolerance: 5,
-            },
-        }),
-        useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates,
-        })
-    )
-
-
-    const handleDragEnd = (event: DragEndEvent) => {
-        const { active, over } = event
-
-        if (over && active.id !== over.id) {
-            const oldIndex = sections.findIndex((s) => s.id === active.id)
-            const newIndex = sections.findIndex((s) => s.id === over.id)
-
-            reorderSections(arrayMove(sections, oldIndex, newIndex))
-        }
-    }
+    const { sections, sensors, handleDragEnd, toggleSection } = useSectionBuilder()
 
     // 그룹별로 섹션 분류 (순서는 유지되지만, 렌더링 시 그룹화)
     // *주의: 드래그 앤 드롭을 전체 리스트에서 하려면 그룹화 UI가 복잡해질 수 있음.

@@ -1,18 +1,17 @@
 'use client'
 
-import { useState } from 'react'
 import { useProfileStore } from '@/entities/profile/model/useProfileStore'
 import { useProfileExport } from '@/features/profile-export'
 import { MarkdownViewer } from '@/entities/profile/ui'
-import { generateMarkdown } from '@/entities/profile/lib/markdown/generator'
-import { APP_CONFIG } from '@/app/config/constants'
+import { APP_CONFIG } from '@/shared/config/constants'
 import styles from './PreviewPanel.module.css'
+import { usePreviewPanel } from '../../model/usePreviewPanel'
 
 export function PreviewPanel() {
-    const { username, sections, selectedTemplate, theme, bio } = useProfileStore()
+    // We only need specific selectors for rendering if needed, or let children handle it.
+    // However, PreviewPanel main job is layout switching.
     const { handleCopy, handleDownload } = useProfileExport()
-
-    const [activeTab, setActiveTab] = useState<'preview' | 'code'>('preview')
+    const { activeTab, setActiveTab, getGeneratedMarkdown } = usePreviewPanel()
 
     return (
         <div className={styles.rightPanel}>
@@ -46,7 +45,7 @@ export function PreviewPanel() {
                             {activeTab === 'preview' && <MarkdownViewer />}
                             {activeTab === 'code' && (
                                 <pre className={styles.codeBlock}>
-                                    {generateMarkdown(useProfileStore.getState())}
+                                    {getGeneratedMarkdown()}
                                 </pre>
                             )}
                         </div>

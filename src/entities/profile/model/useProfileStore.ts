@@ -3,7 +3,7 @@ import { UI_DEFAULTS } from '../config/markdown-constants'
 import { SECTIONS, Section, BIO_DEFAULTS } from './sections'
 import { ProductiveTimeStyleId } from '@/entities/profile/config/productive-time'
 
-interface ProfileState {
+export interface ProfileState {
     // 단계 관리
     currentStep: 'hero' | 'generator'
 
@@ -92,6 +92,48 @@ interface ProfileState {
         }
     }) => void
 
+    // Activity Stats Configuration (Non-WakaTime)
+    timezone: string
+    setTimezone: (timezone: string) => void
+
+    activityStats: {
+        itemCount: number // Default 5
+        ignoredLanguages: string[]
+    }
+    setActivityStatsItemCount: (count: number) => void
+    setActivityStatsIgnoredLanguages: (languages: string[]) => void
+
+    // Weekly Languages Configuration
+    weeklyLanguages: {
+        style: 'progress' | 'emoji' | 'compact'
+        count: number
+        excludeLanguages: string[]
+        sortBy: 'usage' | 'alphabetical' | 'recent'
+        periodDays: number
+    }
+    setWeeklyLanguages: (config: Partial<{
+        style: 'progress' | 'emoji' | 'compact'
+        count: number
+        excludeLanguages: string[]
+        sortBy: 'usage' | 'alphabetical' | 'recent'
+        periodDays: number
+    }>) => void
+
+    // Weekly Projects Configuration
+    weeklyProjects: {
+        style: 'progress' | 'emoji' | 'compact'
+        count: number
+        sortBy: 'commits' | 'alphabetical' | 'recent'
+        periodDays: number
+    }
+    setWeeklyProjects: (config: Partial<{
+        style: 'progress' | 'emoji' | 'compact'
+        count: number
+        sortBy: 'commits' | 'alphabetical' | 'recent'
+        periodDays: number
+    }>) => void
+
+
     // State
     lastValidUsername: string | null
     setLastValidUsername: (username: string | null) => void
@@ -104,6 +146,12 @@ interface ProfileState {
     setTemplate: (template: 'guilyx' | 'minimal' | 'space-ghibli') => void
     toggleSection: (sectionId: string) => void
     reorderSections: (sections: Section[]) => void
+    addHeader: (content: string) => void
+    addText: (content: string) => void
+    addDivider: () => void
+    removeSection: (sectionId: string) => void
+    updateSectionContent: (sectionId: string, content: string) => void
+    updateSection: (sectionId: string, updates: Partial<Section>) => void
     setAccentColor: (color: string) => void
     verifyUser: (username: string) => Promise<void>
 }
@@ -115,14 +163,58 @@ export const useProfileStore = create<ProfileState>((set) => ({
     wakatimeKey: '',
     spotifyId: '',
     selectedTemplate: 'space-ghibli',
-    sections: SECTIONS.map(s => ({
-        ...s,
-        enabled: s.defaultEnabled ?? false
-    })),
+    sections: (() => {
+        const bioIndex = SECTIONS.findIndex(s => s.id === 'yaml-bio')
+        const headerSection = {
+            id: 'header-welcome',
+            type: 'header',
+            content: "Hey there! I'm GlossyBigBro 👋",
+            name: 'Section Title',
+            icon: '📝',
+            category: 'custom',
+            width: 'full',
+            enabled: true,
+            headerConfig: {
+                level: 1,
+                showDivider: true,
+                align: 'left'
+            }
+        } as Section
+
+        const defaultSections = SECTIONS.map(s => ({
+            ...s,
+            enabled: s.defaultEnabled ?? false
+        }))
+
+        // Insert header right before Bio
+        return [
+            ...defaultSections.slice(0, bioIndex),
+            headerSection,
+            ...defaultSections.slice(bioIndex)
+        ]
+    })(),
     theme: UI_DEFAULTS.THEME,
     accentColor: UI_DEFAULTS.ACCENT_COLOR,
     activityGraphTheme: UI_DEFAULTS.ACTIVITY_GRAPH_THEME,
     activityGraphAreaFill: true,
+
+    // Stats Defaults
+    timezone: 'Asia/Seoul',
+    setTimezone: (timezone) => set({ timezone }),
+
+    activityStats: {
+        showLanguages: true,
+        showProjects: true,
+        showTimezone: true,
+        ignoredLanguages: [],
+        itemCount: 5
+    },
+    setActivityStatsItemCount: (count) => set((state) => ({
+        activityStats: { ...state.activityStats, itemCount: count }
+    })),
+    setActivityStatsIgnoredLanguages: (langs) => set((state) => ({
+        activityStats: { ...state.activityStats, ignoredLanguages: langs }
+    })),
     activityGraphHideBorder: false,
     activityGraphHideTitle: true,
     activityGraphGrid: false,
@@ -133,13 +225,38 @@ export const useProfileStore = create<ProfileState>((set) => ({
     // Bio Initial State
     bio: {
         ...BIO_DEFAULTS,
-        showHeading: true,
+        showHeading: false, // Deprecated: Replaced by Header Section
         showDescription: true,
         showBullets: true,
         headingSize: 'h1',
     },
 
     setBio: (newBio) => set((state) => ({ bio: { ...state.bio, ...newBio } })),
+
+    // Weekly Languages Initial State
+    weeklyLanguages: {
+        style: 'progress',
+        count: 5,
+        excludeLanguages: ['Markdown', 'JSON'],
+        sortBy: 'usage',
+        periodDays: 7
+    },
+
+    setWeeklyLanguages: (config) => set((state) => ({
+        weeklyLanguages: { ...state.weeklyLanguages, ...config }
+    })),
+
+    // Weekly Projects Initial State
+    weeklyProjects: {
+        style: 'progress',
+        count: 5,
+        sortBy: 'commits',
+        periodDays: 7
+    },
+
+    setWeeklyProjects: (config) => set((state) => ({
+        weeklyProjects: { ...state.weeklyProjects, ...config }
+    })),
 
     lastValidUsername: null,
 
@@ -160,6 +277,66 @@ export const useProfileStore = create<ProfileState>((set) => ({
     })),
 
     reorderSections: (sections) => set({ sections }),
+
+    addHeader: (content) => set((state) => {
+        const newHeader: Section = {
+            id: `header-${Date.now()}`,
+            type: 'header',
+            content,
+            name: 'Section Title',
+            icon: '📝',
+            category: 'custom',
+            width: 'full',
+            enabled: true, // Headers always enabled by default
+            defaultEnabled: true
+        }
+        return { sections: [newHeader, ...state.sections] }
+    }),
+
+    addText: (content) => set((state) => {
+        const newText: Section = {
+            id: `text-${Date.now()}`,
+            type: 'text',
+            content,
+            name: 'Text Block',
+            icon: '📄',
+            category: 'custom',
+            width: 'full',
+            enabled: true,
+            defaultEnabled: true
+        }
+        return { sections: [newText, ...state.sections] }
+    }),
+
+    addDivider: () => set((state) => {
+        const newDivider: Section = {
+            id: `divider-${Date.now()}`,
+            type: 'divider',
+            name: 'Divider',
+            icon: '➖',
+            category: 'custom',
+            width: 'full',
+            enabled: true,
+            defaultEnabled: true
+        }
+        return { sections: [newDivider, ...state.sections] }
+    }),
+
+    removeSection: (sectionId) => set((state) => ({
+        sections: state.sections.filter(s => s.id !== sectionId)
+    })),
+
+    updateSectionContent: (sectionId, content) => set((state) => ({
+        sections: state.sections.map(s =>
+            s.id === sectionId ? { ...s, content } : s
+        )
+    })),
+
+    updateSection: (sectionId, updates) => set((state) => ({
+        sections: state.sections.map(s =>
+            s.id === sectionId ? { ...s, ...updates } : s
+        )
+    })),
     setAccentColor: (color) => set({ accentColor: color }),
 
     // Activity Graph actions

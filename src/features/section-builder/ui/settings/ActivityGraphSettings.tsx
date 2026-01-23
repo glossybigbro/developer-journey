@@ -1,10 +1,8 @@
-'use client'
-
-import { useProfileStore } from '../../../entities/profile/model/useProfileStore'
-import { ACTIVITY_GRAPH_THEMES } from '../../../entities/profile/model/themes'
-import { MARKDOWN_UI_TEXT } from '../../../entities/profile/config/markdown-constants'
+import { ACTIVITY_GRAPH_THEMES } from '../../../../entities/profile/model/themes'
+import { MARKDOWN_UI_TEXT } from '../../../../entities/profile/config/markdown-constants'
 import { MARKDOWN_URLS } from '@/entities/profile/config/urls'
-import styles from './SectionBuilder.module.css'
+import styles from '../SectionBuilder.module.css'
+import { useActivityGraphSettings } from '../../model/useSettingsHooks'
 
 export function ActivityGraphSettings() {
     const {
@@ -24,7 +22,7 @@ export function ActivityGraphSettings() {
         setActivityGraphRadius,
         activityGraphCustomTitle,
         setActivityGraphCustomTitle
-    } = useProfileStore()
+    } = useActivityGraphSettings()
 
     return (
         <div className={styles.popOverContent}>

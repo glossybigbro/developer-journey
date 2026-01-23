@@ -1,7 +1,7 @@
 'use client'
 
 import { useOnboarding } from '../../model/useOnboarding'
-import { APP_CONFIG } from '@/app/config/constants'
+import { APP_CONFIG } from '@/shared/config/constants'
 import styles from './OnboardingCard.module.css'
 
 export function OnboardingCard() {

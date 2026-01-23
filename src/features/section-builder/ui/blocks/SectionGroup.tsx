@@ -6,9 +6,9 @@ import {
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 
-import { Section } from '../../../entities/profile/model/sections'
-import styles from './SectionBuilder.module.css'
-import { SectionItem } from './SectionItem'
+import { Section } from '../../../../entities/profile/model/sections'
+import styles from '../SectionBuilder.module.css'
+import { SectionItem } from '../SectionItem'
 
 interface SectionGroupProps {
     category: string

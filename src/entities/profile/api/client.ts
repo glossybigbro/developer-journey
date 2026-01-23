@@ -39,7 +39,6 @@ export async function retryWithBackoff<T>(
 
             // Wait before retrying (exponential backoff)
             const delay = baseDelay * Math.pow(2, attempt);
-            console.log(`[GitHub API] Retry attempt ${attempt + 1}/${maxRetries} after ${delay}ms`);
             await new Promise(resolve => setTimeout(resolve, delay));
         }
     }

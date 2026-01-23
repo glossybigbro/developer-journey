@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useProfileStore } from '@/entities/profile/model/useProfileStore'
-import { APP_CONFIG } from '@/app/config/constants'
+import { APP_CONFIG } from '@/shared/config/constants'
 
 export function useOnboarding() {
     const { username, setUsername, setStep, verifyUser } = useProfileStore()

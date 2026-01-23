@@ -20,17 +20,7 @@ export class SimpleBioGenerator implements SectionGenerator {
 
         let markdown = ''
 
-        // 1. Heading
-        if (bio.showHeading !== false) {
-            const size = bio.headingSize === 'h2' ? '##' : bio.headingSize === 'h3' ? '###' : '#'
-            markdown += `${size} ${bio.heading}\n`
-
-            // Separator logic:
-            // Relaxing this to just newlines for consistency in preview/spacing
-            // H1/H2 have native borders, H3 via CSS in preview.
-            // Removing explicit '---' for H3 prevents double borders/spacing issues.
-            markdown += '\n'
-        }
+        // 1. Heading (Deprecated - Handled by standalone Header Section)
 
         // 2. Description
         if (bio.showDescription !== false) {

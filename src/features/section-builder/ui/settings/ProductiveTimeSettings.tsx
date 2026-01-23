@@ -1,66 +1,18 @@
-'use client'
-
-import { useState } from 'react'
-import { useProfileStore } from '@/entities/profile/model/useProfileStore'
-import { getUserProductiveTime } from '@/entities/profile/api/profile-api'
-import { getHabitLabel } from '@/entities/profile/lib/markdown/ascii-art'
-import { hexToRgba } from '@/shared/lib/utils/styleUtils'
-import styles from './SectionBuilder.module.css'
-
 import { PRODUCTIVE_TIME_STYLES } from '@/entities/profile/config/productive-time'
+import { getHabitLabel } from '@/entities/profile/lib/markdown/ascii-art'
+import styles from '../SectionBuilder.module.css'
+import { useProductiveTimeSettings } from '../../model/useSettingsHooks'
 
 export function ProductiveTimeSettings() {
     const {
         accentColor,
         productiveTime,
         setProductiveTimeStyle,
-        setProductiveTimeStats,
+        isAnalyzing,
+        handleAnalyze,
+        getSelectedStyle,
         username
-    } = useProfileStore()
-
-    const [isAnalyzing, setIsAnalyzing] = useState(false)
-
-    // 선택된 테마 스타일
-    const getSelectedStyle = (color: string) => ({
-        background: hexToRgba(color, 0.1),
-        borderColor: hexToRgba(color, 0.5),
-        color: color,
-        boxShadow: `0 0 15px ${hexToRgba(color, 0.2)}`,
-        textShadow: `0 0 8px ${hexToRgba(color, 0.5)}`,
-    })
-
-    const handleAnalyze = async () => {
-        if (!username) return
-
-        setIsAnalyzing(true)
-        // Reset previous stats to trigger animation/refresh
-        setProductiveTimeStats({
-            morning: 0, daytime: 0, evening: 0, night: 0,
-            commits: { morning: 0, daytime: 0, evening: 0, night: 0 }
-        })
-
-        try {
-            // Real API Call
-            // Note: In PROD, we might want to cache this or use React Query.
-            // For now, direct call is fine for this specific interaction.
-            const stats = await getUserProductiveTime(username)
-
-            // Artificial delay for UX (so user sees the spinner and feels the "processing")
-            // 800ms is a sweet spot for "doing work" feeling without annoyance.
-            await new Promise(resolve => setTimeout(resolve, 800))
-
-            setProductiveTimeStats(stats)
-        } catch (error) {
-            console.error('Analysis failed:', error)
-            // Fallback to zero stats on error
-            setProductiveTimeStats({
-                morning: 0, daytime: 0, evening: 0, night: 0,
-                commits: { morning: 0, daytime: 0, evening: 0, night: 0 }
-            })
-        } finally {
-            setIsAnalyzing(false)
-        }
-    }
+    } = useProductiveTimeSettings()
 
     return (
         <div className={styles.popOverContent}>

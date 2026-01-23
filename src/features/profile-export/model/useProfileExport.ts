@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { generateMarkdown } from '@/entities/profile/lib/markdown/generator'
-import { APP_CONFIG } from '@/app/config/constants'
+import { transformStoreToConfig } from '@/entities/profile/lib/mappers'
+import { APP_CONFIG } from '@/shared/config/constants'
 import { useProfileStore } from '@/entities/profile/model/useProfileStore'
 
 export function useProfileExport() {
@@ -8,7 +9,12 @@ export function useProfileExport() {
     const [isCopied, setIsCopied] = useState(false)
 
     const handleCopy = async () => {
-        const markdown = generateMarkdown(useProfileStore.getState())
+        const store = useProfileStore.getState()
+
+        // Adapter: Transform store state to generator config using central mapper
+        const config = transformStoreToConfig(store)
+
+        const markdown = generateMarkdown(config)
 
         try {
             await navigator.clipboard.writeText(markdown)
@@ -20,7 +26,12 @@ export function useProfileExport() {
     }
 
     const handleDownload = () => {
-        const markdown = generateMarkdown(useProfileStore.getState())
+        const store = useProfileStore.getState()
+
+        // Adapter: Transform store state to generator config using central mapper
+        const config = transformStoreToConfig(store)
+
+        const markdown = generateMarkdown(config)
         const blob = new Blob([markdown], { type: 'text/markdown' })
         const url = URL.createObjectURL(blob)
         const a = document.createElement('a')

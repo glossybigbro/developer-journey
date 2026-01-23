@@ -38,13 +38,48 @@ export function generateMarkdown(config: ExtendedGeneratorConfig): string {
 
     // Generate markdown for each enabled section
     enabledSections.forEach((section: MarkdownSection, index: number) => {
-        const generator = getGenerator(section.id)
-        if (generator) {
-            // Add blank line between sections (but not before first section)
+        if (section.type === 'header' && section.content) {
             if (index > 0) {
                 markdown += '\n\n'
             }
-            markdown += generator.generate(config, section).trim()
+            // Generate dynamic header based on config
+            const config = section.headerConfig || { level: 3, align: 'left', showDivider: false }
+            // Handle alignment
+            let headerLine: string
+            if (config.align && config.align !== 'left') {
+                // Use HTML for alignment to ensure styles/borders are preserved
+                headerLine = `<h${config.level} align="${config.align}">${section.content}</h${config.level}>`
+            } else {
+                // Use standard Markdown for default left alignment
+                const prefix = '#'.repeat(config.level)
+                headerLine = `${prefix} ${section.content}`
+            }
+
+            markdown += headerLine
+
+            // Handle divider
+            if (config.showDivider) {
+                markdown += '\n\n---'
+            }
+        } else if (section.type === 'divider') {
+            if (index > 0) {
+                markdown += '\n\n'
+            }
+            markdown += '---'
+        } else if (section.type === 'text' && section.content) {
+            if (index > 0) {
+                markdown += '\n\n'
+            }
+            markdown += section.content
+        } else {
+            const generator = getGenerator(section.id)
+            if (generator) {
+                // Add blank line between sections (but not before first section)
+                if (index > 0) {
+                    markdown += '\n\n'
+                }
+                markdown += generator.generate(config, section).trim()
+            }
         }
     })
 

@@ -4,6 +4,7 @@ import rehypeRaw from 'rehype-raw'
 import rehypeSanitize from 'rehype-sanitize'
 import { useProfileStore } from '../../model/useProfileStore'
 import { generateMarkdown } from '../../lib/markdown/generator'
+import { transformStoreToConfig } from '../../lib/mappers'
 import rehypeHighlight from 'rehype-highlight'
 import './github-light.css' // Custom Light Theme without white background
 import styles from './MarkdownViewer.module.css'
@@ -17,7 +18,11 @@ export function MarkdownViewer() {
 
     // Pass the full store, but the destructuring above ensures we re-render on changes
     // Also, we need to make sure generateMarkdown uses the CURRENT store values
-    const markdown = generateMarkdown(store)
+    // Adapter: Ensure headerConfig.align is normalized (it's optional in Store but required in Generator)
+    // Adapter: Transform store state to generator config using central mapper
+    const config = transformStoreToConfig(store)
+
+    const markdown = generateMarkdown(config)
 
     return (
         <div className={styles.container}>

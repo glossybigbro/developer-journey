@@ -16,6 +16,16 @@ export interface MarkdownSection {
     enabled?: boolean
     /** Display width: 'full', 'half', or 'compact' */
     width?: string
+    /** Optional type for special sections like headers */
+    type?: 'section' | 'header' | 'text' | 'divider'
+    /** Content for text-based sections (e.g., headers) */
+    content?: string
+    /** Configuration for header sections */
+    headerConfig?: {
+        level: 1 | 2 | 3 | 4
+        align: 'left' | 'center' | 'right'
+        showDivider: boolean
+    }
 }
 
 /**
@@ -70,6 +80,8 @@ export interface GeneratorConfig {
 
     // Productive Time Configuration
     productiveTime?: {
+        style: ProductiveTimeStyleId
+        isAnalyzed: boolean
         stats: {
             morning: number
             daytime: number
@@ -82,10 +94,36 @@ export interface GeneratorConfig {
                 night: number
             }
         }
-        style: ProductiveTimeStyleId
-        isAnalyzed: boolean
+    }
+
+    // Act 4 (Stats - GitHub Only)
+    activityStats?: {
+        itemCount: number
+        ignoredLanguages: string[]
+    }
+    timezone?: string
+
+    // Sections
+    sections: MarkdownSection[]
+
+    // Weekly Settings
+    weeklyLanguages?: {
+        style: 'progress' | 'emoji' | 'compact'
+        count: number
+        sortBy: 'usage' | 'alphabetical' | 'recent'
+        periodDays: number
+        excludeLanguages: string[]
+    }
+
+    weeklyProjects?: {
+        style: 'progress' | 'emoji' | 'compact'
+        count: number
+        sortBy: 'commits' | 'alphabetical' | 'recent'
+        periodDays: number
     }
 }
+
+export type ExtendedGeneratorConfig = GeneratorConfig
 
 /**
  * Section Generator Interface

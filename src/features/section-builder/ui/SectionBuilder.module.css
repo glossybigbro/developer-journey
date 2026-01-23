@@ -36,12 +36,13 @@
 }
 
 .sectionTitle {
-    margin: 0 0 var(--spacing-sm) 0;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--accent-cyan);
+    margin: 0 0 12px 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(0, 217, 255, 0.9);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1.2px;
+    text-shadow: 0 0 12px rgba(0, 217, 255, 0.4);
 }
 
 .fullWidth {
@@ -146,12 +147,14 @@
     padding: 0;
 }
 
-/* Group */
+/* Group - Neon Glass */
 .group {
-    border: 1px solid var(--border-dim);
-    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
     overflow: visible;
-    background: var(--surface-dim);
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .groupHeader {
@@ -160,26 +163,30 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(--surface-dim);
+    background: transparent;
     border: none;
     cursor: pointer;
-    color: white;
-    font-size: 14px;
-    font-weight: 600;
-    transition: background 0.2s;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
     font-family: var(--font-system);
 }
 
 .groupHeader:hover {
-    background: rgba(42, 63, 95, 0.5);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(0, 217, 255, 0.9);
+    text-shadow: 0 0 8px rgba(0, 217, 255, 0.3);
 }
 
 .chevron {
     font-size: 10px;
-    transition: transform 0.2s;
-    color: var(--text-quaternary);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .chevron.open {
@@ -194,26 +201,192 @@
     gap: 4px;
 }
 
+/* Neon Glass Section Item */
 .item {
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
-    background: var(--surface-highlight);
-    border-radius: var(--radius-sm);
-    border: 1px solid transparent;
-    transition: all 0.2s;
-    position: relative;
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    overflow: hidden;
+    user-select: none;
+    margin-bottom: 8px;
 }
 
 .item:hover {
-    background: var(--surface-hover-strong);
-    z-index: var(--z-index-hover);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(0, 217, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.15), inset 0 0 0 1px rgba(0, 217, 255, 0.1);
+    z-index: 10;
+}
+
+.item:active {
+    transform: scale(0.98) translateY(0);
+    box-shadow: 0 0 10px rgba(0, 217, 255, 0.1);
 }
 
 .item.enabled {
-    background: rgba(var(--accent-cyan-rgb), 0.1);
-    border-color: rgba(var(--accent-cyan-rgb), 0.3);
+    border-color: rgba(0, 217, 255, 0.3);
+    background: rgba(0, 217, 255, 0.05);
+}
+
+/* Icon Container */
+.itemIconWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    margin-right: 14px;
+    font-size: 18px;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+.item:hover .itemIconWrapper {
+    transform: scale(1.1) rotate(-5deg);
+    border-color: rgba(0, 217, 255, 0.4);
+    background: rgba(0, 217, 255, 0.1);
+    box-shadow: 0 0 12px rgba(0, 217, 255, 0.2);
+}
+
+/* Text & Info */
+.itemInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.itemName {
+    font-size: 14px;
+    font-weight: 700;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(200, 230, 255, 0.9) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: var(--font-system);
+    transition: all 0.2s;
+}
+
+.item:hover .itemName {
+    background: linear-gradient(135deg, #ffffff 0%, #00d9ff 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 8px rgba(0, 217, 255, 0.5));
+}
+
+.itemDescription {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Action Indicator (Right Side) */
+.itemAction {
+    margin-left: 12px;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #00d9ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item:hover .itemAction {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.itemActionIcon {
+    width: 18px;
+    height: 18px;
+    filter: drop-shadow(0 0 5px rgba(0, 217, 255, 0.8));
+}
+
+/* Add Button (Appears when settings open) */
+.addButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 6px 12px;
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+    border: 1px solid rgba(0, 217, 255, 0.4);
+    border-radius: 8px;
+    color: #00d9ff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 0 12px rgba(0, 217, 255, 0.2);
+    white-space: nowrap;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.addButton:hover {
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.25) 0%, rgba(168, 85, 247, 0.25) 100%);
+    border-color: rgba(0, 217, 255, 0.8);
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+    transform: scale(1.05);
+}
+
+.addButton:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 8px rgba(0, 217, 255, 0.3);
+}
+
+.addButtonIcon {
+    font-size: 13px;
+    filter: drop-shadow(0 0 4px rgba(0, 217, 255, 0.8));
+}
+
+/* Keep hover state when settings are open */
+.item.settingsOpen {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(0, 217, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.15), inset 0 0 0 1px rgba(0, 217, 255, 0.1);
+    z-index: 10;
+}
+
+.item.settingsOpen .itemIconWrapper {
+    transform: scale(1.1) rotate(-5deg);
+    border-color: rgba(0, 217, 255, 0.4);
+    background: rgba(0, 217, 255, 0.1);
+    box-shadow: 0 0 12px rgba(0, 217, 255, 0.2);
+}
+
+.item.settingsOpen .itemName {
+    background: linear-gradient(135deg, #ffffff 0%, #00d9ff 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 8px rgba(0, 217, 255, 0.5));
 }
 
 .itemContent {
@@ -374,40 +547,45 @@
     opacity: 1;
 }
 
-/* Pop-over Panel */
+/* Pop-over Panel - Neon Glass Style */
 .settingsPopOver {
     position: absolute;
     top: calc(100% + 4px);
     left: 0;
     z-index: var(--z-index-popover);
 
-    /* Strict Match to Section Item Width */
     width: 100%;
     min-width: unset;
     max-width: unset;
-
-    /* Disable resizing to maintain match */
     resize: none;
     overflow: hidden;
-
     box-sizing: border-box;
 
     padding: 0;
-    background: var(--surface-glass);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--border-glass);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-    animation: popIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    transform-origin: top left;
+    /* Opaque background matching section item visual tone */
+    background: linear-gradient(180deg,
+            rgba(22, 27, 34, 1) 0%,
+            rgba(18, 24, 30, 1) 100%);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    /* Cyan border matching active item */
+    border: 1px solid rgba(0, 217, 255, 0.6);
+    border-radius: 12px;
+    box-shadow:
+        0 24px 48px rgba(0, 0, 0, 0.7),
+        0 0 20px rgba(0, 217, 255, 0.15),
+        inset 0 0 0 1px rgba(0, 217, 255, 0.1);
+
+    animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: top center;
     font-family: var(--font-system);
 }
 
 .popOverContent {
-    padding: 16px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
+    background: linear-gradient(180deg, rgba(0, 217, 255, 0.02) 0%, transparent 100%);
 }
 
 @keyframes popIn {
@@ -431,36 +609,40 @@
 
 .settingLabel {
     font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    color: var(--text-tertiary);
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: rgba(0, 217, 255, 0.7);
     text-transform: uppercase;
     user-select: none;
-    /* Prevent Selection */
     -webkit-user-select: none;
+    text-shadow: 0 0 8px rgba(0, 217, 255, 0.3);
 }
 
 /* --- TEXT INPUT --- */
 .textInput {
     width: 100%;
-    padding: 8px 12px;
-    border-radius: var(--radius-md);
-    background: var(--surface-highlight-hover);
-    border: 1px solid var(--border-highlight);
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(0, 217, 255, 0.15);
     color: white;
-    /* Ensure text is visible */
     font-size: 14px;
     outline: none;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .textInput:focus {
-    border-color: var(--accent-cyan);
-    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(0, 217, 255, 0.6);
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow:
+        0 0 0 3px rgba(0, 217, 255, 0.1),
+        0 0 20px rgba(0, 217, 255, 0.15);
 }
 
 .textInput::placeholder {
-    color: var(--text-placeholder-active);
+    color: rgba(255, 255, 255, 0.25);
 }
 
 /* --- DOC LINK --- */
@@ -493,32 +675,41 @@
     }
 }
 
-/* --- THEME GRID --- */
+/* --- THEME GRID - Neon Glass --- */
 .themeGrid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: var(--spacing-sm);
+    gap: 10px;
 }
 
 .themeChip {
     position: relative;
-    height: 36px;
-    background: #0d1117;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-highlight);
+    height: 40px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .themeChip:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px) scale(1.02);
+    border-color: rgba(0, 217, 255, 0.4);
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(0, 217, 255, 0.15);
 }
 
 .themeChip.selected {
-    border-color: var(--accent-cyan);
-    box-shadow: 0 0 0 2px var(--accent-cyan);
+    border-color: rgba(0, 217, 255, 0.8);
+    background: rgba(0, 217, 255, 0.08);
+    box-shadow:
+        0 0 0 2px rgba(0, 217, 255, 0.4),
+        0 0 24px rgba(0, 217, 255, 0.3),
+        inset 0 0 12px rgba(0, 217, 255, 0.1);
 }
 
 .themePreview {
@@ -530,12 +721,13 @@
 }
 
 .themeCircle {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* --- IOS TOGGLE SWITCH --- */
+/* --- IOS TOGGLE SWITCH - Neon Glass --- */
 .switch {
     position: relative;
     display: inline-block;
@@ -543,7 +735,6 @@
     height: 22px;
     appearance: none;
     user-select: none;
-    /* Prevent Access Selection */
     -webkit-user-select: none;
 }
 
@@ -560,10 +751,12 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.2);
-    -webkit-transition: .4s;
-    transition: .4s;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 34px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 
 .slider:before {
@@ -572,33 +765,39 @@
     height: 16px;
     width: 16px;
     left: 3px;
-    bottom: 3px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
+    bottom: 2.5px;
+    background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 50%;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 input:checked+.slider {
-    background-color: var(--accent-cyan);
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.3) 0%, rgba(0, 217, 255, 0.15) 100%);
+    border-color: rgba(0, 217, 255, 0.6);
+    box-shadow:
+        0 0 12px rgba(0, 217, 255, 0.3),
+        inset 0 0 8px rgba(0, 217, 255, 0.1);
 }
 
 input:focus+.slider {
-    box-shadow: 0 0 1px var(--accent-cyan);
+    box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.2);
 }
 
 input:checked+.slider:before {
     transform: translateX(18px);
-    /* 40 - 16 - 3 - 3 = 18 */
+    background: linear-gradient(135deg, #00d9ff 0%, #00b8d9 100%);
+    box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.3),
+        0 0 12px rgba(0, 217, 255, 0.6);
 }
 
-/* --- CUSTOM RANGE SLIDER --- */
+/* --- CUSTOM RANGE SLIDER - Neon Glass --- */
 .rangeInput {
     appearance: none;
     -webkit-appearance: none;
     width: 100%;
-    margin: 4px 0;
+    margin: 8px 0;
     background: transparent;
 }
 
@@ -608,49 +807,60 @@ input:checked+.slider:before {
 
 .rangeInput::-webkit-slider-runnable-track {
     width: 100%;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+    height: 8px;
+    background: linear-gradient(90deg, rgba(0, 217, 255, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+    border: 1px solid rgba(0, 217, 255, 0.2);
+    border-radius: 8px;
     cursor: pointer;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 
 .rangeInput::-webkit-slider-thumb {
-    height: 16px;
-    width: 16px;
+    height: 18px;
+    width: 18px;
     border-radius: 50%;
-    background: var(--accent-cyan);
-    border: 2px solid #fff;
+    background: linear-gradient(135deg, #00d9ff 0%, #00b8d9 100%);
+    border: 2px solid rgba(255, 255, 255, 0.8);
     cursor: pointer;
     appearance: none;
     -webkit-appearance: none;
-    margin-top: -5px;
-    /* (6 - 16) / 2 */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-    transition: transform 0.1s;
+    margin-top: -6px;
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.4),
+        0 0 16px rgba(0, 217, 255, 0.5);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .rangeInput::-webkit-slider-thumb:hover {
-    transform: scale(1.1);
+    transform: scale(1.15);
+    box-shadow:
+        0 3px 8px rgba(0, 0, 0, 0.5),
+        0 0 24px rgba(0, 217, 255, 0.8);
 }
 
 /* Firefox Styles */
 .rangeInput::-moz-range-track {
     width: 100%;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+    height: 8px;
+    background: linear-gradient(90deg, rgba(0, 217, 255, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+    border: 1px solid rgba(0, 217, 255, 0.2);
+    border-radius: 8px;
     cursor: pointer;
 }
 
 .rangeInput::-moz-range-thumb {
-    height: 16px;
-    width: 16px;
-    border: 2px solid #fff;
+    height: 18px;
+    width: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
     border-radius: 50%;
-    background: var(--accent-cyan);
+    background: linear-gradient(135deg, #00d9ff 0%, #00b8d9 100%);
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.4),
+        0 0 16px rgba(0, 217, 255, 0.5);
 }
+
 
 /* --- BIO SETTINGS STYLES --- */
 .settingsContent {
@@ -699,34 +909,36 @@ input:checked+.slider:before {
 
 .settingsInput {
     width: 100%;
-    padding: 10px 12px;
-    border-radius: var(--radius-md);
-    background: var(--surface-highlight-hover);
-    border: 1px solid var(--border-highlight);
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(0, 217, 255, 0.15);
     color: white;
     font-size: 13px;
     outline: none;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     font-family: var(--font-system);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 textarea.settingsInput {
     min-height: 40px;
     line-height: 1.5;
     resize: none;
-    /* Disable manual resize */
     overflow: hidden;
-    /* Prevent scrollbar */
 }
 
 .settingsInput:focus {
-    border-color: var(--accent-cyan);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 2px rgba(var(--accent-cyan-rgb), 0.2);
+    border-color: rgba(0, 217, 255, 0.6);
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow:
+        0 0 0 3px rgba(0, 217, 255, 0.1),
+        0 0 20px rgba(0, 217, 255, 0.15);
 }
 
 .settingsInput::placeholder {
-    color: var(--text-placeholder-active);
+    color: rgba(255, 255, 255, 0.25);
 }
 
 /* --- SEGMENTED CONTROL --- */
@@ -763,34 +975,39 @@ textarea.settingsInput {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* --- UNIFIED INPUT BAR (DnD) --- */
+/* --- UNIFIED INPUT BAR (DnD) - Neon Glass --- */
 .unifiedListItem {
     display: flex;
     align-items: center;
-    background: var(--surface-highlight);
-    border: 1px solid var(--border-highlight);
-    border-radius: var(--radius-lg);
-    padding: 4px 8px;
-    transition: all 0.2s;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 6px 10px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    box-shadow: var(--shadow-sm);
-    margin-bottom: var(--spacing-sm);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 8px;
     touch-action: none;
-    /* Required for DnD */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .unifiedListItem:hover,
 .unifiedListItem:focus-within {
-    background: var(--surface-highlight-hover);
-    border-color: rgba(var(--accent-cyan-rgb), 0.3);
-    box-shadow: 0 4px 12px rgba(var(--accent-cyan-rgb), 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(0, 217, 255, 0.4);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        0 0 16px rgba(0, 217, 255, 0.15);
 }
 
 .unifiedListItem.dragging {
-    opacity: 0.5;
-    background: rgba(var(--accent-cyan-rgb), 0.1);
-    border-color: var(--accent-cyan);
-    box-shadow: 0 8px 24px rgba(var(--accent-cyan-rgb), 0.2);
+    opacity: 0.6;
+    background: rgba(0, 217, 255, 0.1);
+    border-color: rgba(0, 217, 255, 0.8);
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.4),
+        0 0 24px rgba(0, 217, 255, 0.3);
     z-index: var(--z-index-dragging);
 }
 
@@ -1017,6 +1234,16 @@ textarea.settingsInput {
     justify-content: center;
     margin-top: 8px;
     height: 36px;
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.12) 0%, rgba(168, 85, 247, 0.12) 100%);
+    border: 1px solid rgba(0, 217, 255, 0.3);
+    box-shadow: 0 0 12px rgba(0, 217, 255, 0.15);
+}
+
+.addBulletButton:hover {
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
+    border-color: rgba(0, 217, 255, 0.5);
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.25);
+    transform: scale(1.02);
 }
 
 .headingControls {
@@ -1044,4 +1271,102 @@ textarea.settingsInput {
 
 .detailsList {
     padding: 0;
+}
+
+/* Button Group - Neon Glass */
+.buttonGroup {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.settingsButton {
+    flex: 1;
+    min-width: fit-content;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: var(--font-system);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.settingsButton:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(0, 217, 255, 0.3);
+    color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-1px);
+}
+
+.settingsButton.active {
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+    border-color: rgba(0, 217, 255, 0.6);
+    color: rgba(0, 217, 255, 0.95);
+    box-shadow:
+        0 0 16px rgba(0, 217, 255, 0.2),
+        inset 0 0 8px rgba(0, 217, 255, 0.1);
+}
+
+/* Checkbox Grid - Neon Glass */
+.checkboxGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.checkboxLabel:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(0, 217, 255, 0.3);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.checkbox {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.checkbox:checked {
+    background: linear-gradient(135deg, #00d9ff 0%, #00b8d9 100%);
+    border-color: rgba(0, 217, 255, 0.8);
+    box-shadow: 0 0 12px rgba(0, 217, 255, 0.4);
+}
+
+.checkbox:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
 }

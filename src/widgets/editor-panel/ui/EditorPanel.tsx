@@ -1,21 +1,17 @@
 'use client'
 
 import { SectionBuilder } from '@/features/section-builder'
-import { useProfileStore } from '@/entities/profile/model/useProfileStore'
-import { APP_CONFIG } from '@/app/config/constants'
+import { APP_CONFIG } from '@/shared/config/constants'
 import styles from './EditorPanel.module.css'
+import { useEditorPanel } from '../model/useEditorPanel'
 
 export function EditorPanel() {
-    const { setStep } = useProfileStore()
-
-    const handleChangeUser = () => {
-        setStep('hero')
-    }
+    const { username, handleChangeUser } = useEditorPanel()
 
     return (
         <div className={styles.leftPanel}>
             <div className={styles.panelHeader}>
-                <h3 className={styles.panelTitle}>{APP_CONFIG.TITLES.SECTION_BUILDER}</h3>
+                <h3 className={styles.panelTitle}>{username}</h3>
                 <button
                     className={styles.changeUserButton}
                     onClick={handleChangeUser}
