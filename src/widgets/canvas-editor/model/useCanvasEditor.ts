@@ -12,13 +12,17 @@ export function useCanvasEditor() {
         if (blocks.length > 0) {
             const lastBlock = blocks[blocks.length - 1]
             if (lastBlock.type === 'divider') {
-                // Prevent infinite loop by checking if we just added one? 
-                // Store updates are immediate, so this effect runs after render.
-                // We just append a text block.
                 store.addBlock(createTextBlock(), blocks.length, false)
             }
         }
     }, [store.blocks, store.addBlock])
+
+    // UX Rule: Auto-focus on the first block when entering the editor.
+    useEffect(() => {
+        if (!store.activeBlockId && store.blocks.length > 0) {
+            store.setActiveBlock(store.blocks[0].id)
+        }
+    }, []) // Run only once on mount
 
     return store
 }
