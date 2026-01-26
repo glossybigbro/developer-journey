@@ -29,7 +29,7 @@ export function OnboardingCard() {
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            onKeyPress={(e) => e.key === 'Enter' && handleStart()}
+                            onKeyDown={(e) => e.key === 'Enter' && handleStart()}
                             placeholder={APP_CONFIG.PLACEHOLDERS.USERNAME}
                             className={styles.input}
                             disabled={isInputLocked || isLoading}

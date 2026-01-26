@@ -67,3 +67,15 @@ export const COMMON_ANIMATION_CONFIG = {
         exit: { opacity: 0 }
     }
 } as const
+
+/**
+ * Accent color opacity values for selected state styling
+ * Mimics the "Change User Button" aesthetic
+ * Used in: HeaderSettings, BioSettings, etc.
+ */
+export const ACCENT_OPACITY = {
+    BACKGROUND: 0.2,
+    BORDER: 0.8,
+    SHADOW: 0.4,
+    TEXT_SHADOW: 0.6,
+} as const

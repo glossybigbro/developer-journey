@@ -5,7 +5,7 @@ import { useProfileExport } from '@/features/profile-export'
 import { MarkdownViewer } from '@/entities/profile/ui'
 import { APP_CONFIG } from '@/shared/config/constants'
 import styles from './PreviewPanel.module.css'
-import { usePreviewPanel } from '../../model/usePreviewPanel'
+import { usePreviewPanel, PREVIEW_TABS } from '../../model/usePreviewPanel'
 
 export function PreviewPanel() {
     // We only need specific selectors for rendering if needed, or let children handle it.
@@ -17,14 +17,14 @@ export function PreviewPanel() {
         <div className={styles.rightPanel}>
             <div className={styles.tabs}>
                 <button
-                    className={`${styles.tab} ${activeTab === 'preview' ? styles.active : ''}`}
-                    onClick={() => setActiveTab('preview')}
+                    className={`${styles.tab} ${activeTab === PREVIEW_TABS.PREVIEW ? styles.active : ''}`}
+                    onClick={() => setActiveTab(PREVIEW_TABS.PREVIEW)}
                 >
                     {APP_CONFIG.BUTTONS.PREVIEW}
                 </button>
                 <button
-                    className={`${styles.tab} ${activeTab === 'code' ? styles.active : ''}`}
-                    onClick={() => setActiveTab('code')}
+                    className={`${styles.tab} ${activeTab === PREVIEW_TABS.CODE ? styles.active : ''}`}
+                    onClick={() => setActiveTab(PREVIEW_TABS.CODE)}
                 >
                     {APP_CONFIG.BUTTONS.CODE}
                 </button>
@@ -38,12 +38,12 @@ export function PreviewPanel() {
                                 <span></span><span></span><span></span>
                             </div>
                             <div className={styles.windowTitle}>
-                                {activeTab === 'preview' ? APP_CONFIG.TITLES.PREVIEW_WINDOW : APP_CONFIG.TITLES.CODE_WINDOW}
+                                {activeTab === PREVIEW_TABS.PREVIEW ? APP_CONFIG.TITLES.PREVIEW_WINDOW : APP_CONFIG.TITLES.CODE_WINDOW}
                             </div>
                         </div>
                         <div className={styles.windowContent}>
-                            {activeTab === 'preview' && <MarkdownViewer />}
-                            {activeTab === 'code' && (
+                            {activeTab === PREVIEW_TABS.PREVIEW && <MarkdownViewer />}
+                            {activeTab === PREVIEW_TABS.CODE && (
                                 <pre className={styles.codeBlock}>
                                     {getGeneratedMarkdown()}
                                 </pre>

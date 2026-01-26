@@ -1,0 +1,75 @@
+.footer {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.previewButton,
+.exportButton,
+.downloadButton {
+    flex: 1;
+    height: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.previewButton {
+    background: rgba(13, 17, 23, 0.4);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(167, 139, 250, 0.3);
+    color: rgba(216, 180, 254, 0.9);
+}
+
+.previewButton:hover {
+    background: rgba(13, 17, 23, 0.8);
+    border-color: rgba(167, 139, 250, 0.8);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.exportButton {
+    background: rgba(0, 217, 255, 0.1);
+    border: 1px solid rgba(0, 217, 255, 0.3);
+    color: rgba(0, 217, 255, 0.9);
+}
+
+.exportButton:hover {
+    background: rgba(0, 217, 255, 0.2);
+    border-color: rgba(0, 217, 255, 0.8);
+    color: rgba(0, 217, 255, 1);
+    transform: translateY(-2px);
+}
+
+.downloadButton {
+    background: linear-gradient(90deg, #a855f7 0%, #00d9ff 100%);
+    border: none;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.downloadButton:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+    transform: skewX(-20deg) translateX(-150%);
+    transition: transform 0.5s;
+}
+
+.downloadButton:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.downloadButton:hover:after {
+    transform: skewX(-20deg) translateX(150%);
+}

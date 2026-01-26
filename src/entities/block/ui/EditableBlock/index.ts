@@ -1,0 +1,1 @@
+export { EditableBlock } from './EditableBlock'

@@ -153,7 +153,6 @@ export interface ProfileState {
     updateSectionContent: (sectionId: string, content: string) => void
     updateSection: (sectionId: string, updates: Partial<Section>) => void
     setAccentColor: (color: string) => void
-    verifyUser: (username: string) => Promise<void>
 }
 
 export const useProfileStore = create<ProfileState>((set) => ({
@@ -365,10 +364,5 @@ export const useProfileStore = create<ProfileState>((set) => ({
         productiveTime: { ...state.productiveTime, stats, isAnalyzed: true }
     })),
 
-    verifyUser: async (username: string) => {
-        const { getUserProfile } = await import('../api/profile-api')
-        await getUserProfile(username)
-        // If successful, update state
-        set({ username, currentStep: 'generator' })
-    }
+
 }))

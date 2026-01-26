@@ -11,19 +11,27 @@ export const MARKDOWN_SCHEMA = {
 }
 
 export const MARKDOWN_COMPONENTS = {
-    img: ({ node, ...props }: any) => (
-        <img {...props} style={{ maxWidth: '100%' }} />
-    ),
-    h1: ({ node, ...props }: any) => (
-        <h1 {...props} className={styles.h1} />
-    ),
-    h2: ({ node, ...props }: any) => (
-        <h2 {...props} className={styles.h2} />
-    ),
-    h3: ({ node, ...props }: any) => (
-        <h3 {...props} className={styles.h3} />
-    ),
-    h4: ({ node, ...props }: any) => (
-        <h4 {...props} className={styles.h4} />
-    )
+    img: (props: React.ComponentPropsWithoutRef<'img'> & { node?: any }) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { node, ...rest } = props
+        return (
+            <img {...rest} style={{ maxWidth: '100%' }} alt={rest.alt || ''} />
+        )
+    },
+    h1: (props: React.ComponentPropsWithoutRef<'h1'> & { node?: any }) => {
+        const { node, ...rest } = props
+        return <h1 {...rest} className={styles.h1} />
+    },
+    h2: (props: React.ComponentPropsWithoutRef<'h2'> & { node?: any }) => {
+        const { node, ...rest } = props
+        return <h2 {...rest} className={styles.h2} />
+    },
+    h3: (props: React.ComponentPropsWithoutRef<'h3'> & { node?: any }) => {
+        const { node, ...rest } = props
+        return <h3 {...rest} className={styles.h3} />
+    },
+    h4: (props: React.ComponentPropsWithoutRef<'h4'> & { node?: any }) => {
+        const { node, ...rest } = props
+        return <h4 {...rest} className={styles.h4} />
+    }
 }

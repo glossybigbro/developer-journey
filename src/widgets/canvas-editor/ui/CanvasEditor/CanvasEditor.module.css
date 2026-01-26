@@ -1,0 +1,51 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+
+    /* [Match Left Panel Style - Floating Glass] */
+    background: var(--bg-panel);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--bg-panel-border);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+
+    /* Internal layout */
+    padding: 0;
+    gap: 0;
+    overflow: hidden;
+    /* Toolbar sticks, content scrolls */
+    position: relative;
+    pointer-events: auto;
+    /* Capture clicks, stop fireworks */
+}
+
+.previewMode {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+}
+
+.previewMode h2 {
+    margin-bottom: 20px;
+}
+
+.previewMode button {
+    padding: 12px 24px;
+    background: rgba(167, 139, 250, 0.2);
+    border: 1px solid rgba(167, 139, 250, 0.5);
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.previewMode button:hover {
+    background: rgba(167, 139, 250, 0.3);
+    transform: translateY(-2px);
+}

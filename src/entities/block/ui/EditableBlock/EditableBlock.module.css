@@ -1,0 +1,22 @@
+.block {
+    position: relative;
+    padding: 8px 12px;
+    padding-left: 9px;
+    /* 12px total indent: 3px border + 9px padding */
+    margin: 4px 0;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    cursor: text;
+
+    /* Layout Stability Fix: Always reserve 3px border space */
+    border-left: 3px solid transparent;
+}
+
+.block:hover {
+    background: rgba(0, 217, 255, 0.05);
+}
+
+.block.active {
+    background: rgba(0, 217, 255, 0.08);
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+}

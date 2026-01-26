@@ -1,0 +1,57 @@
+.canvas {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    /* Notion Page Standard: ~900px - 960px max width for centered content */
+    max-width: 1100px;
+    margin: 0 auto;
+
+    /* Notion Layout: Significant top padding (Title Area room) */
+    padding: 80px 60px 150px 60px;
+    /* Bottom padding for scroll space */
+
+    /* min-height: 100% removed to prevent flex container overflow clipping */
+
+    /* Transparent, just layout */
+    background: transparent;
+    border: none;
+    outline: none;
+
+    position: relative;
+    overflow-y: auto;
+
+    /* Scrollbar Hiding (Zen Mode) */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.canvas::-webkit-scrollbar {
+    display: none;
+}
+
+.clickArea {
+    flex: 1;
+    min-height: 100px;
+    /* Clickable space at bottom */
+    cursor: text;
+}
+
+.emptyState {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40vh;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 1rem;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .canvas {
+        padding: 40px 24px 80px 24px;
+    }
+}

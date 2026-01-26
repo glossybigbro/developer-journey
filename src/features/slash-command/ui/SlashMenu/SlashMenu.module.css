@@ -1,0 +1,159 @@
+.menu {
+    position: fixed;
+    z-index: 1000;
+    min-width: 320px;
+    max-height: 320px;
+    overflow-y: auto;
+
+    /* Left Design Concept Match (Floating Glass + Neon Border) */
+    background: var(--bg-panel);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+
+    border: 1px solid rgba(0, 217, 255, 0.6);
+
+    box-shadow:
+        0 24px 48px rgba(0, 0, 0, 0.7),
+        0 0 20px rgba(0, 217, 255, 0.15),
+        inset 0 0 0 1px rgba(0, 217, 255, 0.1);
+
+    border-radius: 24px;
+
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* Scrollbar */
+.menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.menu::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 12px 0;
+}
+
+.menu::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    transition: background 0.2s;
+}
+
+.menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Item Base Style */
+.item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 12px 16px;
+
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    text-align: left;
+    user-select: none;
+}
+
+/* Standard Hover Effects */
+.item:hover,
+.item.active {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(0, 217, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.15), inset 0 0 0 1px rgba(0, 217, 255, 0.1);
+    z-index: 10;
+}
+
+/* Icon Style */
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 16px;
+    margin-right: 14px;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+/* Icon Hover Effects */
+.item:hover .icon,
+.item.active .icon {
+    transform: scale(1.1) rotate(-5deg);
+    border-color: rgba(0, 217, 255, 0.4);
+    background: rgba(0, 217, 255, 0.1);
+    box-shadow: 0 0 12px rgba(0, 217, 255, 0.2);
+}
+
+.label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+
+.title {
+    font-size: 14px;
+    font-weight: 700;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(200, 230, 255, 0.9) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.3px;
+    font-family: var(--font-system);
+    transition: all 0.2s;
+}
+
+/* Title Hover Effects */
+.item:hover .title,
+.item.active .title {
+    background: linear-gradient(135deg, #ffffff 0%, #00d9ff 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 8px rgba(0, 217, 255, 0.5));
+}
+
+.desc {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 0;
+}
+
+/* Disabled State */
+.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.02);
+}
+
+.disabled:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: rgba(255, 255, 255, 0.02);
+    background: transparent;
+}
